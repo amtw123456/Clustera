@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 88px;
+            background: linear-gradient(to right, #4CAF50, #2196F3);
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        h3 {
+            font-size: 44px;
+            background: linear-gradient(to right, rgb(235, 238, 43), rgb(185, 37, 185));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        #upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        #btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        #file-name {
+            margin-left: 10px;
+        }
+
+        #description {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+    <title>Clustera - Text Clustering Application</title>
+</head>
+<body>
+    <div id="container">
+        <h3>Welcome to</h3>
+        <h1>Clustera</h1>
+        <h2 id="description">An application that allows you to Cluster, Categorize and Classify Textual Documents</h2>
+
+        <div id="upload-btn-wrapper">
+            <button class="btn" id="btn">Upload JSON or CSV file</button>
+            <input type="file" name="myfile" />
+        </div>
+        <div id="file-name"></div>
+    </div>
+
+    <script>
+        document.querySelector('input[type=file]').addEventListener('change', function () {
+            document.getElementById('file-name').textContent = this.value.split('\\').pop();
+        });
+    </script>
+</body>
+</html>
