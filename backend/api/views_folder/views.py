@@ -20,7 +20,6 @@ lemma = WordNetLemmatizer()
 
 # Load data from a JSON file
 
-
 # Extract text content from the data
 
 custom_stopwords = set(["im", "i'm", "ve", "would"])
@@ -35,7 +34,7 @@ translator = str.maketrans("", "", string.punctuation)
 def text_tokenization(request):
     print("RED")
     responseData = json.loads(request.body)
-
+    
     def count_words_in_documents(document_contents):
         total_word_counts = Counter()
 
