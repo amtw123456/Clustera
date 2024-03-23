@@ -19,7 +19,6 @@ function DocPage() {
   useEffect(() => {
     // This will log the updated state whenever the component mounts
     console.log(newJsonData)
-    console.log('red')
     setNewJsonData(responseInfo)
     console.log(responseInfo)
   }, [responseInfo]); // Empty dependency array ensures the effect runs only once
