@@ -1,13 +1,13 @@
 import React, { createContext, useState } from 'react';
 
-export const AppContext = createContext();
+export const AppContext = createContext([]);
 
 export const AppStateProvider = ({ children }) => {
-    const [checkedIds, setCheckedIds] = useState([]);
-    const [articles, setArticles] = useState([]);
+    const [uploadedData, setUploadedData] = useState();
+    const [preprocessedText, setPreprocessedText] = useState();
 
     return (
-        <AppContext.Provider value={{ checkedIds, setCheckedIds, articles, setArticles }}>
+        <AppContext.Provider value={{ uploadedData, setUploadedData, preprocessedText, setPreprocessedText }}>
             {children}
         </AppContext.Provider>
     );

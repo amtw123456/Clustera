@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, json, useLocation, useParams } from 'react-router-dom'
+import { AppContext } from '../../providers/AppState.js';
 
 function DocPage() {
-  const { type } = useParams();
-  const jsonData = useLocation().state.documents;
-  const [newJsonData, setNewJsonData] = useState([]);
+  const { uploadedData, setUploadedData } = useContext(AppContext);
+  const { preprocessedText, setPreprocessedText } = useContext(AppContext);
+
   const [responseInfo, setResponseInfo] = useState([]);
   const [isPreProcessed, setIsPreProcessed] = useState(false);
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
@@ -13,15 +14,16 @@ function DocPage() {
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
-    setNewJsonData(jsonData)
+    // console.log(uploadedData)
   }, []);
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
-    console.log(newJsonData)
-    setNewJsonData(responseInfo)
-    console.log(responseInfo)
-  }, [responseInfo]); // Empty dependency array ensures the effect runs only once
+
+    setPreprocessedText(responseInfo)
+    console.log(preprocessedText)
+    console.log(uploadedData)
+  }, [responseInfo, preprocessedText]); // Empty dependency array ensures the effect runs only once
 
   const togglePreProcessedBool = () => {
     setIsPreProcessedBool((prevValue) => !prevValue);
@@ -38,7 +40,7 @@ function DocPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(jsonData),
+        body: JSON.stringify(uploadedData),
       });
 
       const responseData = await response.json();
@@ -59,10 +61,7 @@ function DocPage() {
       </div>
       <div class="flex items-center justify-center mb-5">
         <button class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-center flex items-center">
-          <Link to="/" state={{
-            documents: jsonData
-          }}
-          >Go to Upload Page</Link>
+          <Link to="/">Go to Upload Page</Link>
         </button>
       </div>
       <div class="flex items-center justify-center mb-5">
@@ -109,18 +108,20 @@ function DocPage() {
       <div class="flex items-center justify-center mb-3">
         <button
           class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={!false}
+          disabled={false}
         >
-          <Link to="/cluster_page_lsa" state={{ documents: jsonData }}>
+
+          <Link to="/cluster_page_lsa">
             Cluster Using LSA
           </Link>
         </button>
 
+
         <button
           class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={!false}
+          disabled={false}
         >
-          <Link to="/cluster_page_lda" state={{ documents: jsonData }}>
+          <Link to="/cluster_page_lda">
             Cluster Using LDA
           </Link>
         </button>
@@ -164,7 +165,7 @@ function DocPage() {
             ))
           )
         ) : (
-          jsonData.map((item, index) => (
+          uploadedData.map((item, index) => (
             <div class="w-1/2 h-20 border" key={index}>
               <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.postText.slice(0, 150) + "......."}</div>
             </div>

@@ -10,16 +10,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
     return (
-        <AppStateProvider>
-            <BrowserRouter>
+
+        <BrowserRouter>
+            <AppStateProvider>
                 <Routes>
                     <Route path="/" element={<UploadPage />} />
                     <Route path="/documentsPage" element={<DocPage />} />
                     <Route path="/cluster_page_lda" element={<LDApage />} />
                     <Route path="/cluster_page_lsa" element={<LSApage />} />
                 </Routes>
-            </BrowserRouter>
-        </AppStateProvider>
+            </AppStateProvider >
+        </BrowserRouter>
+
     );
 }
 

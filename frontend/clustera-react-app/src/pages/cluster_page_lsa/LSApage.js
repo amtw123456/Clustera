@@ -1,49 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, json, useLocation, useParams } from 'react-router-dom'
+import { AppContext } from '../../providers/AppState.js';
 
-function LSApage(props) {
-
-  const { type } = useParams();
-  // const jsonData = useLocation().state.documents;
-  // const [newJsonData, setNewJsonData] = useState([]);
-  const [responseInfo, setResponseInfo] = useState([]);
-  const [isPreProcessed, setIsPreProcessed] = useState(false);
-  const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
-
-  const [isLoading, setIsLoading] = useState(false);
+function LSApage() {
+  const { uploadedData, setUploadedData } = useContext(AppContext);
+  const { preprocessedText, setPreprocessedText } = useContext(AppContext);
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
-    console.log("RED");
-    // console.log(jsonData);
-    // setNewJsonData(jsonData);
+    console.log(uploadedData)
+    console.log(preprocessedText)
 
-    // console.log(newJsonData);
   }, []);
-
-  // const clusterDocumentsViaLsa = async () => {
-  //   setIsPreProcessed((prevValue) => !prevValue);
-  //   setIsPreProcessed(true);
-  //   try {
-  //     setIsLoading(true);
-
-  //     const response = await fetch('http://127.0.0.1:8000', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(jsonData),
-  //     });
-
-  //     const responseData = await response.json();
-  //     setResponseInfo(responseData.preprocessed_text);
-  //   } catch (error) {
-  //     console.error('Error during text preprocessing:', error);
-  //     // Handle errors if necessary
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <div class="">

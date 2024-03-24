@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from '../../providers/AppState.js';
 import { Link } from "react-router-dom";
 
 export function Upload() {
+  const { uploadedData, setUploadedData } = useContext(AppContext);
+  // const [uploadedData, setUploadedData] = useContext(AppContext);
   const [files, setFiles] = useState("");
   const [fileName, setFileName] = useState("");
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
     // This will log the updated jsonData whenever it changes
-    console.log(jsonData);
+    setUploadedData(jsonData);
+
   }, [jsonData]);
 
   const handleChange = (e) => {
@@ -26,6 +30,7 @@ export function Upload() {
         try {
           const parsedJson = JSON.parse(content);
           setJsonData(parsedJson);
+
         } catch (error) {
           console.error("Error parsing JSON:", error);
         }
@@ -46,10 +51,7 @@ export function Upload() {
       />
 
       <div class="border-gray-400 px-2 mb-3 py-1 mt-4 border-2 rounded-lg text-sm font-bold hover:bg-gray-200">
-        <Link to="/documentsPage" state={{
-          documents: jsonData
-        }}
-        >Go to Documents Page</Link>
+        <Link to="/documentsPage">Go to Documents Page</Link>
       </div>
       <div>
         {fileName ? (
