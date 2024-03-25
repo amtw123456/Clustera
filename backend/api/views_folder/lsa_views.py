@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation, TruncatedSVD
+from sklearn.preprocessing import normalize
 import nltk
 import time
 import numpy as np
@@ -16,7 +17,7 @@ import json
 import os
 
 
-# samle text_clustering_lsa payload
+# sample payload sent to text_clustering_lsa 
 '''
 {
   "preprocessed_text": [
@@ -38,21 +39,24 @@ def text_clustering_lsa(request):
     responseData = json.loads(request.body)
 
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
+    print(X.shape)
     # Apply LDA
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
     lsa = TruncatedSVD(n_components=n_topics, random_state=42)
 
     document_topic_distribution = lsa.fit_transform(X)
-    predicted_clusters = np.argmax(document_topic_distribution, axis=1)
+    document_topic_distribution_normalized = normalize(document_topic_distribution, norm='l1')
+    predicted_clusters = np.argmax(document_topic_distribution_normalized, axis=1)
 
     feature_names = vectorizer.get_feature_names_out()
     topics = []
     for topic_idx, topic in enumerate(lsa.components_):
-        top_words_indices = topic.argsort()[:-20:-1]  # Get indices of top 10 words for each topic
+        top_words_indices = topic.argsort()[:-30:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
 
     return Response(data={
-        "predicted_cxlusters": predicted_clusters,
-        "topics" : topics
+        "document_topic_distribution" : document_topic_distribution_normalized,
+        "predicted_clusters": predicted_clusters,
+        "topics" : topics,
     })

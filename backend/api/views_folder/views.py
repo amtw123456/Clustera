@@ -92,7 +92,7 @@ def text_tokenization(request):
         #     temp.append(lemmatized_word)
         
         # document = " ".join(temp)    
-        preprocessed_text.append({'postText':document})
+        preprocessed_text.append(document)
             # vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=2)
     # X = vectorizer.fit_transform(preprocessed_text)
 

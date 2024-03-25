@@ -13,8 +13,7 @@ import string
 import json
 import os
 
-
-# samle text_clustering_lsa payload
+# samle text_clustering_lda payload
 '''
 {
   "preprocessed_text": [
@@ -45,12 +44,14 @@ def text_clustering_lda(request):
 
     feature_names = vectorizer.get_feature_names_out()
     topics = []
+    
     for topic_idx, topic in enumerate(lda.components_):
-        top_words_indices = topic.argsort()[:-20:-1]  # Get indices of top 10 words for each topic
+        top_words_indices = topic.argsort()[:-30:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
 
     return Response(data={
-        "predicted_cxlusters": predicted_clusters,
+        "document_topic_distribution" : document_topic_distribution,
+        "predicted_clusters": predicted_clusters,
         "topics" : topics
     })

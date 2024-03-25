@@ -160,7 +160,7 @@ function DocPage() {
           ) : (
             responseInfo.map((item, index) => (
               <div class="w-1/2 h-20 border" key={index}>
-                <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.postText.slice(0, 150)}</div>
+                <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.slice(0, 150)}</div>
               </div>
             ))
           )
