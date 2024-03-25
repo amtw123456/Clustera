@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, json, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
+import NavigationBar from '../../components/navbar.js';
 
 function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
@@ -55,6 +56,7 @@ function DocPage() {
 
   return (
     <div class="">
+      <NavigationBar></NavigationBar>
       <div class="mx-auto w-3/5">
         <h1 class="text-center bg-red-400 font-bold bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-transparent bg-clip-text text-[88px]">Documents Page</h1>
         {/* <h1 class="font-bold bg-red-500 text-[88px]">Documents Page</h1> */}

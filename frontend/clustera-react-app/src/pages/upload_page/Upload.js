@@ -51,7 +51,7 @@ export function Upload() {
       />
 
       <div class="border-gray-400 px-2 mb-3 py-1 mt-4 border-2 rounded-lg text-sm font-bold hover:bg-gray-200">
-        <Link to="/documentsPage">Go to Documents Page</Link>
+        <Link to="/documentsPage">Cluster Documents</Link>
       </div>
       <div>
         {fileName ? (
