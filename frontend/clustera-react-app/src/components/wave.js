@@ -8,6 +8,7 @@ const PurpleWave = () => {
     return (
         <img src={Waves} class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" alt="background" />
     );
+
 };
 
 export default PurpleWave;
