@@ -25,12 +25,12 @@ function LDApage() {
       });
 
       const responseData = await response.json();
-      setResponseInfo(responseData.preprocessed_text);
+
     } catch (error) {
       console.error('Error during text preprocessing:', error);
       // Handle errors if necessary
     } finally {
-      setIsLoading(false);
+      console.error('Error during text preprocessing:');
     }
   };
 

@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 
-function NavigationBar() {
+function SideBar() {
     return (
-        <nav class="bg-gray-800 p-4 absolute top-0 left-0 right-0 z-0">
+        <nav class="bg-gray-800 p-4">
             <div class="flex justify-between items-center">
                 <div>
                     <Link to="/"><a href="#" class="text-white text-xl font-bold">Clustera</a></Link>
@@ -19,4 +19,4 @@ function NavigationBar() {
     );
 };
 
-export default NavigationBar;
+export default SideBar;
