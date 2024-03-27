@@ -15,7 +15,7 @@ export function Upload() {
 
   }, [jsonData]);
 
-  const handleChange = (e) => {
+  const uploadDocuments = (e) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -40,19 +40,21 @@ export function Upload() {
 
   return (
     <>
-      <label htmlFor="fileInput" class="w-92 h-13 mt-4 mx-auto border-2 border-gray-500 text-gray-500 px-4 py-2 bg-white rounded-lg text-sm font-bold cursor-pointer">
-        Upload JSON or CSV file
+      <label htmlFor="fileInput" class="w-92 h-13 mt-4 mx-auto border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+        Upload File
       </label>
+
+
       <input
         type="file"
         id="fileInput"
-        onChange={handleChange}
+        onChange={uploadDocuments}
         style={{ display: 'none' }}
       />
 
-      <div class="border-gray-400 px-2 mb-3 py-1 mt-4 border-2 rounded-lg text-sm font-bold hover:bg-gray-200">
+      <button class="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700">
         <Link to="/documentsPage">Cluster Documents</Link>
-      </div>
+      </button>
       <div>
         {fileName ? (
           <p>File Upload Complete!!!</p>
