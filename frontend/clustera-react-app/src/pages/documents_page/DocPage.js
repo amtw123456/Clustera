@@ -3,6 +3,8 @@ import { Link, json, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 import UtilitiesBar from '../../components/utilbar.js';
+import Popup from 'reactjs-popup';
+import { AiFillEye } from "react-icons/ai";
 
 function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
@@ -17,6 +19,8 @@ function DocPage() {
   useEffect(() => {
     // This will log the updated state whenever the component mounts
     // console.log(uploadedData)
+    document.body.style.overflow = 'auto';
+
   }, []);
 
   useEffect(() => {
@@ -109,7 +113,7 @@ function DocPage() {
         }
       </div>
 
-      <div class="flex items-center justify-center mb-3">
+      {/* <div class="flex items-center justify-center mb-3">
         <button
           class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           disabled={false}
@@ -129,7 +133,7 @@ function DocPage() {
             Cluster Using LDA
           </Link>
         </button>
-      </div>
+      </div> */}
 
       <div class="flex items-center justify-center mb-3">
         <div class="flex flex-wrap">
@@ -163,22 +167,32 @@ function DocPage() {
             </div>
           ) : (
             responseInfo.map((item, index) => (
-              <div class="w-1/2 h-20 border" key={index}>
+              <div class="w-1/2 h-20 border rounded-lg" key={index}>
                 <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.slice(0, 150)}</div>
               </div>
             ))
           )
         ) : (
           uploadedData.map((item, index) => (
-            <div class="w-1/2 h-20 border" key={index}>
-              <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.postText.slice(0, 150) + "......."}</div>
+            <div class="w-[880px] h-28 my-3 mx-6 h-20 border rounded-lg bg-gray-100" key={index}>
+              <div className="my-2 pb-2 pt-2 px-2">
+                <div>
+                  {index + 1 + ". " + item.postText.slice(0, 140) + "......."}
+                  <AiFillEye class="inline-block text-purple-800 text-lg" />
+                  <Popup trigger={<button class="inline-block text-purple-600">Read Full</button>} modal nested><div>This is the content inside the popup.</div></Popup>
+                  {/* <Popup trigger={<button>Open Popup</button>} position="right center">
+                    <div>This is the content inside the popup.</div>
+                  </Popup> */}
+                </div>
+              </div>
             </div>
 
           ))
-        )}
-      </div>
+        )
+        }
+      </div >
 
-    </div>
+    </div >
   );
 }
 
