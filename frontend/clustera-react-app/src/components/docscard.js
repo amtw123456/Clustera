@@ -1,5 +1,6 @@
 import React from 'react';
 import { AiFillEye } from 'react-icons/ai';
+import { IoDocumentSharp } from "react-icons/io5";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
@@ -18,15 +19,16 @@ function DocumentsCard({ index, item }) {
                     }} trigger={<button className="inline-block text-purple-600 p-0">Read Full</button>} modal nested>
                         {close => (
                             <div>
-                                <div className="border-b px-5 pb-4 border-gray-300 my-4 text-3xl font-bold">Document {index + 1}</div>
+                                <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end">
+                                    <IoDocumentSharp class="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div>
+                                </div>
                                 <div className="overflow-auto p-5 text-justify flex flex-col justify-center" style={{ maxHeight: "50vh" }}>
                                     <div class="pb-5">{item.postText}</div>
                                 </div>
-                                {/* Divider */}
                                 <div className="border-t border-gray-300 my-4"></div>
-                                {/* Close button */}
-                                <div className="flex justify-center pb-5">
-                                    <button className="inline-block text-white py-2 bg-teal-400 border rounded-lg w-1/5" onClick={close}>Close</button>
+                                <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
+                                    <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
+                                    <div className="text-sm italic">Length of Document: {item.postText.length} Characters</div>
                                 </div>
                             </div>
                         )}
