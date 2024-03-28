@@ -87,7 +87,7 @@ def text_tokenization(request):
         filtered_documents.append(document)
     
     total_word_counts = count_words_in_documents(filtered_documents)
-
+    print(total_word_counts.items())
     filtered_words = [word for word, count in total_word_counts.items() if count < 0]
 
     documents_tokens = []
@@ -118,4 +118,5 @@ def text_tokenization(request):
     return Response(data={
         "payload": PreProcessedInfo,
         "execution_time": elapsed_time,
+        # "total_word_counts" : total_word_counts.items(),
     })
