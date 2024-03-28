@@ -17,17 +17,19 @@ function DocPage() {
   const [wordCounts, setWordCounts] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isDocumentsLoading, setIsDocumentsLoading] = useState(false);
 
 
   // bools
   const [isRawDocumentsBool, setIsRawDocumentsBool] = useState(true);
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
-  const [isDocumentWordCountBool, setIisDocumentWordCountBoold] = useState(false);
+  const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
     // console.log(uploadedData)
     document.body.style.overflow = 'auto';
+    // document.body.style.cursor = 'wait';
 
   }, []);
 
@@ -35,28 +37,35 @@ function DocPage() {
     // This will log the updated state whenever the component mounts
 
     setPreprocessedText(responseInfo)
+    console.log(wordCounts.length)
+    console.log(wordCounts.isEmpty)
     console.log(wordCounts)
     console.log(uploadedData)
   }, [responseInfo, preprocessedText, wordCounts]); // Empty dependency array ensures the effect runs only once
 
   const togglePreProcessedBool = () => {
+
     setIsPreProcessedBool(true);
     setIsRawDocumentsBool(false);
-    setIisDocumentWordCountBoold(false);
+    setIsDocumentWordCountBool(false);
+
   };
 
   const toggleRawDocumentsBool = () => {
+
     setIsPreProcessedBool(false);
     setIsRawDocumentsBool(true);
-    setIisDocumentWordCountBoold(false);
-
+    setIsDocumentWordCountBool(false);
   };
 
   const toggleDocumentWordCountBool = () => {
+
     setIsPreProcessedBool(false);
     setIsRawDocumentsBool(false);
-    setIisDocumentWordCountBoold(true);
+    setIsDocumentWordCountBool(true);
+
   };
+
 
   const preprocessText = async () => {
     setIsPreProcessed((prevValue) => !prevValue);
@@ -115,8 +124,11 @@ function DocPage() {
               </div>
             ) : (
               isPreProcessed ? (
-                <button className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96" disabled>
-                  <div class>{"Text Pre-Processing"}</div>
+                <button
+                  className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96 cursor-not-allowed hover:cursor-not-allowed"
+                  disabled
+                >
+                  <div>{"Text Pre-Processing"}</div>
                 </button>
               ) : (
                 <button className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96" onClick={() => preprocessText()}>
@@ -131,52 +143,6 @@ function DocPage() {
       </div>
       <div class="mx-auto w-3/5">
       </div>
-
-      {/* <div class="flex items-center justify-center mb-3">
-        <button
-          class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={false}
-        >
-
-          <Link to="/cluster_page_lsa">
-            Cluster Using LSA
-          </Link>
-        </button>
-
-
-        <button
-          class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={false}
-        >
-          <Link to="/cluster_page_lda">
-            Cluster Using LDA
-          </Link>
-        </button>
-      </div> */}
-
-      {/* <div class="flex items-center justify-center mb-3">
-        <div class="flex flex-wrap">
-          {isPreProcessed ? (
-            <button class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"Un Pre-Processed Text"}</button>
-          ) : (
-            <button class="w-60 bg-gray-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"Un Pre-Processed Text"}</button>
-          )}
-        </div>
-        <div class="flex flex-wrap">
-          {isPreProcessed ? (
-            <button class="w-60 bg-gray-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"Pre-Processed Text"}</button>
-          ) : (
-            <button class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"Pre-Processed Text"}</button>
-          )}
-        </div>
-        <div class="flex flex-wrap">
-          {isPreProcessed ? (
-            <button class="w-60 bg-gray-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"View Word Count"}</button>
-          ) : (
-            <button class="w-60 bg-blue-500 mx-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => togglePreProcessedBool()}>{"View Word Count"}</button>
-          )}
-        </div>
-      </div> */}
 
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
         <div class="flex">
@@ -206,7 +172,7 @@ function DocPage() {
       </nav >
 
       <div class="ml-80 flex flex-wrap items-center">
-        {isPreProcessedBool > 0 ? (
+        {isPreProcessedBool ? (
           isLoading ? (
             <div class="flex-1 mt-48 text-center">
               <div role="status">
@@ -230,17 +196,29 @@ function DocPage() {
               </div>
             )
           )
-        ) :
+        ) : isRawDocumentsBool ? (
           uploadedData.length > 0 ? (
             uploadedData.map((item, index) => (
               <UDocumentsCard key={index} index={index} item={item} />
             ))
           ) : (
             <div class="flex-1">
-              <div className="text-center mt-80 text-gray-600 text-xl dark:text-gray-400">There are no Documents loaded yet to the page please Upload a JSON or CSV file.</div>
-              <Link to="/"><div class="text-center text-blue-600 text-base underline-offset-4">Go to Upload Page</div></Link>
+              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Documents loaded yet to the page please Upload a JSON or CSV file.</div>
+              <Link to="/"><div class="text-center text-blue-600 text-xl underline-offset-4">Go to Upload Page</div></Link>
             </div>
           )
+        ) : isDocumentWordCountBool ? (
+          wordCounts.length > 0 ? (
+            wordCounts.map((item, index) => (
+              <div> {item[0]} : {item[1]} </div>
+            ))
+          ) :
+            <div class="flex-1">
+              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">The documents has not yet been read</div>
+              <Link to="/"><div class="text-center text-gray-600 text-xl underline-offset-4">Please press the Text Pre-Processing Button.</div></Link>
+            </div>
+        ) :
+          <div></div>
         }
       </div >
 
