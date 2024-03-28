@@ -76,4 +76,10 @@ function PDocumentsCard({ index, item }) {
     );
 }
 
-export { PDocumentsCard, UDocumentsCard };
+function WordCountCard({ index, item }) {
+    return (
+        <div class="w-[135px] h-8 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg"> {item[0].slice(0, 12)} : {item[1]} </div>
+    );
+}
+
+export { PDocumentsCard, UDocumentsCard, WordCountCard };

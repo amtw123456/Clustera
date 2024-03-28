@@ -4,7 +4,7 @@ import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 import UtilitiesBar from '../../components/utilbar.js';
 import Sidebar from "../../components/sidebar.js";
-import { PDocumentsCard, UDocumentsCard } from '../../components/docscard.js'
+import { PDocumentsCard, UDocumentsCard, WordCountCard } from '../../components/docscard.js'
 import Popup from 'reactjs-popup';
 import { AiFillEye } from "react-icons/ai";
 
@@ -210,7 +210,7 @@ function DocPage() {
         ) : isDocumentWordCountBool ? (
           wordCounts.length > 0 ? (
             wordCounts.map((item, index) => (
-              <div> {item[0]} : {item[1]} </div>
+              <WordCountCard key={index} index={index} item={item} />
             ))
           ) :
             <div class="flex-1">
