@@ -46,7 +46,6 @@ translator = str.maketrans("", "", string.punctuation)
 # Create your views here.
 @api_view(['POST'])
 def text_tokenization(request):
-    print("RED")
     responseData = json.loads(request.body)
     
     def count_words_in_documents(document_contents):
@@ -66,7 +65,7 @@ def text_tokenization(request):
     #     data = json.load(file)
 
     texts = [item.get('postText', '') for item in responseData]
-    print(texts)
+    # print(texts)
 
     filtered_documents = []
     for document in texts:
@@ -91,7 +90,9 @@ def text_tokenization(request):
 
     filtered_words = [word for word, count in total_word_counts.items() if count < 0]
 
+    documents_tokens = []
     preprocessed_text = []
+    PreProcessedInfo = []
     for document in filtered_documents:
         temp = []
 
@@ -99,20 +100,22 @@ def text_tokenization(request):
             if word not in stop_words and not word.isdigit() and word not in filtered_words:
                 temp.append(word)
 
-        document = " ".join(temp)  
+        document = ", ".join(temp)  
         # temp = []
         # for word in document.split():
         #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
         #     temp.append(lemmatized_word)
         
         # document = " ".join(temp)    
-        preprocessed_text.append(document)
+        # documents_tokens.append({"postTokens:" : temp})
+        # preprocessed_text.append({"postText": document})
+        PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
 
     end_time = time.time()  # Record the end time
 
     elapsed_time = end_time - start_time  # Calculate the elapsed time
-    print(preprocessed_text)
+    print(len(PreProcessedInfo))
     return Response(data={
-        "preprocessed_text": preprocessed_text,
-        'execution_time': elapsed_time,
+        "payload": PreProcessedInfo,
+        "execution_time": elapsed_time,
     })
