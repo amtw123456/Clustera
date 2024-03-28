@@ -3,6 +3,7 @@ import { Link, json, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 import UtilitiesBar from '../../components/utilbar.js';
+import DocumentsCard from '../../components/docscard.js'
 import Popup from 'reactjs-popup';
 import { AiFillEye } from "react-icons/ai";
 
@@ -174,19 +175,7 @@ function DocPage() {
           )
         ) : (
           uploadedData.map((item, index) => (
-            <div class="w-[880px] h-28 my-3 mx-6 h-20 border rounded-lg bg-gray-100" key={index}>
-              <div className="my-2 pb-2 pt-2 px-2">
-                <div>
-                  {index + 1 + ". " + item.postText.slice(0, 140) + "......."}
-                  <AiFillEye class="inline-block text-purple-800 text-lg" />
-                  <Popup trigger={<button class="inline-block text-purple-600">Read Full</button>} modal nested><div>This is the content inside the popup.</div></Popup>
-                  {/* <Popup trigger={<button>Open Popup</button>} position="right center">
-                    <div>This is the content inside the popup.</div>
-                  </Popup> */}
-                </div>
-              </div>
-            </div>
-
+            < DocumentsCard key={index} index={index} item={item} />
           ))
         )
         }
