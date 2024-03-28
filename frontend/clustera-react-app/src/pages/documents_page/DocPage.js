@@ -3,7 +3,7 @@ import { Link, json, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 import UtilitiesBar from '../../components/utilbar.js';
-import DocumentsCard from '../../components/docscard.js'
+import { PDocumentsCard, UDocumentsCard } from '../../components/docscard.js'
 import Popup from 'reactjs-popup';
 import { AiFillEye } from "react-icons/ai";
 
@@ -51,7 +51,8 @@ function DocPage() {
       });
 
       const responseData = await response.json();
-      setResponseInfo(responseData.preprocessed_text);
+      setResponseInfo(responseData.payload);
+      // setResponseInfo(responseData);
     } catch (error) {
       console.error('Error during text preprocessing:', error);
       // Handle errors if necessary
@@ -168,14 +169,12 @@ function DocPage() {
             </div>
           ) : (
             responseInfo.map((item, index) => (
-              <div class="w-1/2 h-20 border rounded-lg" key={index}>
-                <div class="my-2 pb-2 pt-2 px-3">{index + 1 + ". " + item.slice(0, 150)}</div>
-              </div>
+              < PDocumentsCard key={index} index={index} item={item} />
             ))
           )
         ) : (
           uploadedData.map((item, index) => (
-            < DocumentsCard key={index} index={index} item={item} />
+            < UDocumentsCard key={index} index={index} item={item} />
           ))
         )
         }
