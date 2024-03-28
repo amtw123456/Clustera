@@ -26,8 +26,22 @@ custom_stopwords = set(["im", "i'm", "ve", "would"])
 stop_words = set(stopwords.words('english')).union(custom_stopwords)
 stop_words = sorted(stop_words)
 punctuation = set(string.punctuation)
-
 translator = str.maketrans("", "", string.punctuation)
+
+# sample payload
+"""
+{
+  [
+    {
+        "postTitle": "Shout out to the particular hell that is functional depression.",
+        "postText": "Shout out to the particular hell that is functional depression. This is me. Don\u2019t get me wrong, it\u2019s better than don\u2019t-leave-my-bed-for-a-week depression. I am grateful I can be an independent person. But there is something uniquely horrible about being able to go to work every day, occasionally clean up after yourself, pay your bills, generally put yourself together enough to look like a human being... but that\u2019s it. Nothing else. No social life. No hobbies. Constantly battling your mind. And being absolutely fucking exhausted all the time.",
+        "subreddit": "depression",
+        "label": 0
+    },
+  ]
+}
+"""
+
 
 # Create your views here.
 @api_view(['POST'])
@@ -93,25 +107,12 @@ def text_tokenization(request):
         
         # document = " ".join(temp)    
         preprocessed_text.append(document)
-            # vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=2)
-    # X = vectorizer.fit_transform(preprocessed_text)
-
-    # lda = LatentDirichletAllocation(n_components=5, random_state=42)
-    # X_lda = lda.fit_transform(X)
-    # topics_list = []
-    # document_topic_distribution = lda.fit_transform(X)
-    # predicted_clusters = np.argmax(document_topic_distribution, axis=1)
-    # for topic_idx, topic in enumerate(lda.components_):
-    #     top_words_idx = topic.argsort()[:-10 - 1:-1]
-    #     top_words = [vectorizer.get_feature_names_out()[i] for i in top_words_idx]
-    #     topics_list.append(top_words)
 
     end_time = time.time()  # Record the end time
 
     elapsed_time = end_time - start_time  # Calculate the elapsed time
-
+    print(preprocessed_text)
     return Response(data={
         "preprocessed_text": preprocessed_text,
         'execution_time': elapsed_time,
     })
-    # return HttpResponse(f"Code execution completed in {elapsed_time:.2f} seconds. {preprocessed_text[:3]}, {topics_list}, {predicted_clusters[:15]}")
