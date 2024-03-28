@@ -51,10 +51,11 @@ export function Upload() {
         onChange={uploadDocuments}
         style={{ display: 'none' }}
       />
-
-      <button class="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700">
-        <Link to="/documentsPage">Cluster Documents</Link>
-      </button>
+      <Link to="/documentsPage">
+        <button class="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700">
+          Cluster Documents
+        </button >
+      </Link>
       <div>
         {fileName ? (
           <p>File Upload Complete!!!</p>
