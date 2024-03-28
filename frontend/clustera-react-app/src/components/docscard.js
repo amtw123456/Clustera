@@ -6,7 +6,7 @@ import 'reactjs-popup/dist/index.css';
 
 function UDocumentsCard({ index, item }) {
     return (
-        <div className="w-[900px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
+        <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
             <div className="my-2 pb-2 pt-2 px-2">
                 <div>
                     {index + 1 + ". " + item.postText.slice(0, 140) + ".......   "}
@@ -20,7 +20,7 @@ function UDocumentsCard({ index, item }) {
                         {close => (
                             <div>
                                 <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end">
-                                    <IoDocumentSharp class="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div>
+                                    <IoDocumentSharp class="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1} Text</div>
                                 </div>
                                 <div className="overflow-auto p-5 text-justify flex flex-col justify-center" style={{ maxHeight: "50vh" }}>
                                     <div class="pb-5">{item.postText}</div>
@@ -40,9 +40,8 @@ function UDocumentsCard({ index, item }) {
 }
 
 function PDocumentsCard({ index, item }) {
-    // Your implementation for DocumentsCardV2 goes here
     return (
-        <div className="w-[900px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
+        <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
             <div className="my-2 pb-2 pt-2 px-2">
                 <div>
                     {index + 1 + ". " + item[0].postText.slice(0, 140) + ".......   "}

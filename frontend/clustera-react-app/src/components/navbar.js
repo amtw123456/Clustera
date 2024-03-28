@@ -19,7 +19,7 @@ function NavigationBar() {
     // }
 
     return (
-        <nav class="bg-blue-600 py-2 px-4 top-0 left-0 right-0 z-0">
+        <nav class="bg-blue-600 py-2 px-4 top-0 left-0 right-0 z-50">
             <div class="flex justify-between items-center">
                 <div class="flex-1 justify-start grow">
                     <Link to="/"><a href="#" class="text-white text-2xl font-bold">Clustera</a></Link>
