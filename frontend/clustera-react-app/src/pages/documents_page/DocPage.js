@@ -12,10 +12,10 @@ import { AiFillEye } from "react-icons/ai";
 function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
+  const { wordCounts, setWordCounts } = useContext(AppContext);
 
   const [responseInfo, setResponseInfo] = useState([]);
   const [isPreProcessed, setIsPreProcessed] = useState(false);
-  const [wordCounts, setWordCounts] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDocumentsLoading, setIsDocumentsLoading] = useState(false);
@@ -233,7 +233,7 @@ function DocPage() {
           <div></div>
         }
       </div >
-      <PurpleWave />
+      {/* <PurpleWave /> */}
     </div >
   );
 }
