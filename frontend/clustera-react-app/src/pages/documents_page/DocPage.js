@@ -41,7 +41,6 @@ function DocPage() {
   useEffect(() => {
     // This will log the updated state whenever the component mounts
 
-    setPreprocessedText(responseInfo)
   }, [responseInfo, preprocessedText, wordCounts]); // Empty dependency array ensures the effect runs only once
 
   const togglePreProcessedBool = () => {

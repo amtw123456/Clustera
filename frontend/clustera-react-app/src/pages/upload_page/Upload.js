@@ -73,11 +73,26 @@ export function Upload() {
         onChange={uploadDocuments}
         style={{ display: 'none' }}
       />
-      <Link to="/documentsPage">
+      {
+        isLoading ? (
+          <Link to="/documentsPage">
+            <button class="bg-gray-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-gray-500" disabled={true}>
+              Cluster Documents
+            </button >
+          </Link >
+        ) :
+          <Link to="/documentsPage">
+            <button class="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700" disabled={false}>
+              Cluster Documents
+            </button >
+          </Link >
+      }
+
+      {/* <Link to="/documentsPage">
         <button class="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700">
           Cluster Documents
         </button >
-      </Link>
+      </Link > */}
       <div>
         {fileName ? (
           isLoading ? (
