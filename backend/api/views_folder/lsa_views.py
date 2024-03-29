@@ -37,9 +37,12 @@ def text_clustering_lsa(request):
     vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=2)
         
     responseData = json.loads(request.body)
-
-    X = vectorizer.fit_transform(responseData['preprocessed_text'])
-    print(X.shape)
+    # print(responseData['preprocessed_text'])
+    processed_text = []
+    for i in responseData['preprocessed_text']:
+        processed_text.append(i[0]['postText'])
+    X = vectorizer.fit_transform(processed_text)
+    # print(X.shape)
     # Apply LDA
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
     lsa = TruncatedSVD(n_components=n_topics, random_state=42)
@@ -51,7 +54,7 @@ def text_clustering_lsa(request):
     feature_names = vectorizer.get_feature_names_out()
     topics = []
     for topic_idx, topic in enumerate(lsa.components_):
-        top_words_indices = topic.argsort()[:-30:-1]  # Get indices of top 10 words for each topic
+        top_words_indices = topic.argsort()[:-50:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
 

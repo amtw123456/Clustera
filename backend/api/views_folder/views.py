@@ -100,15 +100,15 @@ def text_tokenization(request):
             if word not in stop_words and not word.isdigit() and word not in filtered_words:
                 temp.append(word)
 
-        document = ", ".join(temp)  
+        # document = ", ".join(temp)  
         # temp = []
         # for word in document.split():
         #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
         #     temp.append(lemmatized_word)
         
-        # document = " ".join(temp)    
-        # documents_tokens.append({"postTokens:" : temp})
-        # preprocessed_text.append({"postText": document})
+        document = " ".join(temp)    
+        # documents_tokens.append(temp)
+        # preprocessed_text.append(document)
         PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
 
     end_time = time.time()  # Record the end time

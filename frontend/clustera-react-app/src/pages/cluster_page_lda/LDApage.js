@@ -7,6 +7,7 @@ import NavigationBar from '../../components/navbar.js';
 function LDApage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isRawDocumentsBool, setIsRawDocumentsBool] = useState(true);
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
@@ -49,16 +50,18 @@ function LDApage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(uploadedData),
+        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 10 }),
       });
 
       const responseData = await response.json();
+      console.log(responseData)
 
     } catch (error) {
       console.error('Error during text preprocessing:', error);
       // Handle errors if necessary
     } finally {
-      console.error('Error during text preprocessing:');
+      setIsLoading(false);
+
     }
   };
 

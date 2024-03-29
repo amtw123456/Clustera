@@ -19,7 +19,7 @@ function LSApage() {
     // This will log the updated state whenever the component mounts
     console.log(uploadedData)
     console.log(preprocessedText)
-    console.log(JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 4 }))
+    console.log(JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 10 }))
 
   }, []);
 
@@ -32,7 +32,7 @@ function LSApage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 4 }),
+        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 10 }),
       });
 
       const responseData = await response.json();

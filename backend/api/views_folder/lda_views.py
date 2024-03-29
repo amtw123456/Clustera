@@ -34,7 +34,11 @@ def text_clustering_lda(request):
         
     responseData = json.loads(request.body)
 
-    X = vectorizer.fit_transform(responseData['preprocessed_text'])
+    processed_text = []
+    for i in responseData['preprocessed_text']:
+        processed_text.append(i[0]['postText'])
+    print(processed_text)
+    X = vectorizer.fit_transform(processed_text)
     # Apply LDA
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
     lda = LatentDirichletAllocation(n_components=n_topics, random_state=42)
@@ -49,7 +53,7 @@ def text_clustering_lda(request):
         top_words_indices = topic.argsort()[:-30:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
-
+      
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,

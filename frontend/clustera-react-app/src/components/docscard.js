@@ -44,7 +44,7 @@ function PDocumentsCard({ index, item }) {
         <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
             <div className="my-2 pb-2 pt-2 px-2">
                 <div>
-                    {index + 1 + ". " + item[0].postText.slice(0, 140) + ".......   "}
+                    {index + 1 + ". " + item[0].postText.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
                     <AiFillEye className="inline-block text-purple-800 text-lg" />
                     {"      "}
                     <Popup contentStyle={{
@@ -58,7 +58,7 @@ function PDocumentsCard({ index, item }) {
                                     <IoDocumentSharp class="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1} Tokens</div>
                                 </div>
                                 <div className="overflow-auto p-5 text-justify flex flex-col justify-center" style={{ maxHeight: "50vh" }}>
-                                    <div class="pb-5">{item[0].postText}</div>
+                                    <div class="pb-5">{item[0].postText.replace(/\s+/g, ', ')}</div>
                                 </div>
                                 <div className="border-t border-gray-300 my-4"></div>
                                 <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
