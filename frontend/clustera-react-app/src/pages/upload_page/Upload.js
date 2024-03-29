@@ -18,9 +18,9 @@ export function Upload() {
     setUploadedData(jsonData);
     buildDocumentsFromUpload(jsonData);
 
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 1500);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3500);
     // setUploadedData(jsonData);
     // buildDocumentsFromUpload(jsonData);
 
@@ -56,7 +56,7 @@ export function Upload() {
     data.map((item, index) => (
       listOfDocuments.push(new Document(item.postText, null, null, null, null))
     ))
-    setIsLoading(false);
+    console.log(listOfDocuments)
 
   };
 
