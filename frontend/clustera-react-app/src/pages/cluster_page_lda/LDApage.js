@@ -7,6 +7,8 @@ import NavigationBar from '../../components/navbar.js';
 function LDApage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
+  const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
@@ -63,6 +65,7 @@ function LDApage() {
 
       const responseData = await response.json();
       console.log(responseData)
+      buildLDAClusterSummary(responseData)
 
     } catch (error) {
       console.error('Error during text preprocessing:', error);
@@ -73,9 +76,15 @@ function LDApage() {
     }
   };
 
-  const buildLdaClusterSummary = async () => {
-    uploadedData.map((item, index) => (
-      <SDocumentsCard key={index} index={index} item={item} />
+  const buildLDAClusterSummary = async (ldaResults) => {
+    ldaResults['document_topic_distribution'].forEach((item, index) => {
+      documentsProvider[index].documentTopicDistribution = item
+    })
+    ldaResults['predicted_clusters'].forEach((item, index) => {
+      documentsProvider[index].clusterId = item
+    })
+    documentsProvider.map((item, index) => (
+      documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
     ))
   };
 
@@ -94,44 +103,41 @@ function LDApage() {
 
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
         <div class="flex">
-          {/* <div class="hidden md:flex space-x-4 justify-center flex-1">
-                    <a href="#" class="text-white text-2xl">{middleText}</a>
-                </div> */}
           <div class="ml-80 hidden md:flex flex-1">
             {isDocumentSummaryBool ? (
-              <button href="#" class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
+              <button class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
             ) : (
-              <button href="#" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
             )}
             {isClusteredGeneratedBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
             )}
             {isDocumentTopicDistributionBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
             )}
             {isTopicsGeneratedBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
             )}
             {isClassifierBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
             )}
             {isVisualizeBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
             )}
             {isExportBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
+              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
+              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
             )}
 
             <a href="/" class="text-blue-400 text-base border-b pr-32 pt-1"></a>

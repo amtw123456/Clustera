@@ -33,12 +33,9 @@ def text_clustering_lda(request):
     vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=2)
         
     responseData = json.loads(request.body)
+    print(responseData['preprocessed_text'])
 
-    processed_text = []
-    for i in responseData['preprocessed_text']:
-        processed_text.append(i[0]['postText'])
-    print(processed_text)
-    X = vectorizer.fit_transform(processed_text)
+    X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
     lda = LatentDirichletAllocation(n_components=n_topics, random_state=42)

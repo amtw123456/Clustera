@@ -7,7 +7,7 @@ import NavigationBar from '../../components/navbar.js';
 function LSApage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
-  const { wordCounts, setWordCounts } = useContext(AppContext);
+  const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,12 +82,8 @@ function LSApage() {
     <div class="">
       <NavigationBar />
 
-
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
         <div class="flex">
-          {/* <div class="hidden md:flex space-x-4 justify-center flex-1">
-                    <a href="#" class="text-white text-2xl">{middleText}</a>
-                </div> */}
           <div class="ml-80 hidden md:flex flex-1">
             {isDocumentSummaryBool ? (
               <button href="#" class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
