@@ -11,9 +11,40 @@ function LSApage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isRawDocumentsBool, setIsRawDocumentsBool] = useState(true);
-  const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
-  const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
+  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
+  const [isClusteredGeneratedBool, setIsClusteredGeneratedBool] = useState(false);
+  const [isDocumentTopicDistributionBool, setIsDocumentTopicDistributionBool] = useState(false);
+  const [isTopicsGeneratedBool, setIsTopicsGeneratedBoolBool] = useState(false);
+  const [isClassifierBool, setIsClassifierBool] = useState(false);
+  const [isVisualizeBool, setIsVisualizeBool] = useState(false);
+  const [isExportBool, setIsExportBool] = useState(false);
+
+  const toggleBoolUtilisBar = (stateName) => {
+    // Create an object to map state names to their corresponding setter functions
+    const stateSetterMap = {
+      isDocumentSummaryBool: setIsDocumentSummaryBool,
+      isClusteredGeneratedBool: setIsClusteredGeneratedBool,
+      isDocumentTopicDistributionBool: setIsDocumentTopicDistributionBool,
+      isTopicsGeneratedBool: setIsTopicsGeneratedBoolBool,
+      isClassifierBool: setIsClassifierBool,
+      isVisualizeBool: setIsVisualizeBool,
+      isExportBool: setIsExportBool
+    };
+
+    if (stateName in stateSetterMap) {
+      for (const key in stateSetterMap) {
+        if (stateName == key) {
+          stateSetterMap[key](true);
+        }
+        else {
+          stateSetterMap[key](false);
+        }
+      }
+
+    } else {
+      console.error(`State ${stateName} does not exist`);
+    }
+  };
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
@@ -47,29 +78,6 @@ function LSApage() {
     }
   };
 
-  const togglePreProcessedBool = () => {
-
-    setIsPreProcessedBool(true);
-    setIsRawDocumentsBool(false);
-    setIsDocumentWordCountBool(false);
-
-  };
-
-  const toggleRawDocumentsBool = () => {
-
-    setIsPreProcessedBool(false);
-    setIsRawDocumentsBool(true);
-    setIsDocumentWordCountBool(false);
-  };
-
-  const toggleDocumentWordCountBool = () => {
-
-    setIsPreProcessedBool(false);
-    setIsRawDocumentsBool(false);
-    setIsDocumentWordCountBool(true);
-
-  };
-
   return (
     <div class="">
       <NavigationBar />
@@ -81,40 +89,40 @@ function LSApage() {
                     <a href="#" class="text-white text-2xl">{middleText}</a>
                 </div> */}
           <div class="ml-80 hidden md:flex flex-1">
-            {isPreProcessedBool ? (
+            {isDocumentSummaryBool ? (
               <button href="#" class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
             ) : (
-              <button href="#" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => togglePreProcessedBool()}>Documents Summary</button>
+              <button href="#" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
             )}
-            {isDocumentWordCountBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters</button>
+            {isClusteredGeneratedBool ? (
+              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Clusters Generated</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
             )}
-            {isDocumentWordCountBool ? (
+            {isDocumentTopicDistributionBool ? (
               <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Document Topic Distribution</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
             )}
-            {isDocumentWordCountBool ? (
+            {isTopicsGeneratedBool ? (
               <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Topics Generated</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
             )}
-            {isDocumentWordCountBool ? (
+            {isClassifierBool ? (
               <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Classifier</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
             )}
-            {isDocumentWordCountBool ? (
+            {isVisualizeBool ? (
               <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Visualize</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
             )}
-            {isDocumentWordCountBool ? (
+            {isExportBool ? (
               <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleDocumentWordCountBool()}>Export</button>
+              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
             )}
 
             <a href="/" class="text-blue-400 text-base border-b pr-32 pt-1"></a>
@@ -132,7 +140,7 @@ function LSApage() {
       </div>
 
       <div class="ml-80 flex flex-wrap items-center">
-        {
+        {/* {
           uploadedData.length > 0 ? (
             uploadedData.map((item, index) => (
               <UDocumentsCard key={index} index={index} item={item} />
@@ -143,7 +151,7 @@ function LSApage() {
               <Link to="/"><div class="text-center text-blue-600 text-xl underline-offset-4">Go to Upload Page</div></Link>
             </div>
           )
-        }
+        } */}
       </div >
 
     </div >
