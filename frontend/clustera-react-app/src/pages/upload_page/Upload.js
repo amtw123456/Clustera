@@ -74,7 +74,7 @@ export function Upload() {
         style={{ display: 'none' }}
       />
       {
-        isLoading ? (
+        isLoading || uploadedData.isEmpty ? (
           <Link to="/documentsPage">
             <button class="bg-gray-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-gray-500" disabled={true}>
               Cluster Documents
