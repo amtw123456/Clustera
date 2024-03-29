@@ -11,7 +11,7 @@ function LDApage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
+  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(false);
   const [isClusteredGeneratedBool, setIsClusteredGeneratedBool] = useState(false);
   const [isDocumentTopicDistributionBool, setIsDocumentTopicDistributionBool] = useState(false);
   const [isTopicsGeneratedBool, setIsTopicsGeneratedBoolBool] = useState(false);
@@ -145,18 +145,16 @@ function LDApage() {
         </div>
       </nav >
       <div class="ml-80 flex flex-wrap items-center">
-        {/* {
-          uploadedData.length > 0 ? (
-            uploadedData.map((item, index) => (
-              <SDocumentsCard key={index} index={index} item={item} />
-            ))
+        {
+          isDocumentSummaryBool ? (
+            <SDocumentsCard summarizedDocuments={documentsProvider} />
           ) : (
             <div class="flex-1">
-              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Documents loaded yet to the page please Upload a JSON or CSV file.</div>
-              <Link to="/"><div class="text-center text-blue-600 text-xl underline-offset-4">Go to Upload Page</div></Link>
+              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
+              <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
             </div>
           )
-        } */}
+        }
       </div >
     </div >
   );

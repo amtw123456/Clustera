@@ -181,14 +181,14 @@ function SDocumentsCard({ summarizedDocuments }) {
                 <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
                     <div className="my-2 pb-2 pt-2 px-2">
                         <div>
-                            {index + 1 + ". " + item[0].postText.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
+                            {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
                             <AiFillEye className="inline-block text-purple-800 text-lg" />
                             {"      "}
                             <Popup
                                 contentStyle={{
                                     borderRadius: "10px",
                                     border: "none",
-                                    padding: "0"
+                                    padding: "0",
                                 }}
                                 trigger={<button className="inline-block text-purple-600 p-0">Read Full</button>}
                                 modal
@@ -197,16 +197,35 @@ function SDocumentsCard({ summarizedDocuments }) {
                                 {close => (
                                     <div>
                                         <div className="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end">
-                                            <IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1} Tokens</div>
+                                            <IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div>
                                         </div>
-                                        <div className="overflow-auto p-5 text-justify flex flex-col justify-center" style={{ maxHeight: "50vh" }}>
-                                            <div className="pb-5">{item[0].postText.replace(/\s+/g, ', ')}</div>
+                                        <div className="overflow-auto h-[250px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "50vh" }}>
+                                            <div className="text-base mb-3 font-bold inline-block"> Document Text</div>
+                                            <div className="pb-5">{item.uDocument}</div>
+                                        </div>
+                                        <div className="border-t border-gray-300 my-4"></div>
+                                        <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "50vh" }}>
+                                            <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
+                                            <div className="pb-5">{item.pDocument}</div>
+                                        </div>
+                                        <div class="px-5 py-4">
+                                            <div class="flex flex-row flex-wrap font-bold text-justify" key={index}>
+                                                <div>Topics:&nbsp;&nbsp; </div>
+                                                {item.topics.map((topic, index) => (
+                                                    <div class="flex " key={index}>
+                                                        <div>{index !== item.topics.length - 1 && topic + ","} &nbsp;</div>
+                                                        {index === item.topics.length - 1 && topic}
+
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                         <div className="border-t border-gray-300 my-4"></div>
                                         <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
                                             <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
                                             <div className="flex flex-col justify-right">
-                                                <div className="text-sm italic">Number of Tokens: {item[1].postTokens.length}</div>
+                                                <div className="text-sm italic">Length of Documents: {item.uDocument.length}</div>
+                                                <div className="text-sm italic pl-7">Number of Tokens: {item.documentTokens.length}</div>
                                             </div>
                                         </div>
                                     </div>

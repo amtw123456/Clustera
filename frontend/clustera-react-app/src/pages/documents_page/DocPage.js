@@ -95,7 +95,6 @@ function DocPage() {
     console.log(listOfPreProcessedText)
     setPreprocessedText(listOfPreProcessedText)
 
-
   };
 
   return (
