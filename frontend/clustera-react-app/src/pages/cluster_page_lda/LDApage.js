@@ -1,6 +1,6 @@
 import { PDocumentsCard, UDocumentsCard, WordCountCard, SDocumentsCard } from '../../components/docscard.js'
 import React, { useEffect, useState, useContext } from "react";
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 

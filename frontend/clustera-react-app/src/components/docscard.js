@@ -9,6 +9,7 @@ function UDocumentsCard({ uploadedData }) {
 
     useEffect(() => {
         setIsComponentLoading(false);
+
     }, []);
 
     return (
@@ -69,6 +70,7 @@ function PDocumentsCard({ data }) {
 
     useEffect(() => {
         setIsComponentLoading(false);
+
     }, []);
 
     return (
@@ -131,6 +133,7 @@ function WordCountCard({ wordCounts }) {
 
     useEffect(() => {
         setIsComponentLoading(false);
+
     }, []);
 
     return (

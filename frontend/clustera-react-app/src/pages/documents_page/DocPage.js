@@ -1,14 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, json, useLocation, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
-import UtilitiesBar from '../../components/utilbar.js';
-import Sidebar from "../../components/sidebar.js";
 import LoadingScreen from "../../components/loadingscreen.js"
 import { PDocumentsCard, UDocumentsCard, WordCountCard } from '../../components/docscard.js'
-import PurpleWave from '../../components/wave.js'
-import Popup from 'reactjs-popup';
-import { AiFillEye } from "react-icons/ai";
 
 function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
@@ -29,36 +24,38 @@ function DocPage() {
   const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
   useEffect(() => {
-    // This will log the updated state whenever the component mounts
-    // console.log(uploadedData)
     document.body.style.overflow = 'auto';
-    // document.body.style.cursor = 'wait';
-    console.log('red upload data has finished loading')
     setPageIsLoading(false)
 
   }, [uploadedData]);
 
-  useEffect(() => {
-    // This will log the updated state whenever the component mounts
 
-  }, [responseInfo, preprocessedText, wordCounts]); // Empty dependency array ensures the effect runs only once
+  useEffect(() => {
+
+  }, [responseInfo, preprocessedText, wordCounts]);
 
   const togglePreProcessedBool = () => {
+
     setIsPreProcessedBool(true);
     setIsRawDocumentsBool(false);
     setIsDocumentWordCountBool(false);
+
   };
 
   const toggleRawDocumentsBool = () => {
+
     setIsPreProcessedBool(false);
     setIsRawDocumentsBool(true);
     setIsDocumentWordCountBool(false);
+
   };
 
   const toggleDocumentWordCountBool = () => {
+
     setIsPreProcessedBool(false);
     setIsRawDocumentsBool(false);
     setIsDocumentWordCountBool(true);
+
   };
 
 
@@ -81,7 +78,6 @@ function DocPage() {
       console.log('Payload size:', contentLength, 'bytes');
       setResponseInfo(responseData.payload);
       setWordCounts(responseData.total_word_counts)
-      // setResponseInfo(responseData);
     } catch (error) {
       console.error('Error during text preprocessing:', error);
       // Handle errors if necessary
@@ -94,12 +90,9 @@ function DocPage() {
     isPageLoading ? <LoadingScreen /> : (
       <div class="" >
         <NavigationBar />
-        {/* <UtilitiesBar /> */}
-        {/* <Sidebar /> */}
         <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
           <div class="ml-4 pt-4 font-bold text-2xl">Documents Hub</div>
           <ul class="mt-12">
-            {/* <li><Link to="/" class="block py-2 px-6 text-black hover:bg-gray-300">Upload</Link></li> */}
             <li class="flex ">{
               isLoading ? (
                 <div>
@@ -135,9 +128,6 @@ function DocPage() {
 
         <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
           <div class="flex">
-            {/* <div class="hidden md:flex space-x-4 justify-center flex-1">
-                    <a href="#" class="text-white text-2xl">{middleText}</a>
-                </div> */}
             <div class="ml-80 hidden md:flex flex-1">
               {isRawDocumentsBool ? (
                 <button class="text-black text-base border-x border-t pl-12 pr-12 pt-1" disabled={true}>Raw Documents</button>
@@ -215,7 +205,6 @@ function DocPage() {
             <div></div>
           }
         </div >
-        {/* <PurpleWave /> */}
       </div >
     )
   );
