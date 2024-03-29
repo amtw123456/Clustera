@@ -87,6 +87,15 @@ function DocPage() {
       documentsProvider[index].pDocument = item[0].postText
       documentsProvider[index].documentTokens = item[1].postTokens
     })
+    var listOfPreProcessedText = [];
+
+    documentsProvider.map((item, index) => (
+      listOfPreProcessedText.push(item.pDocument)
+    ))
+    console.log(listOfPreProcessedText)
+    setPreprocessedText(listOfPreProcessedText)
+
+
   };
 
   return (
@@ -167,7 +176,7 @@ function DocPage() {
               </div>
             ) : (
               responseInfo.length > 0 ? (
-                <PDocumentsCard data={responseInfo} />
+                <PDocumentsCard processedData={responseInfo} />
               ) : (
                 <div class="flex-1">
                   <div className="text-center mt-80 text-gray-600 text-base dark:text-gray-400">Documents have not yet been tokenized!</div>
