@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export function Upload() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
+  const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const [files, setFiles] = useState("");
@@ -12,7 +13,6 @@ export function Upload() {
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
-    // This will log the updated jsonData whenever it changes
 
     setIsLoading(true);
     setUploadedData(jsonData);
@@ -54,9 +54,10 @@ export function Upload() {
 
     var listOfDocuments = []
     data.map((item, index) => (
-      listOfDocuments.push(new Document(item.postText, null, null, null, null))
+      listOfDocuments.push(new Document(item.postText, null, null, null, null, null))
     ))
-    console.log(listOfDocuments)
+
+    setDocumentsProvider(listOfDocuments);
 
   };
 

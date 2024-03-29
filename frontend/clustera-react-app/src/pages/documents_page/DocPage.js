@@ -9,6 +9,7 @@ function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
   const { wordCounts, setWordCounts } = useContext(AppContext);
+  const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
 
   const [responseInfo, setResponseInfo] = useState([]);
   const [isPreProcessed, setIsPreProcessed] = useState(false);
@@ -16,7 +17,6 @@ function DocPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setPageIsLoading] = useState(true);
   const [isDocumentsLoading, setIsDocumentsLoading] = useState(false);
-
 
   // bools
   const [isRawDocumentsBool, setIsRawDocumentsBool] = useState(true);
@@ -28,11 +28,6 @@ function DocPage() {
     setPageIsLoading(false)
 
   }, [uploadedData]);
-
-
-  useEffect(() => {
-
-  }, [responseInfo, preprocessedText, wordCounts]);
 
   const togglePreProcessedBool = () => {
 
@@ -58,7 +53,6 @@ function DocPage() {
 
   };
 
-
   const preprocessText = async () => {
     setIsPreProcessed((prevValue) => !prevValue);
     setIsPreProcessed(true);
@@ -75,15 +69,24 @@ function DocPage() {
 
       const responseData = await response.json();
       const contentLength = response.headers.get('Content-Length');
-      console.log('Payload size:', contentLength, 'bytes');
+      // console.log('Payload size:', contentLength, 'bytes');
       setResponseInfo(responseData.payload);
       setWordCounts(responseData.total_word_counts)
+      buildDocumentsFromUpload(responseData.payload)
     } catch (error) {
       console.error('Error during text preprocessing:', error);
       // Handle errors if necessary
     } finally {
       setIsLoading(false);
+
     }
+  };
+
+  const buildDocumentsFromUpload = async (data) => {
+    data.forEach((item, index) => {
+      documentsProvider[index].pDocument = item[0].postText
+      documentsProvider[index].documentTokens = item[1].postTokens
+    })
   };
 
   return (

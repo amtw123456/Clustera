@@ -28,9 +28,9 @@ function NavigationBar() {
                     <a href="#" class="text-white text-2xl">{middleText}</a>
                 </div> */}
                 <div class="hidden md:flex space-x-9 flex-1 justify-end">
-                    <a href="/" class="text-white text-base hover:bg-gray-300">Upload</a>
-                    <a href="/aboutPage" class="text-white text-base hover:bg-gray-300">About</a>
-                    <a href="/documentationPage" class="text-white text-base hover:bg-gray-300">Documentation</a>
+                    <Link to="/" class="text-white text-base hover:bg-gray-300">Upload</Link>
+                    <Link to="/aboutPage" class="text-white text-base hover:bg-gray-300">About</Link>
+                    <Link to="/documentationPage" class="text-white text-base hover:bg-gray-300">Documentation</Link>
                 </div>
             </div>
         </nav>
