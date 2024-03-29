@@ -114,7 +114,7 @@ def text_tokenization(request):
     end_time = time.time()  # Record the end time
 
     elapsed_time = end_time - start_time  # Calculate the elapsed time
-    sorted_word_counts = dict(sorted(total_word_counts.items(), key=lambda item: item[1], reverse=True))
+    sorted_word_counts = dict(sorted(total_word_counts.items(), key=lambda item: item[1], reverse=True)[:500])
 
     return Response(data={
         "payload": PreProcessedInfo,
