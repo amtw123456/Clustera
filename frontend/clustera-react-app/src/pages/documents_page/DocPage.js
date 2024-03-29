@@ -174,9 +174,7 @@ function DocPage() {
               </div>
             ) : (
               responseInfo.length > 0 ? (
-                responseInfo.map((item, index) => (
-                  <PDocumentsCard key={index} index={index} item={item} />
-                ))
+                <PDocumentsCard data={responseInfo} />
               ) : (
                 <div class="flex-1">
                   <div className="text-center mt-80 text-gray-600 text-base dark:text-gray-400">Documents have not yet been tokenized!</div>
@@ -187,9 +185,7 @@ function DocPage() {
             )
           ) : isRawDocumentsBool ? (
             uploadedData.length > 0 ? (
-              uploadedData.map((item, index) => (
-                <UDocumentsCard key={index} index={index} item={item} />
-              ))
+              <UDocumentsCard uploadedData={uploadedData} />
             ) : (
               <div class="flex-1">
                 <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Documents loaded yet to the page please Upload a JSON or CSV file.</div>
@@ -209,9 +205,7 @@ function DocPage() {
               </div>
             ) :
               wordCounts.length > 0 ? (
-                wordCounts.map((item, index) => (
-                  <WordCountCard key={index} index={index} item={item} />
-                ))
+                <WordCountCard wordCounts={wordCounts} />
               ) :
                 <div class="flex-1">
                   <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">The documents has not yet been read</div>
