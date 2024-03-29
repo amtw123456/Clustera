@@ -1,4 +1,4 @@
-import { PDocumentsCard, UDocumentsCard, WordCountCard } from '../../components/docscard.js'
+import { PDocumentsCard, UDocumentsCard, WordCountCard, SDocumentsCard } from '../../components/docscard.js'
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
@@ -63,6 +63,12 @@ function LDApage() {
       setIsLoading(false);
 
     }
+  };
+
+  const buildLdaClusterSummary = async () => {
+    uploadedData.map((item, index) => (
+      <SDocumentsCard key={index} index={index} item={item} />
+    ))
   };
 
   return (
@@ -139,7 +145,7 @@ function LDApage() {
         {
           uploadedData.length > 0 ? (
             uploadedData.map((item, index) => (
-              <UDocumentsCard key={index} index={index} item={item} />
+              <SDocumentsCard key={index} index={index} item={item} />
             ))
           ) : (
             <div class="flex-1">
