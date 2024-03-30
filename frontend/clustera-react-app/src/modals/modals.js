@@ -9,3 +9,12 @@ export class Document {
         this.topics = topics;
     }
 }
+
+export class Cluster {
+    constructor(documentsIndex, clusterLabel, clusterId, clusterTopics) {
+        this.documentsIndex = documentsIndex;
+        this.clusterLabel = clusterLabel;
+        this.clusterId = clusterId;
+        this.clusterTopics = clusterTopics;
+    }
+}
