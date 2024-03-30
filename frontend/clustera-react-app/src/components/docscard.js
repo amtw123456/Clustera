@@ -187,25 +187,26 @@ function SDocumentsCard({ summarizedDocuments }) {
                             <Popup
                                 contentStyle={{
                                     borderRadius: "10px",
+                                    overflow: "auto",
                                     border: "none",
                                     padding: "0",
                                 }}
-                                trigger={<button className="inline-block text-purple-600 p-0">Read Full</button>}
+                                trigger={<button class="inline-block text-purple-600 p-0">Read Full</button>}
                                 modal
                                 nested
                             >
                                 {close => (
-                                    <div>
-                                        <div className="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end justify-between">
+                                    <div style={{ maxHeight: "90vh" }}>
+                                        <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col">
                                             <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
-                                            <div className="text-3xl font-bold inline-block"> Cluster {item.clusterId}</div>
+                                            <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div>
                                         </div>
-                                        <div className="overflow-auto h-[250px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "50vh" }}>
-                                            <div className="text-base mb-3 font-bold inline-block"> Document Text</div>
-                                            <div className="pb-5">{item.uDocument}</div>
+                                        <div class="overflow-auto h-[220px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
+                                            <div class="text-base mb-3 font-bold inline-block"> Document Text</div>
+                                            <div class="pb-5">{item.uDocument}</div>
                                         </div>
                                         <div className="border-t border-gray-300 my-4"></div>
-                                        <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "50vh" }}>
+                                        <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
                                             <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
                                             <div className="pb-5">{item.pDocument}</div>
                                         </div>
