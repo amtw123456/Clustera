@@ -11,7 +11,6 @@ function LDApage() {
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
 
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
@@ -53,10 +52,16 @@ function LDApage() {
 
   useEffect(() => {
     // This will log the updated state whenever the component mounts
-    console.log(uploadedData)
-    console.log(preprocessedText)
+    // console.log(uploadedData)
+    // console.log(preprocessedText)
 
   }, []); // Empty dependency array ensures the effect runs only once
+
+  useEffect(() => {
+
+    console.log(clustersProvider)
+
+  }, [clustersProvider]);
 
   const clusterUsingLda = async () => {
     try {
@@ -72,6 +77,7 @@ function LDApage() {
       const responseData = await response.json();
       console.log(responseData)
       buildLDAClusterSummary(responseData)
+      setClustersProvider(responseData['clusters'])
 
     } catch (error) {
       console.error('Error during text preprocessing:', error);
@@ -79,6 +85,7 @@ function LDApage() {
     } finally {
       setIsLoading(false);
       setIsCorporaNotClustered(false);
+
 
     }
   };
@@ -101,7 +108,7 @@ function LDApage() {
     for (let i = 0; i < numberOfClusters; i++) {
       listOfClusters.push(new Cluster([], null, i, null))
     }
-    setClustersProvider(listOfClusters)
+
   }
 
   return (
