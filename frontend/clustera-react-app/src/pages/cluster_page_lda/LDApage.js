@@ -1,5 +1,6 @@
-import { PDocumentsCard, UDocumentsCard, WordCountCard, SDocumentsCard } from '../../components/docscard.js'
+import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard } from '../../components/docscard.js'
 import React, { useEffect, useState, useContext } from "react";
+import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
@@ -8,6 +9,8 @@ function LDApage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
+  const { clustersProvider, setClustersProvider } = useContext(AppContext);
+
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,8 +65,9 @@ function LDApage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 10 }),
+        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 2 }),
       });
+
 
       const responseData = await response.json();
       console.log(responseData)
@@ -89,7 +93,16 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
     ))
+    console.log(documentsProvider)
   };
+
+  const createClusters = async (numberOfClusters) => {
+    var listOfClusters = []
+    for (let i = 0; i < numberOfClusters; i++) {
+      listOfClusters.push(new Cluster([], null, i, null))
+    }
+    setClustersProvider(listOfClusters)
+  }
 
   return (
     <div class="">
@@ -156,6 +169,8 @@ function LDApage() {
             </div>
           ) : isDocumentSummaryBool ? (
             <SDocumentsCard summarizedDocuments={documentsProvider} />
+          ) : isClusteredGeneratedBool ? (
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} />
           ) :
             <div class="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
