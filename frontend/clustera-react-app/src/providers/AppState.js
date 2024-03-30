@@ -6,6 +6,7 @@ export const AppStateProvider = ({ children }) => {
     const [uploadedData, setUploadedData] = useState([]);
     const [preprocessedText, setPreprocessedText] = useState([]);
     const [wordCounts, setWordCounts] = useState([]);
+    // const [topicsGenerated, setTopicsGenerated] = useState([]);
     const [documentsProvider, setDocumentsProvider] = useState([]);
 
     return (

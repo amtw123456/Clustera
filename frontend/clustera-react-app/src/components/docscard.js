@@ -196,8 +196,9 @@ function SDocumentsCard({ summarizedDocuments }) {
                             >
                                 {close => (
                                     <div>
-                                        <div className="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end">
-                                            <IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div>
+                                        <div className="border-b px-5 pb-4 border-gray-300 my-4 flex flex-row items-end justify-between">
+                                            <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
+                                            <div className="text-3xl font-bold inline-block"> Cluster {item.clusterId}</div>
                                         </div>
                                         <div className="overflow-auto h-[250px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "50vh" }}>
                                             <div className="text-base mb-3 font-bold inline-block"> Document Text</div>
@@ -208,18 +209,30 @@ function SDocumentsCard({ summarizedDocuments }) {
                                             <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
                                             <div className="pb-5">{item.pDocument}</div>
                                         </div>
-                                        <div class="px-5 py-4">
-                                            <div class="flex flex-row flex-wrap font-bold text-justify" key={index}>
-                                                <div>Topics:&nbsp;&nbsp; </div>
+                                        <div className="border-t border-gray-300"></div>
+                                        <div class="px-5 pt-2">
+                                            <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
+                                            <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
                                                 {item.topics.map((topic, index) => (
-                                                    <div class="flex " key={index}>
-                                                        <div>{index !== item.topics.length - 1 && topic + ","} &nbsp;</div>
-                                                        {index === item.topics.length - 1 && topic}
-
+                                                    <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                                        <div class="px-3 py-[0.5px]">{topic}</div>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
+                                        <div className="border-t mt-4 border-gray-300"></div>
+                                        <div class="px-5 pt-2 flex flex-col">
+                                            <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
+                                            <div class="m-1 flex flex-wrap text-justify" key={index}>
+                                                {/* {item.documentTopicDistribution} */}
+                                                {item.documentTopicDistribution.map((distribution, index) => (
+                                                    <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
+                                                        <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
                                         <div className="border-t border-gray-300 my-4"></div>
                                         <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
                                             <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
@@ -232,8 +245,8 @@ function SDocumentsCard({ summarizedDocuments }) {
                                 )}
                             </Popup>
                         </div>
-                    </div>
-                </div>
+                    </div >
+                </div >
             ))
         )
     );
