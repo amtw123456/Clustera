@@ -11,13 +11,15 @@ function LDApage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(false);
+  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
   const [isClusteredGeneratedBool, setIsClusteredGeneratedBool] = useState(false);
   const [isDocumentTopicDistributionBool, setIsDocumentTopicDistributionBool] = useState(false);
   const [isTopicsGeneratedBool, setIsTopicsGeneratedBoolBool] = useState(false);
   const [isClassifierBool, setIsClassifierBool] = useState(false);
   const [isVisualizeBool, setIsVisualizeBool] = useState(false);
   const [isExportBool, setIsExportBool] = useState(false);
+
+  const [isCorporaNotClustered, setIsCorporaNotClustered] = useState(true)
 
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
@@ -72,6 +74,7 @@ function LDApage() {
       // Handle errors if necessary
     } finally {
       setIsLoading(false);
+      setIsCorporaNotClustered(false);
 
     }
   };
@@ -146,14 +149,18 @@ function LDApage() {
       </nav >
       <div class="ml-80 flex flex-wrap items-center">
         {
-          isDocumentSummaryBool ? (
+          isCorporaNotClustered ? (
+            <div class="flex-1">
+              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">Documents are not yet clustered!</div>
+              <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
+            </div>
+          ) : isDocumentSummaryBool ? (
             <SDocumentsCard summarizedDocuments={documentsProvider} />
-          ) : (
+          ) :
             <div class="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
               <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
             </div>
-          )
         }
       </div >
     </div >
