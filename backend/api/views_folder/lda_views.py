@@ -45,14 +45,23 @@ def text_clustering_lda(request):
 
     feature_names = vectorizer.get_feature_names_out()
     topics = []
-    
+    clusters = {}
+
     for topic_idx, topic in enumerate(lda.components_):
         top_words_indices = topic.argsort()[:-30:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
       
+    
+    for i in range(0, n_topics):
+      clusters[i] = []
+
+    for index, value in enumerate(predicted_clusters):
+      clusters[value].append(index)
+
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,
+        "clusters" : clusters,
         "topics" : topics
     })
