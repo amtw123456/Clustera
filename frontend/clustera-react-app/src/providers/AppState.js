@@ -8,6 +8,7 @@ export const AppStateProvider = ({ children }) => {
     const [wordCounts, setWordCounts] = useState([]);
     // const [topicsGenerated, setTopicsGenerated] = useState([]);
     const [documentsProvider, setDocumentsProvider] = useState([]);
+    const [clustersProvider, setClustersProvider] = useState([]);
 
     return (
         <AppContext.Provider value={
@@ -15,7 +16,8 @@ export const AppStateProvider = ({ children }) => {
                 uploadedData, setUploadedData,
                 preprocessedText, setPreprocessedText,
                 wordCounts, setWordCounts,
-                documentsProvider, setDocumentsProvider
+                documentsProvider, setDocumentsProvider,
+                clustersProvider, setClustersProvider
             }
         }>
             {children}
