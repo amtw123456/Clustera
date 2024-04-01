@@ -5,6 +5,7 @@ import NavigationBar from '../../components/navbar.js';
 import LoadingScreen from "../../components/loadingscreen.js"
 import { PDocumentsCard, UDocumentsCard, WordCountCard } from '../../components/docscard.js'
 
+
 function DocPage() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
@@ -23,8 +24,11 @@ function DocPage() {
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
   const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
+  const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
   useEffect(() => {
     document.body.style.overflow = 'auto';
+    console.log(REACT_APP_BACKEND_API_URL)
     setPageIsLoading(false)
 
   }, [uploadedData]);
@@ -59,7 +63,7 @@ function DocPage() {
     try {
       setIsLoading(true);
 
-      const response = await fetch('http://127.0.0.1:8000', {
+      const response = await fetch(REACT_APP_BACKEND_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

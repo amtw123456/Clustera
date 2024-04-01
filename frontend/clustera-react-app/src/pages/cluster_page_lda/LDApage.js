@@ -6,6 +6,9 @@ import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
 
 function LDApage() {
+
+  const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
   const { uploadedData, setUploadedData } = useContext(AppContext);
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
@@ -65,7 +68,7 @@ function LDApage() {
 
   const clusterUsingLda = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/lda', {
+      const response = await fetch(REACT_APP_BACKEND_API_URL + 'lda', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
