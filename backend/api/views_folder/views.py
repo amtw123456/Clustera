@@ -47,7 +47,7 @@ translator = str.maketrans("", "", string.punctuation)
 @api_view(['POST'])
 def text_tokenization(request):
     responseData = json.loads(request.body)
-    
+    print("red")
     def count_words_in_documents(document_contents):
         total_word_counts = Counter()
 
