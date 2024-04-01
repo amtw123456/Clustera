@@ -275,7 +275,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
             </div>
         ) : (
             summarizedDocuments.map((item, index) => (
-                <div key={index} className="w-[135px] h-8 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
+                <div key={index} className="w-auto h-24 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
                     {item.uDocument}
                 </div>
             ))
@@ -304,7 +304,7 @@ function TopicsGeneratedCard({ topics }) {
             </div>
         ) : (
             topics.map((item, index) => (
-                <div key={index} className="w-[135px] h-8 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
+                <div key={index} className="w-[135px] h-12 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
                     {item}
                 </div>
             ))

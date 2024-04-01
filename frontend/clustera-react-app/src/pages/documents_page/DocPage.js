@@ -28,7 +28,6 @@ function DocPage() {
 
   useEffect(() => {
     document.body.style.overflow = 'auto';
-    console.log(REACT_APP_BACKEND_API_URL)
     setPageIsLoading(false)
 
   }, [uploadedData]);

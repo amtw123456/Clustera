@@ -170,24 +170,31 @@ function LDApage() {
           </div>
         </div>
       </nav >
-      <div class="ml-80 flex flex-wrap items-center">
-        {
-          isCorporaNotClustered ? (
+
+      {
+        isCorporaNotClustered ? (
+          <div class="ml-80 flex flex-wrap items-center">
             <div class="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">Documents are not yet clustered!</div>
               <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
             </div>
-          ) : isDocumentSummaryBool ? (
+          </div >
+        ) : isDocumentSummaryBool ? (
+          <div class="ml-80 flex flex-wrap items-center">
             <SDocumentsCard summarizedDocuments={documentsProvider} />
-          ) : isClusteredGeneratedBool ? (
+          </div >
+        ) : isClusteredGeneratedBool ? (
+          <div class="ml-80 flex flex-col flex-wrap">
             <ClusteredGeneratedCard summarizedDocuments={documentsProvider} />
-          ) :
+          </div >
+        ) :
+          <div class="ml-80 flex flex-wrap items-center">
             <div class="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
               <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
             </div>
-        }
-      </div >
+          </div >
+      }
     </div >
   );
 }
