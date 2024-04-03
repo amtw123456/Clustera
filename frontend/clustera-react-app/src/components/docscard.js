@@ -274,11 +274,14 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                 </div>
             </div>
         ) : (
-            summarizedDocuments.map((item, index) => (
-                <div key={index} className="w-auto h-24 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
-                    {item.uDocument}
-                </div>
-            ))
+            <div>
+                {Array.from(Array(noOfClusters), (item, index) => (
+                    <div key={index} className="w-auto h-24 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
+                        {item}
+                    </div>
+                ))}
+            </div>
+
         )
     );
 }

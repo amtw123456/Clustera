@@ -25,6 +25,7 @@ function LDApage() {
   const [isExportBool, setIsExportBool] = useState(false);
 
   const [isCorporaNotClustered, setIsCorporaNotClustered] = useState(true)
+  const [noOfClustersInput, setNoOfClustersInput] = useState(1)
 
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
@@ -73,7 +74,7 @@ function LDApage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": 2 }),
+        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": noOfClustersInput }),
       });
 
 
@@ -114,17 +115,27 @@ function LDApage() {
 
   }
 
+  const handleInputNoOfClusters = (e) => {
+    setNoOfClustersInput(parseInt(e.target.value));
+    console.log(noOfClustersInput)
+  };
+
   return (
     <div class="">
       <NavigationBar />
 
       <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
         <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
-        <ul class="mt-12">
-          {/* <li><Link to="/" class="block py-2 px-6 text-black hover:bg-gray-300">Upload</Link></li> */}
-          {/* <li><Link to="/cluster_page_lsa" class="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LSA</Link></li> */}
-          <li onClick={() => clusterUsingLda()}><Link to="/cluster_page_lda" class="block py-2 px-5 text-black hover:bg-gray-300">Cluster Documents</Link></li>
-        </ul>
+
+
+
+        <div class="mt-4 mx-4 my-5">
+          <div class="font-bold text-sm mb-2">Number of Clusters:</div>
+          <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+        </div>
+        <div class="flex justify-center">
+          <button onClick={() => clusterUsingLda()}><Link to="/cluster_page_lda" class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">Cluster Documents</Link></button>
+        </div>
       </div>
 
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
@@ -185,7 +196,7 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div class="ml-80 flex flex-col flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} />
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput} />
           </div >
         ) :
           <div class="ml-80 flex flex-wrap items-center">
