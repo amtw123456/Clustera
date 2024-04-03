@@ -254,7 +254,7 @@ function SDocumentsCard({ summarizedDocuments }) {
 }
 
 
-function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated }) {
+function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -274,24 +274,112 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                 </div>
             </div>
         ) : (
-            <div>
-                {Array.from(Array(noOfClusters), (item, index) => (
-                    <div class="flex flex-row max-w-screen m-3 rounded-lg bg-gray-100 drop-shadow-lg ">
-                        <div key={index} class="overflow-hidden justify-between px-3 py-2 flex flex-row rounded-l-lg w-[1100px] flex-wrap h-32 max-w-[1100px]">
-                            {summarizedDocuments.map((value, innerIndex) => (
-                                // Check if value.clusterid is equal to index
-                                value.clusterId === index && (
-                                    <div key={innerIndex}>
-                                        {innerIndex}&nbsp;
-                                    </div>
-                                )
-                            ))}
+            Array.from(Array(noOfClusters), (item, index) => (
+                <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg">
+                    <div class="w-auto rounded-r-lg mt-2">
+                        <div class="px-2 text-lg ml-1 flex justify-left font-bold">
+                            {"Cluster Label: Sports"}
                         </div>
-                        <div class="px-2 flex-1 border-l w-auto rounded-r-lg"><div class="flex justify-center font-bold">{"Cluster: " + index}</div><div>red green blue</div></div>
+                        <div class="px-2 text-base ml-1 flex justify-left">
+                            {"Cluster Number: " + index}
+                        </div>
+                        <div class="px-2 text-base ml-1 flex justify-left">
+                            {"No. of Documents in Cluster: " + clustersGenerated[index].length}
+                        </div>
+                        <div className="border-t my-2 border-gray-300"></div>
+                        <div class="flex px-2 text-base text-gray-500 ml-1 mb-1 flex justify-left font-bold">
+                            {"Top 7: Terms"}
+                        </div>
+                        <div class="px-2 flex flex-row flex-wrap text-justify justify-start" key={index}>
+                            {topicsGenerated[index].slice(0, 7).map((topic, index) => (
+                                <div class="flex border text-base font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                    <div class="px-3 py-[0.5px]">{topic}</div>
+                                </div>
+                            ))}
+                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index].length - 7}</div>
+                            </div>
+                        </div>
                     </div>
-                ))
-                }
-            </div >
+                    {/* <div key={index} class="overflow-hidden justify-between px-3 py-2 flex flex-row rounded-l-lg w-[1100px] flex-wrap h-32 max-w-[1100px]">
+                        {summarizedDocuments.map((value, innerIndex) => (
+                            // Check if value.clusterid is equal to index
+                            value.clusterId === index && (
+                                <div key={innerIndex}>
+                                    {innerIndex}&nbsp;
+                                </div>
+                            )
+                        ))}
+                    </div> */}
+                    < div class="flex ml-3 justify-center mt-3 items-center" >
+                        {/* {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "} */}
+                        < AiFillEye className="inline-block text-purple-800 text-lg" />
+                        {"      "}
+                        < Popup
+                            contentStyle={{
+                                borderRadius: "10px",
+                                overflow: "auto",
+                                border: "none",
+                                padding: "0",
+                            }}
+                            trigger={< button class="inline-block text-purple-600 p-0" > View Cluster Information</button >}
+                            modal
+                            nested
+                        >
+                            {close => (
+                                <div style={{ maxHeight: "90vh" }}>
+                                    <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col">
+                                        <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
+                                        {/* <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div> */}
+                                    </div>
+                                    <div class="overflow-auto h-[220px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
+                                        <div class="text-base mb-3 font-bold inline-block"> Document Text</div>
+                                        {/* <div class="pb-5">{item.uDocument}</div> */}
+                                    </div>
+                                    <div className="border-t border-gray-300 my-4"></div>
+                                    <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
+                                        <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
+                                        {/* <div className="pb-5">{item.pDocument}</div> */}
+                                    </div>
+                                    <div className="border-t border-gray-300"></div>
+                                    <div class="px-5 pt-2">
+                                        <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
+                                        <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
+                                            {/* {item.topics.map((topic, index) => (
+                                                <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                                    <div class="px-3 py-[0.5px]">{topic}</div>
+                                                </div>
+                                            ))} */}
+                                        </div>
+                                    </div>
+                                    <div className="border-t mt-4 border-gray-300"></div>
+                                    <div class="px-5 pt-2 flex flex-col">
+                                        <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
+                                        <div class="m-1 flex flex-wrap text-justify" key={index}>
+                                            {/* {item.documentTopicDistribution} */}
+                                            {/* {item.documentTopicDistribution.map((distribution, index) => (
+                                                <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
+                                                    <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
+                                                </div>
+                                            ))} */}
+                                        </div>
+                                    </div>
+
+                                    <div className="border-t border-gray-300 my-4"></div>
+                                    <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
+                                        <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
+                                        <div className="flex flex-col justify-right">
+                                            {/* <div className="text-sm italic">Length of Documents: {item.uDocument.length}</div>
+                                            <div className="text-sm italic pl-7">Number of Tokens: {item.documentTokens.length}</div> */}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </Popup >
+                    </div >
+                </div >
+            ))
+
 
         )
     );

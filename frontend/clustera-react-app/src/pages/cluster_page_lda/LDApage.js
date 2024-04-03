@@ -14,6 +14,9 @@ function LDApage() {
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
 
+  const [topicsGenerated, setTopicsGenerated] = useState([]);
+
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
@@ -70,6 +73,7 @@ function LDApage() {
   }, [clustersProvider]);
 
   const clusterUsingLda = async () => {
+    var responseData;
     try {
       const response = await fetch(REACT_APP_BACKEND_API_URL + 'lda', {
         method: 'POST',
@@ -84,10 +88,8 @@ function LDApage() {
       });
 
 
-      const responseData = await response.json();
-      console.log(responseData)
-      buildLDAClusterSummary(responseData)
-      setClustersProvider(responseData['clusters'])
+      responseData = await response.json();
+
 
     } catch (error) {
       console.error('Error during text preprocessing:', error);
@@ -95,6 +97,12 @@ function LDApage() {
     } finally {
       setIsLoading(false);
       setIsCorporaNotClustered(false);
+
+      buildLDAClusterSummary(responseData)
+      setClustersProvider(responseData['clusters'])
+      setTopicsGenerated(responseData['topics'])
+      console.log(responseData['clusters'])
+      console.log(responseData['topics'])
 
     }
   };
@@ -210,8 +218,8 @@ function LDApage() {
             <SDocumentsCard summarizedDocuments={documentsProvider} />
           </div >
         ) : isClusteredGeneratedBool ? (
-          <div class="ml-80 flex flex-col flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput} />
+          <div class="ml-80 flex flex-row flex-wrap">
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} />
           </div >
         ) :
           <div class="ml-80 flex flex-wrap items-center">
