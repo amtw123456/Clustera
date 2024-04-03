@@ -25,7 +25,9 @@ function LDApage() {
   const [isExportBool, setIsExportBool] = useState(false);
 
   const [isCorporaNotClustered, setIsCorporaNotClustered] = useState(true)
+
   const [noOfClustersInput, setNoOfClustersInput] = useState(1)
+  const [vectorizerType, setVectorizerType] = useState('tfidf');
 
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
@@ -74,7 +76,11 @@ function LDApage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "preprocessed_text": preprocessedText, "num_topics": noOfClustersInput }),
+        body: JSON.stringify({
+          "preprocessed_text": preprocessedText,
+          'vectorizer_type': vectorizerType,
+          "num_topics": noOfClustersInput
+        }),
       });
 
 
@@ -89,7 +95,6 @@ function LDApage() {
     } finally {
       setIsLoading(false);
       setIsCorporaNotClustered(false);
-
 
     }
   };
@@ -117,7 +122,10 @@ function LDApage() {
 
   const handleInputNoOfClusters = (e) => {
     setNoOfClustersInput(parseInt(e.target.value));
-    console.log(noOfClustersInput)
+  };
+
+  const handleVectorizerChange = (e) => {
+    setVectorizerType(e.target.value);
   };
 
   return (
@@ -125,15 +133,22 @@ function LDApage() {
       <NavigationBar />
 
       <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
-        <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
-
-
+        <div class="ml-4 pt-4 mb-12 font-bold text-2xl">LDA Clustering</div>
 
         <div class="mt-4 mx-4 my-5">
+          <div class="font-bold text-sm mb-2">Cluster Vectorizer:</div>
+          <select class="block px-3 w-52 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={vectorizerType} onChange={handleVectorizerChange}>
+            <option value="tfidf-vectorizer">TF-IDF Vectorizer</option>
+            <option value="count-vectorizer">Count Vectorizer</option>
+          </select>
+        </div>
+
+        <div class="mx-4 my-5">
           <div class="font-bold text-sm mb-2">Number of Clusters:</div>
           <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
         </div>
-        <div class="flex justify-center">
+
+        <div class="flex justify-center mt-12">
           <button onClick={() => clusterUsingLda()}><Link to="/cluster_page_lda" class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">Cluster Documents</Link></button>
         </div>
       </div>
