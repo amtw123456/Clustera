@@ -90,8 +90,6 @@ def text_tokenization(request):
     # print(total_word_counts.items())
     filtered_words = [word for word, count in total_word_counts.items() if count < 0]
 
-    documents_tokens = []
-    preprocessed_text = []
     PreProcessedInfo = []
     for document in filtered_documents:
         temp = []

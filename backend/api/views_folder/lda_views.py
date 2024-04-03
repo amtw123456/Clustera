@@ -30,10 +30,14 @@ import os
 # Create your views here.
 @api_view(['POST'])
 def text_clustering_lda(request):
-    vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=2)
         
     responseData = json.loads(request.body)
-    print(responseData['preprocessed_text'])
+
+    if(responseData['vectorizer_type'] == "count-vectorizer"):
+      vectorizer = CountVectorizer(stop_words='english', max_df=0.8, min_df=20)
+
+    else:
+      vectorizer = TfidfVectorizer(stop_words='english', max_df=0.8, min_df=20)
 
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA

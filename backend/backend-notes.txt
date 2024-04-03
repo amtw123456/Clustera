@@ -1,0 +1,15 @@
+Nginx Notes
+
+
+Error: Nginx error: client intended to send too large body:
+
+Solution Link: https://stackoverflow.com/questions/44741514/nginx-error-client-intended-to-send-too-large-body
+
+http {
+    ...
+    client_max_body_size 20M;
+}
+
+How to start, restart or stop Nginx service on Ubuntu
+
+Reference: https://phoenixnap.com/kb/nginx-start-stop-restart
