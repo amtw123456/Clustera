@@ -276,11 +276,22 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
         ) : (
             <div>
                 {Array.from(Array(noOfClusters), (item, index) => (
-                    <div key={index} className="w-auto h-24 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
-                        {item}
+                    <div class="flex flex-row max-w-screen m-3 rounded-lg bg-gray-100 drop-shadow-lg ">
+                        <div key={index} class="overflow-hidden justify-between px-3 py-2 flex flex-row rounded-l-lg w-[1100px] flex-wrap h-32 max-w-[1100px]">
+                            {summarizedDocuments.map((value, innerIndex) => (
+                                // Check if value.clusterid is equal to index
+                                value.clusterId === index && (
+                                    <div key={innerIndex}>
+                                        {innerIndex}&nbsp;
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                        <div class="px-2 flex-1 border-l w-auto rounded-r-lg"><div class="flex justify-center font-bold">{"Cluster: " + index}</div><div>red green blue</div></div>
                     </div>
-                ))}
-            </div>
+                ))
+                }
+            </div >
 
         )
     );
