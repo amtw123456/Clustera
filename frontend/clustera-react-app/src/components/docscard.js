@@ -280,24 +280,24 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
                             {"Cluster Label: Sports"}
                         </div>
-                        <div class="px-2 text-base ml-1 flex justify-left">
-                            {"Cluster Number: " + index}
+                        <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
+                            {"Cluster No: " + index}
                         </div>
-                        <div class="px-2 text-base ml-1 flex justify-left">
+                        <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
                             {"No. of Documents in Cluster: " + clustersGenerated[index].length}
                         </div>
                         <div className="border-t my-2 border-gray-300"></div>
-                        <div class="flex px-2 text-base text-gray-500 ml-1 mb-1 flex justify-left font-bold">
-                            {"Top 7: Terms"}
+                        <div class="flex px-2 text-base text-gray-800 ml-1 mb-1 flex justify-left font-bold">
+                            {"Top 7 Terms:"}
                         </div>
-                        <div class="px-2 flex flex-row flex-wrap text-justify justify-start" key={index}>
-                            {topicsGenerated[index].slice(0, 7).map((topic, index) => (
+                        <div class="px-2 flex flex-row flex-wrap text-justify justify-start items-center" key={index}>
+                            {topicsGenerated[index].slice(0, 8).map((topic, index) => (
                                 <div class="flex border text-base font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
                                     <div class="px-3 py-[0.5px]">{topic}</div>
                                 </div>
                             ))}
                             <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
-                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index].length - 7}</div>
+                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index].length - 8}</div>
                             </div>
                         </div>
                     </div>
@@ -321,27 +321,37 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                 overflow: "auto",
                                 border: "none",
                                 padding: "0",
+                                width: '1800px',
+                                height: '800px',
+                                margin: "50px",
                             }}
-                            trigger={< button class="inline-block text-purple-600 p-0" > View Cluster Information</button >}
+                            trigger={< button class="inline-block text-purple-600 p-0" >View Cluster Information</button >}
                             modal
                             nested
                         >
                             {close => (
                                 <div style={{ maxHeight: "90vh" }}>
-                                    <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col">
-                                        <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
+                                    <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col ">
+                                        <div class="flex flex-row items-end">
+                                            <div className="text-3xl font-bold inline-block">
+                                                <div class="text-base mb-3 font-bold inline-block"> Cluster {index} documents</div>
+                                            </div>
+                                        </div>
                                         {/* <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div> */}
                                     </div>
-                                    <div class="overflow-auto h-[220px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
-                                        <div class="text-base mb-3 font-bold inline-block"> Document Text</div>
-                                        {/* <div class="pb-5">{item.uDocument}</div> */}
+                                    <div class="overflow-auto h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify-center" style={{ maxHeight: "50vh" }}>
+                                        {clustersGenerated[index].map((value, innerIndex) => (
+                                            <div key={index} class="overflow-hidden mx-2 px-2 py-2 my-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
+                                                <div key={innerIndex}>
+                                                    <div>Document Number: {value} </div>
+                                                    <div></div>
+                                                    {summarizedDocuments[value].uDocument.slice(0, 80) + "..........."}&nbsp;
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <div className="border-t border-gray-300 my-4"></div>
-                                    <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col" style={{ maxHeight: "30vh" }}>
-                                        <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
-                                        {/* <div className="pb-5">{item.pDocument}</div> */}
-                                    </div>
-                                    <div className="border-t border-gray-300"></div>
+
+                                    <div className="border-t border-gray-300" />
                                     <div class="px-5 pt-2">
                                         <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
                                         <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>

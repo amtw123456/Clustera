@@ -102,7 +102,7 @@ function LDApage() {
       setClustersProvider(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
       console.log(responseData['clusters'])
-      console.log(responseData['topics'])
+      // console.log(responseData['topics'])
 
     }
   };
@@ -117,7 +117,7 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
     ))
-    console.log(documentsProvider)
+    // console.log(documentsProvider)
   };
 
   const createClusters = async (numberOfClusters) => {
