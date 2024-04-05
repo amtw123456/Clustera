@@ -419,11 +419,15 @@ function TopicsGeneratedCard({ topicsGenerated }) {
             </div>
         ) : (
             topicsGenerated.map((listOfTopics, index) => (
+
                 <div key={index} className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
-                    <div class="ml-3 mb-2 font-bold">Topics of Cluster {index}</div>
-                    <div class="ml-2 flex flex-row flex-wrap">
+                    <div>
+                        <div class="ml-3 font-bold">Edit Topic Category name</div>
+                        <div class="ml-3 mb-2 font-bold">Topics of Cluster {index}</div>
+                    </div>
+                    <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "8vh" }}>
                         {listOfTopics.map((topic, innerIndex) => (
-                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                 <div class="px-3 py-[0.5px]">{topic}</div>
                             </div>
                         ))}
@@ -467,7 +471,7 @@ function DocumentTopicDistributionCard({ summarizedDocuments }) {
                                         <div class="px-3 py-[0.5px] ml-1 ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}%</div>
                                     </div>
                                 ) :
-                                    <div class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">
+                                    <div class="flex border font-bold text-green-400 m-1 rounded-md bg-green-100 border-green-400">
                                         <div class="px-3 py-[0.5px] ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}% </div>
                                     </div>
                             ))
