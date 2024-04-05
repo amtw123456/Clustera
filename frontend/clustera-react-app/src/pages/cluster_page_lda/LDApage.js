@@ -31,6 +31,8 @@ function LDApage() {
 
   const [noOfClustersInput, setNoOfClustersInput] = useState(1)
   const [vectorizerType, setVectorizerType] = useState('tfidf');
+  const [minimumDf, setMinimumDf] = useState(0.1);
+  const [maximumDf, setMaximumDf] = useState(10);
 
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
@@ -132,6 +134,14 @@ function LDApage() {
     setNoOfClustersInput(parseInt(e.target.value));
   };
 
+  const handleInputOfMaximumDf = (e) => {
+    setMaximumDf(parseInt(e.target.value));
+  };
+
+  const handleInputOfMinimumDf = (e) => {
+    setMinimumDf(parseFloat(e.target.value));
+  };
+
   const handleVectorizerChange = (e) => {
     setVectorizerType(e.target.value);
   };
@@ -159,11 +169,11 @@ function LDApage() {
         <div class="mx-4 my-5 flex-row flex">
           <div>
             <div class="font-bold text-sm mb-2">Min_df:</div>
-            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+            <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
           </div>
           <div class="ml-12">
             <div class="font-bold text-sm mb-2">Max_df:</div>
-            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
           </div>
         </div>
 
