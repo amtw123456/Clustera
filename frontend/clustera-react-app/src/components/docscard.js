@@ -334,22 +334,26 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                 <div style={{ maxHeight: "90vh" }}>
                                     <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col ">
                                         <div class="flex flex-row items-end">
-                                            <div className="text-3xl font-bold inline-block">
+                                            <div class="text-3xl ml-7 font-bold inline-block">
                                                 <div class="text-xl font-bold inline-block"> Cluster {index} documents</div>
                                             </div>
                                         </div>
                                         {/* <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div> */}
                                     </div>
-                                    <div class="overflow-auto h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify ml-5" style={{ maxHeight: "50vh" }}>
+                                    <div class="overflow-auto mr-3 h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify ml-5 drop-shadow-lg" style={{ maxHeight: "50vh" }}>
                                         {clustersGenerated[index].map((value, innerIndex) => (
                                             <div key={index} class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
                                                 <div key={innerIndex}>
-                                                    <div>
-                                                        {Math.max(...summarizedDocuments[value].documentTopicDistribution.slice(0, 10)) + "..........."}
-                                                    </div>
+
                                                     <div class="font-bold">Document Number: {value} </div>
+                                                    <div class="italic mb-3">
+                                                        {"Cluster Topic Distribution: " + (Math.max(...summarizedDocuments[value].documentTopicDistribution))}
+                                                    </div>
                                                     <div>
-                                                        {summarizedDocuments[value].uDocument.slice(0, 200) + "..........."}&nbsp;
+                                                        {/* {summarizedDocuments[value].documentTopicDistribution} */}
+                                                    </div>
+                                                    <div class="overflow-auto h-[100px] pr-3" style={{ maxHeight: "80vh" }}>
+                                                        {summarizedDocuments[value].uDocument}&nbsp; < AiFillEye className="inline-block text-purple-800 text-lg" />
                                                     </div>
 
                                                 </div>
@@ -388,7 +392,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
                                     <div className="border-t border-gray-300 my-4"></div>
                                     <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
-                                        <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
+                                        <button className="inline-block text-white py-2 ml-6 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
                                         <div className="flex flex-col justify-right">
                                             {/* <div className="text-sm italic">Length of Documents: {item.uDocument.length}</div>
                                             <div className="text-sm italic pl-7">Number of Tokens: {item.documentTokens.length}</div> */}
@@ -406,7 +410,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
     );
 }
 
-function TopicsGeneratedCard({ topics }) {
+function TopicsGeneratedCard({ topicsGenerated }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -426,9 +430,9 @@ function TopicsGeneratedCard({ topics }) {
                 </div>
             </div>
         ) : (
-            topics.map((item, index) => (
+            topicsGenerated.map((listOfTopics, index) => (
                 <div key={index} className="w-[135px] h-12 pt-1 m-3 text-center rounded-lg bg-gray-100 drop-shadow-lg">
-                    {item}
+                    {listOfTopics}
                 </div>
             ))
         )

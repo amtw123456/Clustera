@@ -34,10 +34,10 @@ def text_clustering_lda(request):
     responseData = json.loads(request.body)
 
     if(responseData['vectorizer_type'] == "count-vectorizer"):
-      vectorizer = CountVectorizer(stop_words='english', max_df=0.5, min_df=4)
+      vectorizer = CountVectorizer(stop_words='english', max_df=0.95, min_df=300)
 
     else:
-      vectorizer = TfidfVectorizer(stop_words='english', max_df=0.5, min_df=4)
+      vectorizer = TfidfVectorizer(stop_words='english', max_df=0.95, min_df=300)
 
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA
@@ -50,6 +50,8 @@ def text_clustering_lda(request):
     feature_names = vectorizer.get_feature_names_out()
     topics = []
     clusters = {}
+
+    print(feature_names)
 
     for topic_idx, topic in enumerate(lda.components_):
         top_words_indices = topic.argsort()[:-45:-1]  # Get indices of top 10 words for each topic

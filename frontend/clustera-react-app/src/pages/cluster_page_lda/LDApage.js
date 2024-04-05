@@ -221,8 +221,13 @@ function LDApage() {
           <div class="ml-80 flex flex-row flex-wrap">
             <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} />
           </div >
+
+        ) : isTopicsGeneratedBool ? (
+          <div class="ml-80 flex flex-row flex-wrap">
+            <TopicsGeneratedCard topicsGenerated={topicsGenerated} />
+          </div >
         ) :
-          <div class="ml-80 flex flex-wrap items-center">
+          < div class="ml-80 flex flex-wrap items-center">
             <div class="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
               <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
