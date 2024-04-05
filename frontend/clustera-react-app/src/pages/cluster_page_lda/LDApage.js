@@ -266,6 +266,10 @@ function LDApage() {
               <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
             </div>
           </div >
+        ) : isDataSummaryBool ? (
+          <div class="ml-80 flex flex-wrap items-center">
+            <div>This is the Data Summary Page</div>
+          </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
             <SDocumentsCard summarizedDocuments={documentsProvider} />
