@@ -259,6 +259,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
     useEffect(() => {
         setIsComponentLoading(false);
+        console.log(summarizedDocuments)
 
     }, []);
 
@@ -334,18 +335,23 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                     <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col ">
                                         <div class="flex flex-row items-end">
                                             <div className="text-3xl font-bold inline-block">
-                                                <div class="text-base mb-3 font-bold inline-block"> Cluster {index} documents</div>
+                                                <div class="text-xl font-bold inline-block"> Cluster {index} documents</div>
                                             </div>
                                         </div>
                                         {/* <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div> */}
                                     </div>
-                                    <div class="overflow-auto h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify-center" style={{ maxHeight: "50vh" }}>
+                                    <div class="overflow-auto h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify ml-5" style={{ maxHeight: "50vh" }}>
                                         {clustersGenerated[index].map((value, innerIndex) => (
-                                            <div key={index} class="overflow-hidden mx-2 px-2 py-2 my-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
+                                            <div key={index} class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
                                                 <div key={innerIndex}>
-                                                    <div>Document Number: {value} </div>
-                                                    <div></div>
-                                                    {summarizedDocuments[value].uDocument.slice(0, 80) + "..........."}&nbsp;
+                                                    <div>
+                                                        {Math.max(...summarizedDocuments[value].documentTopicDistribution.slice(0, 10)) + "..........."}
+                                                    </div>
+                                                    <div class="font-bold">Document Number: {value} </div>
+                                                    <div>
+                                                        {summarizedDocuments[value].uDocument.slice(0, 200) + "..........."}&nbsp;
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         ))}
@@ -353,27 +359,32 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
                                     <div className="border-t border-gray-300" />
                                     <div class="px-5 pt-2">
-                                        <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
-                                        <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
-                                            {/* {item.topics.map((topic, index) => (
+                                        <div class="font-bold ml-5 mb-2 px-1">Topics of the Cluster</div>
+                                        <div class="ml-5 flex flex-row flex-wrap text-justify justify-start" key={index}>
+                                            {topicsGenerated[index].map((topic, index) => (
                                                 <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
                                                     <div class="px-3 py-[0.5px]">{topic}</div>
                                                 </div>
-                                            ))} */}
+                                            ))}
+                                            {/* <div>
+                                                <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                                    <div class="px-3 py-[0.5px]">+ {topicsGenerated[index].length - 35}</div>
+                                                </div>
+                                            </div> */}
                                         </div>
                                     </div>
-                                    <div className="border-t mt-4 border-gray-300"></div>
+                                    {/* <div className="border-t mt-4 border-gray-300"></div>
                                     <div class="px-5 pt-2 flex flex-col">
                                         <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
-                                        <div class="m-1 flex flex-wrap text-justify" key={index}>
-                                            {/* {item.documentTopicDistribution} */}
-                                            {/* {item.documentTopicDistribution.map((distribution, index) => (
+                                        <div class="m-1 flex flex-wrap text-justify" key={index}> */}
+                                    {/* {item.documentTopicDistribution} */}
+                                    {/* {item.documentTopicDistribution.map((distribution, index) => (
                                                 <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
                                                     <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
                                                 </div>
                                             ))} */}
-                                        </div>
-                                    </div>
+                                    {/* </div>
+                                    </div> */}
 
                                     <div className="border-t border-gray-300 my-4"></div>
                                     <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">

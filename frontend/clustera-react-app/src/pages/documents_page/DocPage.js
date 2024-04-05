@@ -95,7 +95,7 @@ function DocPage() {
     documentsProvider.map((item, index) => (
       listOfPreProcessedText.push(item.pDocument)
     ))
-    console.log(listOfPreProcessedText)
+    // console.log(listOfPreProcessedText)
     setPreprocessedText(listOfPreProcessedText)
 
   };
