@@ -1,4 +1,4 @@
-import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard } from '../../components/docscard.js'
+import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.js'
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
@@ -228,7 +228,7 @@ function LDApage() {
         )
           : isDocumentTopicDistributionBool ? (
             <div class="ml-80 flex flex-row flex-wrap">
-              <TopicsGeneratedCard topicsGenerated={topicsGenerated} />
+              <DocumentTopicDistributionCard summarizedDocuments={documentsProvider} />
             </div >
           ) : (
             < div class="ml-80 flex flex-wrap items-center">
