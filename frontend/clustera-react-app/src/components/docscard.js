@@ -179,7 +179,7 @@ function SDocumentsCard({ summarizedDocuments }) {
             </div>
         ) : (
             summarizedDocuments.map((item, index) => (
-                <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
+                <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden" key={index}>
                     <div className="my-2 pb-2 pt-2 px-2">
                         <div>
                             {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
@@ -277,7 +277,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
             </div>
         ) : (
             Array.from(Array(noOfClusters), (item, index) => (
-                <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg">
+                <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div class="w-auto rounded-r-lg mt-2">
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
                             {"Cluster Label: Sports"}
