@@ -156,6 +156,17 @@ function LDApage() {
           <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
         </div>
 
+        <div class="mx-4 my-5 flex-row flex">
+          <div>
+            <div class="font-bold text-sm mb-2">Min_df:</div>
+            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+          </div>
+          <div class="ml-12">
+            <div class="font-bold text-sm mb-2">Max_df:</div>
+            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+          </div>
+        </div>
+
         <div class="flex justify-center mt-12">
           <button onClick={() => clusterUsingLda()}><Link to="/cluster_page_lda" class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">Cluster Documents</Link></button>
         </div>
