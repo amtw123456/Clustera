@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiFillEye } from 'react-icons/ai';
 import { IoDocumentSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
@@ -419,13 +420,16 @@ function TopicsGeneratedCard({ topicsGenerated }) {
             </div>
         ) : (
             topicsGenerated.map((listOfTopics, index) => (
-
                 <div key={index} className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div>
-                        <div class="ml-3 font-bold">Edit Topic Category name</div>
-                        <div class="ml-3 mb-2 font-bold">Topics of Cluster {index}</div>
+                        <div class="flex flex-row items-center ml-3">
+                            <FaEdit class="text-purple-400 hover:text-purple-600 hover:cursor-pointer" />
+                            <div class="font-bold italic ml-1">Category name</div>
+                        </div>
+                        <div class="ml-3 mb-1 italic">Topics of Cluster {index}</div>
+                        <div className="border-t border-gray-300 my-1"></div>
                     </div>
-                    <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "8vh" }}>
+                    <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "9vh" }}>
                         {listOfTopics.map((topic, innerIndex) => (
                             <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                 <div class="px-3 py-[0.5px]">{topic}</div>
