@@ -23,7 +23,8 @@ function LDApage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(true);
+  const [isDataSummaryBool, setIsDataSummaryBool] = useState(true);
+  const [isDocumentSummaryBool, setIsDocumentSummaryBool] = useState(false);
   const [isClusteredGeneratedBool, setIsClusteredGeneratedBool] = useState(false);
   const [isDocumentTopicDistributionBool, setIsDocumentTopicDistributionBool] = useState(false);
   const [isTopicsGeneratedBool, setIsTopicsGeneratedBoolBool] = useState(false);
@@ -41,6 +42,7 @@ function LDApage() {
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
     const stateSetterMap = {
+      isDataSummaryBool: setIsDataSummaryBool,
       isDocumentSummaryBool: setIsDocumentSummaryBool,
       isClusteredGeneratedBool: setIsClusteredGeneratedBool,
       isDocumentTopicDistributionBool: setIsDocumentTopicDistributionBool,
@@ -172,12 +174,6 @@ function LDApage() {
         {/* <a className="my-anchor-element">◕‿‿◕</a>
         <a className="my-anchor-element">◕‿‿◕</a> */}
 
-
-        <div class="mx-4 my-5">
-          <div class="font-bold text-sm mb-2">Number of Clusters:</div>
-          <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
-        </div>
-
         <div class="mx-4 my-5 flex-row flex">
 
           <div>
@@ -203,6 +199,12 @@ function LDApage() {
           </div>
         </div>
 
+
+        <div class="mx-4 my-5">
+          <div class="font-bold text-sm mb-2">Number of Clusters:</div>
+          <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+        </div>
+
         <div class="flex justify-center mt-12">
           <button onClick={() => clusterUsingLda()}><Link to="/cluster_page_lda" class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">Cluster Documents</Link></button>
         </div>
@@ -211,43 +213,47 @@ function LDApage() {
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
         <div class="flex">
           <div class="ml-80 hidden md:flex flex-1">
-            {isDocumentSummaryBool ? (
-              <button class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
+            {isDataSummaryBool ? (
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Data Summary</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isDataSummaryBool')}>Data Summary</button>
+            )}
+            {isDocumentSummaryBool ? (
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Documents Summary</button>
+            ) : (
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
             )}
             {isClusteredGeneratedBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Clusters Generated</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
             )}
             {isDocumentTopicDistributionBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Document Topic Distribution</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
             )}
             {isTopicsGeneratedBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Topics Generated</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
             )}
             {isClassifierBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Classifier</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
             )}
             {isVisualizeBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Visualize</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
             )}
             {isExportBool ? (
-              <button class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
+              <button class="text-black text-base border-x border-t px-8 pt-1" disabled={true}>Export</button>
             ) : (
-              <button class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
+              <button class="text-blue-400 text-base border-b px-8 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
             )}
-
-            <a href="/" class="text-blue-400 text-base border-b pr-32 pt-1"></a>
+            <a class="text-blue-400 text-base border-b pr-32 pt-1"></a>
           </div>
         </div>
       </nav >
