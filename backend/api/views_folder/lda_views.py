@@ -34,10 +34,10 @@ def text_clustering_lda(request):
     responseData = json.loads(request.body)
 
     if(responseData['vectorizer_type'] == "count-vectorizer"):
-      vectorizer = CountVectorizer(stop_words='english', max_df=0.95, min_df=30)
+      vectorizer = CountVectorizer(stop_words='english', max_df=responseData['maximum_df_value'], min_df=responseData['minimum_df_value'])
 
     else:
-      vectorizer = TfidfVectorizer(stop_words='english', max_df=0.95, min_df=30)
+      vectorizer = TfidfVectorizer(stop_words='english', max_df=responseData['maximum_df_value'], min_df=responseData['minimum_df_value'])
 
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA

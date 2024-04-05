@@ -89,7 +89,10 @@ function LDApage() {
         body: JSON.stringify({
           "preprocessed_text": preprocessedText,
           'vectorizer_type': vectorizerType,
-          "num_topics": noOfClustersInput
+          "num_topics": noOfClustersInput,
+          "minimum_df_value": minimumDf,
+          "max_df_value": maximumDf,
+
         }),
       });
 
