@@ -54,7 +54,7 @@ def text_clustering_lda(request):
     print(feature_names)
 
     for topic_idx, topic in enumerate(lda.components_):
-        top_words_indices = topic.argsort()[:-60:-1]  # Get indices of top 10 words for each topic
+        top_words_indices = topic.argsort()[:-45:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
       
