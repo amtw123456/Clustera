@@ -4,6 +4,10 @@ import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.js';
 import NavigationBar from '../../components/navbar.js';
+import { ImNotification } from "react-icons/im";
+import { Tooltip } from 'react-tooltip'
+
+
 
 function LDApage() {
 
@@ -161,18 +165,37 @@ function LDApage() {
           </select>
         </div>
 
+
+        {/* <a className="my-anchor-element">◕‿‿◕</a>
+        <a className="my-anchor-element">◕‿‿◕</a> */}
+
+
         <div class="mx-4 my-5">
           <div class="font-bold text-sm mb-2">Number of Clusters:</div>
           <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
         </div>
 
         <div class="mx-4 my-5 flex-row flex">
+
           <div>
-            <div class="font-bold text-sm mb-2">Min_df:</div>
+            <div class="flex flex-row justify-center">
+              <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+              <div class="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
+            </div>
             <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
+            <Tooltip anchorSelect=".min-df-tooltip" place="right">
+              <div class='text-xs'>max_df = 0.50 means "ignore terms that appear in more than 50% of the documents</div>
+            </Tooltip>
           </div>
           <div class="ml-12">
-            <div class="font-bold text-sm mb-2">Max_df:</div>
+            <div class="flex flex-row justify-center">
+              <a className="max-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+              <div class="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
+              <Tooltip anchorSelect=".max-df-tooltip" place="right">
+                <div class='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
+              </Tooltip>
+            </div>
+
             <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
           </div>
         </div>
