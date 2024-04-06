@@ -105,6 +105,9 @@ def text_tokenization(request):
         #     temp.append(lemmatized_word)
         
         document = " ".join(temp)    
+        print("BLUE")
+        print(temp)
+        print(document)
         # documents_tokens.append(temp)
         # preprocessed_text.append(document)
         PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])

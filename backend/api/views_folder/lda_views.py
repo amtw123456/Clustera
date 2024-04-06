@@ -1,6 +1,9 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from gensim.models.coherencemodel import CoherenceModel
+from gensim import corpora
+
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
@@ -30,7 +33,7 @@ import os
 # Create your views here.
 @api_view(['POST'])
 def text_clustering_lda(request):
-        
+    tokens = []
     responseData = json.loads(request.body)
 
     if(responseData['vectorizer_type'] == "count-vectorizer"):
@@ -41,23 +44,32 @@ def text_clustering_lda(request):
 
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA
+
+  
+    for i in responseData['preprocessed_text']:
+       tokens.append(i.split())
+
+    dictionary = corpora.Dictionary(tokens)
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
-    lda = LatentDirichletAllocation(n_components=n_topics, random_state=42)
+    lda = LatentDirichletAllocation(n_components=n_topics, random_state=43)
 
     document_topic_distribution = lda.fit_transform(X)
     predicted_clusters = np.argmax(document_topic_distribution, axis=1)
 
     feature_names = vectorizer.get_feature_names_out()
+    topic_coherance_score = []
     topics = []
     clusters = {}
-
-    print(feature_names)
 
     for topic_idx, topic in enumerate(lda.components_):
         top_words_indices = topic.argsort()[:-45:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
-      
+
+    for index, topic in enumerate(topics):
+        coherence_model_lda = CoherenceModel(topics=[topic], texts=tokens, dictionary=dictionary, coherence='u_mass')
+        coherence_score = coherence_model_lda.get_coherence()
+        topic_coherance_score.append(coherence_score)
     
     for i in range(0, n_topics):
       clusters[i] = []
@@ -68,6 +80,7 @@ def text_clustering_lda(request):
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,
+        "topic_coherance_score" : topic_coherance_score,
         "clusters" : clusters,
         "topics" : topics
     })

@@ -19,7 +19,7 @@ function LDApage() {
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
 
   const [topicsGenerated, setTopicsGenerated] = useState([]);
-
+  const [topicCoheranceScores, setTopicCoheranceScores] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -94,7 +94,6 @@ function LDApage() {
           "num_topics": noOfClustersInput,
           "minimum_df_value": minimumDf,
           "maximum_df_value": maximumDf,
-
         }),
       });
 
@@ -112,8 +111,10 @@ function LDApage() {
       buildLDAClusterSummary(responseData)
       setClustersProvider(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
-      console.log(responseData['clusters'])
-      // console.log(responseData['topics'])
+      setTopicCoheranceScores(responseData['topic_coherance_score'])
+      // console.log(responseData['clusters'])
+      console.log(responseData['topics'])
+      console.log(responseData['topic_coherance_score'])
 
     }
   };
