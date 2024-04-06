@@ -281,7 +281,7 @@ function LDApage() {
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <TopicsGeneratedCard topicsGenerated={topicsGenerated} />
+            <TopicsGeneratedCard topicsGenerated={topicsGenerated} topicCoheranceGenerated={topicCoheranceScores} />
           </div >
         )
           : isDocumentTopicDistributionBool ? (

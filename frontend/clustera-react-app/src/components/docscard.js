@@ -401,7 +401,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
     );
 }
 
-function TopicsGeneratedCard({ topicsGenerated }) {
+function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -428,7 +428,11 @@ function TopicsGeneratedCard({ topicsGenerated }) {
                             <FaEdit class="text-purple-400 hover:text-purple-600 hover:cursor-pointer" />
                             <div class="font-bold italic ml-1">Category name</div>
                         </div>
-                        <div class="ml-3 mb-1 italic">Topics of Cluster {index}</div>
+                        <div class="flex flex-row items-center">
+                            <div class="ml-3 mb-1 italic">Topics of Cluster {index}</div>
+                            <div class="ml-3 mb-1 italic">|</div>
+                            <div class="ml-3 mb-1 italic">Coherance Score of Cluster {index} topics: {topicCoheranceGenerated[index]}</div>
+                        </div>
                         <div className="border-t border-gray-300 my-1"></div>
                     </div>
                     <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "9vh" }}>
@@ -440,7 +444,7 @@ function TopicsGeneratedCard({ topicsGenerated }) {
 
                     </div>
 
-                </div>
+                </div >
             ))
         )
     );
