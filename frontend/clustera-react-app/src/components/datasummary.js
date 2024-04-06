@@ -1,5 +1,6 @@
 // Sidebar.jsx
 import React from 'react';
+import ExampleWordCloud from "./textwordcloud.tsx";
 
 function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
     return (
@@ -10,12 +11,12 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                 <div class="font-bold w-full h-[15px] text-center mb-5">Topics Summary</div>
                 <div class="w-full flex flex-col">
                     {topicsGenerated.map((topics, innerIndex) => (
-                        <div class="border-yellow border flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-yellow-400 mb-1 rounded-md bg-yellow-100 border-yellow-400">
+                        <div class="border-yellow border flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400">
                             <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
                                 <div class="flex text-base flex ml-[3px] px-1 ">Topic {innerIndex}:</div>
                                 <div class="overflow-hidden flex flex-wrap">
                                     {topics.slice(0, 5).map((topic, topicIndex) => (
-                                        <div class="flex ml-[3px] px-1 border font-bold text-base text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={topicIndex}>{topic}</div>
+                                        <div class="flex ml-[3px] px-1 border font-bold text-base text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400" key={topicIndex}>{topic}</div>
                                     ))}
                                 </div>
                             </div>
@@ -28,27 +29,38 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                     ))}
                 </div>
             </div>
-            <div class="ml-2 p-2 flex flex-col h-1/2 w-1/3 overflow-auto border-grey-300 border rounded-lg mt-3">
-                <div class="font-bold w-full h-[15px] text-center mb-5">Clusters Summary</div>
-                <div class="w-full flex flex-col">
-                    {Array.from(Array(noOfClusters), (item, index) => (
-                        <div class="border-yellow border flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-yellow-400 mb-1 rounded-md bg-yellow-100 border-yellow-400">
-                            <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
-                                <div class="flex text-base flex ml-[3px] px-1 ">Cluster {index} Number of documents:</div>
-                                <div class="overflow-hidden flex flex-wrap">
-                                    <div class="flex ml-[3px] px-1 border font-bold text-base text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index].length} Documents</div>
+            <div class="ml-2 p-2 flex flex-col h-1/2 w-2/3 overflow-auto border-grey-300 border rounded-lg mt-3">
+                <div class="flex-row flex">
+                    <div class="w-full flex flex-col">
+                        <div class="font-bold w-full h-[15px] text-center mb-5">Clusters Summary</div>
+                        <div class="w-full flex flex-col">
+                            {Array.from(Array(noOfClusters), (item, index) => (
+                                <div class="border-yellow border flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400">
+                                    <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
+                                        <div class="flex text-base flex ml-[3px] px-1 ">Cluster {index} Number of documents:</div>
+                                        <div class="overflow-hidden flex flex-wrap">
+                                            <div class="flex ml-[3px] px-1 border font-bold text-base text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index].length} Documents</div>
+                                        </div>
+                                    </div>
+                                    <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
+                                        <div class="flex text-base flex ml-[3px] px-1 ">Cluster Category Label: NaN</div>
+                                        {/* <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
-                                <div class="flex text-base flex ml-[3px] px-1 ">Topic Coherence Score: :</div>
-                                {/* <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
-                            </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <div class="font-bold w-full h-[15px] text-center mb-5">Clusters Summary</div>
+                        <div class="w-full flex flex-col">
+                            <ExampleWordCloud width={400} height={400} />
 
                         </div>
-                    ))}
+
+                    </div>
                 </div>
             </div>
-
         </div>
     );
 }

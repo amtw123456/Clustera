@@ -3,6 +3,7 @@ import { AiFillEye } from 'react-icons/ai';
 import { IoDocumentSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import Popup from 'reactjs-popup';
+
 import 'reactjs-popup/dist/index.css';
 
 function UDocumentsCard({ uploadedData }) {
