@@ -1,4 +1,6 @@
-import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.js'
+import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.js';
+import DataSummarySection from '../../components/datasummary.js';
+
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
@@ -269,7 +271,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
-            <div>This is the Data Summary Page</div>
+            <DataSummarySection topicsGenerated={topicsGenerated} topicCoheranceGenerated={topicCoheranceScores} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
