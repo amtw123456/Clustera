@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import React from 'react';
-import MyWordCloud from './wordcloudchart';
+import WordCloudChart from './wordcloudchart';
 
 function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
     return (
@@ -54,7 +54,7 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                     <div class="w-full flex flex-col">
                         <div class="font-bold w-full h-[15px] text-center mb-5">Clusters Summary</div>
                         <div class="w-full flex flex-col">
-                            <MyWordCloud />
+                            <WordCloudChart />
                         </div>
 
                     </div>
