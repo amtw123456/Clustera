@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Document } from '../../modals/modals.js'
-import { AppContext } from '../../providers/AppState.js';
+import { AppContext } from '../../providers/AppState.jsx';
 import { Link } from "react-router-dom";
 
 export function Upload() {

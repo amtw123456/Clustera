@@ -1,7 +1,7 @@
 // ClusteraApp.jsx
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import NavigationBar from '../../components/navbar.js';
+import NavigationBar from '../../components/navbar.jsx';
 
 const DocumentationPage = () => {
     return (

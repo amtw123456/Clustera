@@ -1,11 +1,11 @@
-import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.js';
-import DataSummarySection from '../../components/datasummary.js';
+import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.jsx';
+import DataSummarySection from '../../components/datasummary.jsx';
 
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
-import { AppContext } from '../../providers/AppState.js';
-import NavigationBar from '../../components/navbar.js';
+import { AppContext } from '../../providers/AppState.jsx';
+import NavigationBar from '../../components/navbar.jsx';
 import { ImNotification } from "react-icons/im";
 import { Tooltip } from 'react-tooltip'
 
