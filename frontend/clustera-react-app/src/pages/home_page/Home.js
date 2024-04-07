@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Upload } from "./Upload";
 import { Link } from "react-router-dom";
-import NavigationBar from '../../components/navbar.jsx';
+import NavigationBar from '../../components/navbar.js';
 
 const HomePage = () => {
     return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AppContext } from '../../providers/AppState.jsx';
-import NavigationBar from '../../components/navbar.jsx';
+import { AppContext } from '../../providers/AppState.js';
+import NavigationBar from '../../components/navbar.js';
 
 const AboutPage = () => {
 

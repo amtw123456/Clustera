@@ -1,8 +1,8 @@
 // ClusteraApp.jsx
 import React, { useState, useEffect } from 'react';
-import { Upload } from "./Upload.jsx";
-import NavigationBar from '../../components/navbar.jsx';
-import PurpleWave from '../../components/wave.jsx'
+import { Upload } from "./Upload";
+import NavigationBar from '../../components/navbar.js';
+import PurpleWave from '../../components/wave.js'
 
 const UploadPage = () => {
   const [fileName, setFileName] = useState('');
