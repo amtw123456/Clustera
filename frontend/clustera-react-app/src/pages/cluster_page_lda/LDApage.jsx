@@ -1,5 +1,6 @@
 import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.jsx';
 import DataSummarySection from '../../components/datasummary.jsx';
+import VisualizationSection from '../../components/visualizesection.jsx';
 
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
@@ -285,19 +286,22 @@ function LDApage() {
           <div class="ml-80 flex flex-row flex-wrap">
             <TopicsGeneratedCard topicsGenerated={topicsGenerated} topicCoheranceGenerated={topicCoheranceScores} />
           </div >
+        ) : isDocumentTopicDistributionBool ? (
+          <div class="ml-80 flex flex-row flex-wrap">
+            <DocumentTopicDistributionCard summarizedDocuments={documentsProvider} />
+          </div >
+        ) : isVisualizeBool ? (
+          <div class="ml-80 flex flex-row flex-wrap">
+            <VisualizationSection />
+          </div >
+        ) : (
+          < div class="ml-80 flex flex-wrap items-center">
+            <div class="flex-1">
+              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
+              <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
+            </div>
+          </div >
         )
-          : isDocumentTopicDistributionBool ? (
-            <div class="ml-80 flex flex-row flex-wrap">
-              <DocumentTopicDistributionCard summarizedDocuments={documentsProvider} />
-            </div >
-          ) : (
-            < div class="ml-80 flex flex-wrap items-center">
-              <div class="flex-1">
-                <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
-                <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
-              </div>
-            </div >
-          )
       }
     </div >
   );
