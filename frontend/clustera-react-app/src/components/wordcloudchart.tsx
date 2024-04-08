@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Text } from '@visx/text';
 import { scaleLog } from '@visx/scale';
 import Wordcloud from '@visx/wordcloud/lib/Wordcloud';
-import { totoAfricaLyrics } from './text.fixture.tsx';
 
 declare module 'react' {
     interface StyleHTMLAttributes<T> extends React.HTMLAttributes<T> {
@@ -15,6 +14,7 @@ interface ExampleProps {
     width: number;
     height: number;
     showControls?: boolean;
+    TokenFrequencies: Object;
 }
 
 export interface WordData {
@@ -24,15 +24,12 @@ export interface WordData {
 
 const colors = ['#143059', '#2F6B9A', '#82a6c2'];
 
-function wordFreq(text: string): WordData[] {
-    const words: string[] = text.replace(/\./g, '').split(/\s/);
-    const freqMap: Record<string, number> = {};
-
-    for (const w of words) {
-        if (!freqMap[w]) freqMap[w] = 0;
-        freqMap[w] += 1;
-    }
-    return Object.keys(freqMap).map((word) => ({ text: word, value: freqMap[word] }));
+function wordFreqv2(TokenFrequencies: Object): WordData[] {
+    return Object.keys(TokenFrequencies).map((word, index) => (
+        {
+            text: word, value: TokenFrequencies[word]
+        }
+    ))
 }
 
 function getRotationDegree() {
@@ -41,22 +38,24 @@ function getRotationDegree() {
     return rand * degree;
 }
 
-const words = wordFreq(totoAfricaLyrics);
-
-const fontScale = scaleLog({
-    domain: [Math.min(...words.map((w) => w.value)), Math.max(...words.map((w) => w.value))],
-    range: [10, 100],
-});
-const fontSizeSetter = (datum: WordData) => fontScale(datum.value);
-
-const fixedValueGenerator = () => 0.5;
-
 type SpiralType = 'archimedean' | 'rectangular';
 
-export default function WordCloudChart({ width, height, showControls }: ExampleProps) {
+export default function WordCloudChart({ width, height, showControls, TokenFrequencies }: ExampleProps) {
     const [spiralType, setSpiralType] = useState<SpiralType>('rectangular');
     const [withRotation, setWithRotation] = useState(false);
+    console.log(TokenFrequencies)
+    const words = wordFreqv2(TokenFrequencies);
 
+    const fontScale = scaleLog({
+        domain: [Math.min(...words.map((w) => w.value)), Math.max(...words.map((w) => w.value))],
+        range: [10, 100],
+    });
+
+    const fontSizeSetter = (datum: WordData) => fontScale(datum.value);
+
+    const fixedValueGenerator = () => 0.5;
+
+    console.log(words);
     return (
         <div className="wordcloud">
             <Wordcloud

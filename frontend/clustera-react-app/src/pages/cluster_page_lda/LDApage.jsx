@@ -292,7 +292,7 @@ function LDApage() {
           </div >
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <VisualizationSection />
+            <VisualizationSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} />
           </div >
         ) : (
           < div class="ml-80 flex flex-wrap items-center">
