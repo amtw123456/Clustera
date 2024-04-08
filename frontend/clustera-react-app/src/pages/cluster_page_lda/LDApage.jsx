@@ -270,7 +270,7 @@ function LDApage() {
             </div>
           </div >
         ) : isDataSummaryBool ? (
-          <div class="ml-80 flex flex-wrap items-center">
+          <div class="ml-80 flex flex-wrap items-center mx-5">
             <DataSummarySection topicsGenerated={topicsGenerated} noOfClusters={noOfClustersInput} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
           </div >
         ) : isDocumentSummaryBool ? (

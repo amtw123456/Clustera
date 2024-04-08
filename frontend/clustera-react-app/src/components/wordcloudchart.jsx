@@ -1,25 +1,45 @@
 import React from 'react';
+import { render } from 'react-dom';
 import WordCloud from 'react-d3-cloud';
-import data from "./data.json";
+import { scaleOrdinal } from 'd3-scale';
+import { schemeCategory10 } from 'd3-scale-chromatic';
 
-const fontSize = (word) => word.value / 20;
-const rotate = (word) => (word.value % 90) - 45;
+const data = [
+    { text: 'Hey', value: 1000 },
+    { text: 'lol', value: 200 },
+    { text: 'first impression', value: 800 },
+    { text: 'very cool', value: 1000000 },
+    { text: 'duck', value: 10 },
+];
 
-function MyWordCloud() {
-    const newData = data.map((item) => ({
-        text: item.text,
-        value: Math.random() * 1000
-    }));
+const schemeCategory10ScaleOrdinal = scaleOrdinal(schemeCategory10);
+
+const WordCloudChart = () => {
     return (
         <WordCloud
-            width={1000}
-            height={750}
-            data={newData}
-            fontSize={fontSize}
-            rotate={rotate}
-            padding={2}
+            data={data}
+            width={500}
+            height={500}
+            font="Times"
+            fontStyle="italic"
+            fontWeight="bold"
+            fontSize={(word) => Math.log2(word.value) * 5}
+            spiral="rectangular"
+            rotate={(word) => word.value % 360}
+            padding={5}
+            random={Math.random}
+            fill={(d, i) => schemeCategory10ScaleOrdinal(i)}
+            onWordClick={(event, d) => {
+                console.log(`onWordClick: ${d.text}`);
+            }}
+            onWordMouseOver={(event, d) => {
+                console.log(`onWordMouseOver: ${d.text}`);
+            }}
+            onWordMouseOut={(event, d) => {
+                console.log(`onWordMouseOut: ${d.text}`);
+            }}
         />
     );
-}
+};
 
-export default MyWordCloud;
+export default WordCloudChart;
