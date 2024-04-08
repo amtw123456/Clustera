@@ -72,10 +72,10 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
             <div class="flex-row flex w-full h-full my-2">
 
                 <div class="flex flex-row w-1/2 justify-start mt-3">
-
+                    <WordCloudChart width={500} height={250} />
                 </div>
                 <div class="flex flex-row w-1/2 justify-start mt-3">
-
+                    <WordCloudChart width={500} height={250} />
                 </div>
             </div>
 

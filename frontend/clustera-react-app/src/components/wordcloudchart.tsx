@@ -4,6 +4,13 @@ import { scaleLog } from '@visx/scale';
 import Wordcloud from '@visx/wordcloud/lib/Wordcloud';
 import { totoAfricaLyrics } from './text.fixture.tsx';
 
+declare module 'react' {
+    interface StyleHTMLAttributes<T> extends React.HTMLAttributes<T> {
+        jsx?: boolean;
+        global?: boolean;
+    }
+}
+
 interface ExampleProps {
     width: number;
     height: number;
@@ -46,7 +53,7 @@ const fixedValueGenerator = () => 0.5;
 
 type SpiralType = 'archimedean' | 'rectangular';
 
-export default function Example({ width, height, showControls }: ExampleProps) {
+export default function WordCloudChart({ width, height, showControls }: ExampleProps) {
     const [spiralType, setSpiralType] = useState<SpiralType>('rectangular');
     const [withRotation, setWithRotation] = useState(false);
 
