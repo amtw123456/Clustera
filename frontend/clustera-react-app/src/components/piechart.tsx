@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import * as d3 from "d3";
-import styles from "./donut-chart.module.css";
+import styles from "./pie-chart.module.css";
 
 type DataItem = {
     clusterLabel: string;

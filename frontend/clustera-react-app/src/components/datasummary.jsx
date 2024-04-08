@@ -1,8 +1,7 @@
 // Sidebar.jsx
 import React, { useEffect } from 'react';
 import WordCloudChart from './wordcloudchart.jsx';
-import PieChart from './donutchart.tsx'
-import { data } from "./data1.ts";
+import PieChart from './piechart.tsx'
 
 function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
 
