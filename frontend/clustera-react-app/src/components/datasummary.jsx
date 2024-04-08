@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import React, { useEffect } from 'react';
-import WordCloudChart from './wordcloudchart.jsx';
+import WordCloudChart from './wordcloudchart.tsx';
 import PieChart from './piechart.tsx'
 
 function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
@@ -68,17 +68,14 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
 
 
             </div>
-            <div class="flex-row flex w-full h-full bg-green-200 my-2">
+
+            <div class="flex-row flex w-full h-full my-2">
+
                 <div class="flex flex-row w-1/2 justify-start mt-3">
-                    <div class="flex bg-red-200 p-3 rounded-lg">
-                        redredredredredredredred
-                    </div>
+
                 </div>
                 <div class="flex flex-row w-1/2 justify-start mt-3">
-                    <div class="flex bg-red-200 p-3 rounded-lg">
-                        redredredredredredredred
-                        <div class="h-1/3 flex"><WordCloudChart /></div>
-                    </div>
+
                 </div>
             </div>
 
