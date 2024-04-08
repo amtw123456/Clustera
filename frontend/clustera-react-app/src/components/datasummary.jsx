@@ -1,10 +1,15 @@
 // Sidebar.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import WordCloudChart from './wordcloudchart.jsx';
-import DonutChart from './donutchart.tsx'
+import PieChart from './donutchart.tsx'
 import { data } from "./data1.ts";
 
 function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
+
+    useEffect(() => {
+        console.log(clustersGenerated)
+    }, []);
+
     return (
         <div class="flex-col px-2 py-1 flex h-[785px] w-full m-3 rounded-lg bg-gray-100 drop-shadow-lg max-w-[1580px]">
             <div class="flex-row flex h-1/2">
@@ -56,7 +61,7 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                         <div class="flex flex-col w-1/2 overflow-x-auto overflow-y-hidden">
                             <div class="font-bold w-full h-[15px] text-center">Clustered Data Donut Chart</div>
                             <div class="w-full flex flex-col">
-                                <DonutChart data={data} width={500} height={400} />
+                                <PieChart clusterData={clustersGenerated} width={500} height={420} />
                             </div>
                         </div>
                     </div>

@@ -45,7 +45,6 @@ def text_clustering_lda(request):
     X = vectorizer.fit_transform(responseData['preprocessed_text'])
     # Apply LDA
 
-  
     for i in responseData['preprocessed_text']:
        tokens.append(i.split())
 

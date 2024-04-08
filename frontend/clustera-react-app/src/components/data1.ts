@@ -1,17 +1,17 @@
 export const data = [
     {
-        name: "Mark", value: 90
+        clusterLabel: "Mark", value: 90
     },
     {
-        name: "Robert", value: 12
+        clusterLabel: "Robert", value: 12
     },
     {
-        name: "Emily", value: 34
+        clusterLabel: "Emily", value: 34
     },
     {
-        name: "Marion", value: 53
+        clusterLabel: "Marion", value: 53
     },
     {
-        name: "Nicolas", value: 58
+        clusterLabel: "Nicolas", value: 58
     },
 ]

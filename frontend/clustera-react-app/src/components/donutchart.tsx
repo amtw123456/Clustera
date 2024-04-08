@@ -3,33 +3,45 @@ import * as d3 from "d3";
 import styles from "./donut-chart.module.css";
 
 type DataItem = {
-    name: string;
+    clusterLabel: string;
     value: number;
-};
-type DonutChartProps = {
-    width: number;
-    height: number;
-    data: DataItem[];
 };
 
 const MARGIN_X = 150;
 const MARGIN_Y = 50;
-const INFLEXION_PADDING = 20; // space between donut and label inflexion point
+const INFLEXION_PADDING = 1; // space between donut and label inflexion point
 
 const colors = [
-    "#e0ac2b",
-    "#e85252",
-    "#6689c6",
-    "#9a6fb0",
-    "#a53253",
-    "#69b3a2",
+    "#e0ac2b", // Orange
+    "#e85252", // Red
+    "#6689c6", // Blue
+    "#9a6fb0", // Purple
+    "#a53253", // Dark red
+    "#69b3a2", // Light blue
+
+    // New unique colors
+    "#ffc107", // Yellow
+    "#3f51b5", // Indigo
+    "#43a047", // Green
+    "#f9845e", // Light orange
+    "#d81b60", // Dark pink
+    "#738678", // Dark green
 ];
 
-const DonutChart = ({ width, height, data }: DonutChartProps) => {
+const PieChart = ({ width, height, clusterData }) => {
     const ref = useRef(null);
 
+    let data: DataItem[] = [];
+
+    for (const cluster in clusterData) {
+        const value = clusterData[cluster];
+        data.push({
+            clusterLabel: "Cluster: " + cluster,
+            value: value.length,
+        });
+    }
+
     const radius = Math.min(width - 2 * MARGIN_X, height - 2 * MARGIN_Y) / 2;
-    const innerRadius = radius / 2;
 
     const pie = useMemo(() => {
         const pieGenerator = d3.pie<any, DataItem>().value((d) => d.value);
@@ -39,9 +51,9 @@ const DonutChart = ({ width, height, data }: DonutChartProps) => {
     const arcGenerator = d3.arc();
 
     const shapes = pie.map((grp, i) => {
-        // First arc is for the donut
+        // First arc is for the Pie
         const sliceInfo = {
-            innerRadius,
+            innerRadius: 0,
             outerRadius: radius,
             startAngle: grp.startAngle,
             endAngle: grp.endAngle,
@@ -59,9 +71,9 @@ const DonutChart = ({ width, height, data }: DonutChartProps) => {
         const inflexionPoint = arcGenerator.centroid(inflexionInfo);
 
         const isRightLabel = inflexionPoint[0] > 0;
-        const labelPosX = inflexionPoint[0] + 50 * (isRightLabel ? 1 : -1);
+        const labelPosX = inflexionPoint[0] + 15 * (isRightLabel ? 1 : -1);
         const textAnchor = isRightLabel ? "start" : "end";
-        const label = grp.data.name + " (" + grp.value + ")";
+        const label = grp.data.clusterLabel + " (" + grp.value + ")";
 
         return (
             <g
@@ -96,12 +108,14 @@ const DonutChart = ({ width, height, data }: DonutChartProps) => {
                     stroke={"black"}
                     fill={"black"}
                 />
+
                 <text
                     x={labelPosX + (isRightLabel ? 2 : -2)}
                     y={inflexionPoint[1]}
                     textAnchor={textAnchor}
                     dominantBaseline="middle"
-                    fontSize={14}
+                    fontSize={13}
+                    className="font-bold italic text-blue-600"
                 >
                     {label}
                 </text>
@@ -122,4 +136,4 @@ const DonutChart = ({ width, height, data }: DonutChartProps) => {
     );
 };
 
-export default DonutChart;
+export default PieChart;
