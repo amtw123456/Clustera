@@ -38,7 +38,7 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                 <div class="ml-2 p-2 flex flex-col w-2/3 border-grey-300 border rounded-lg mt-3">
                     <div class="flex-row flex overflow-hidden">
                         <div class="w-1/2 flex flex-col px-1 overflow-auto">
-                            <div class="font-bold h-[15px] text-center mb-5">Clustered Summary</div>
+                            <div class="font-bold h-[15px] text-center mb-5">Cluster Summary</div>
                             <div class="flex flex-col">
                                 {Array.from(Array(noOfClusters), (item, index) => (
                                     <div class="border-yellow border flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-teal-400 rounded-md bg-teal-100 border-teal-400">
@@ -69,12 +69,18 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
 
             </div>
 
-            <div class="flex-row flex w-full h-full my-2">
+            <div class="flex-row flex w-full h-full my-1">
 
-                <div class="flex flex-row w-1/2 justify-start mt-3">
-                    {/* <WordCloudChart width={500} height={250} /> */}
+                <div class="flex flex-row w-1/2 justify-start border rounded-lg mr-1">
+                    <div class="w-full">
+                        <div class="flex flex-col items-center">
+                            <div>Evaluation Scores</div>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="flex flex-row w-1/2 justify-start mt-3">
+                <div class="flex flex-row w-1/2 justify-start border rounded-lg ml-1">
+                    <div class="w-full"></div>
                     {/* <WordCloudChart width={500} height={250} /> */}
                 </div>
             </div>
