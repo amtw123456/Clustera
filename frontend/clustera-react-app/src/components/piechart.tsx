@@ -2,6 +2,7 @@ import React, { useMemo, useRef } from "react";
 import * as d3 from "d3";
 import styles from "./pie-chart.module.css";
 
+
 type DataItem = {
     clusterLabel: string;
     value: number;
@@ -90,7 +91,7 @@ const PieChart = ({ width, height, clusterData }) => {
                     }
                 }}
             >
-                <path d={slicePath} fill={colors[i]} />
+                <path d={slicePath!} fill={colors[i]} />
                 <circle cx={centroid[0]} cy={centroid[1]} r={2} />
                 <line
                     x1={centroid[0]}
