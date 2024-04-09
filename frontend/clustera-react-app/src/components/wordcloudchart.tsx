@@ -43,7 +43,6 @@ type SpiralType = 'archimedean' | 'rectangular';
 export default function WordCloudChart({ width, height, showControls, TokenFrequencies }: ExampleProps) {
     const [spiralType, setSpiralType] = useState<SpiralType>('rectangular');
     const [withRotation, setWithRotation] = useState(false);
-    console.log(TokenFrequencies)
     const words = wordFreqv2(TokenFrequencies);
 
     const fontScale = scaleLog({
@@ -55,7 +54,6 @@ export default function WordCloudChart({ width, height, showControls, TokenFrequ
 
     const fixedValueGenerator = () => 0.5;
 
-    console.log(words);
     return (
         <div className="wordcloud">
             <Wordcloud

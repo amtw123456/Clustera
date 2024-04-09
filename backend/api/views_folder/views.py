@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.manifold import TSNE
 import nltk
 import time
 import numpy as np
@@ -116,9 +117,28 @@ def text_tokenization(request):
 
     elapsed_time = end_time - start_time  # Calculate the elapsed time
     sorted_word_counts = dict(sorted(total_word_counts.items(), key=lambda item: item[1], reverse=True))
-
+    
     return Response(data={
         "payload": PreProcessedInfo,
         "execution_time": elapsed_time,
         "total_word_counts" :sorted_word_counts.items(),
+    })
+
+
+# Create your views here.
+@api_view(['POST'])
+def reduce_dtd_to_tsne(request):
+    responseData = json.loads(request.body)
+
+    # tsne = TSNE(n_components=2, perplexity=50,
+    #             learning_rate=100, n_iter=2000, verbose=1,
+    #             random_state=0, angle=0.75)
+    tsne = TSNE(n_components=2, random_state=42)
+    reduced_data = tsne.fit_transform(np.array(responseData['document_topic_distribution']))
+
+    # Display the shape of the reduced_data array
+    # print("Shape of reduced_data:", reduced_data.shape)
+
+    return Response(data={
+        "reduced_data": reduced_data,
     })

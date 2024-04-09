@@ -1,9 +1,59 @@
 // Sidebar.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
+import Scatterplot from "./scatterplot_folder/Scatterplot";
+import { data } from "./scatterplot_folder/data";
+// import ScatterplotClimateCrisisDemo from './scatterplot_folder/ScatterplotClimateCrisisDemo.tsx'
+const HEADER_HEIGHT = 120;
+const PADDING = 20;
 
-function VisualizationSection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
+function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated }) {
+
+    const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
+    const [tsneReducedData, setTsneReducedData] = useState([]);
+
+
     const TopicTokenFrequencies = [];
+    const document_topic_distribution = [];
+    summarizedDocuments.map((item, index) => (
+        document_topic_distribution.push(summarizedDocuments[index].documentTopicDistribution)
+    ))
+
+    const getTsneData = async () => {
+        var responseData;
+        try {
+            const response = await fetch(REACT_APP_BACKEND_API_URL + 'tsne', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "document_topic_distribution": document_topic_distribution
+                }),
+            });
+
+            responseData = await response.json();
+
+        } catch (error) {
+            console.error('Error during tsne conversion:', error);
+            // Handle errors if necessary
+        } finally {
+            setTsneReducedData(responseData['reduced_data'])
+
+        }
+    };
+
+    useEffect(() => {
+        getTsneData()
+        console.log(clustersPredicted)
+    }, []);
+
+    useEffect(() => {
+        console.log(tsneReducedData)
+
+
+    }, [tsneReducedData]);
 
     Object.keys(topicsGenerated).forEach(key => {
         const tokenFrequencies = {};
@@ -32,6 +82,12 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, topicCoheranc
 
     return (
         <div class="flex-col px-2 py-1 flex w-full m-3 rounded-lg drop-shadow-lg max-w-[1580px]">
+            <Scatterplot
+                reducedData={tsneReducedData}
+                clusterLabel={clustersPredicted}
+                width={1500}
+                height={900 - HEADER_HEIGHT - 2 * PADDING}
+            />
             <div class="flex flex-row flex-wrap justify-start mt-3 max-w-[1580px]">
                 {
                     TopicTokenFrequencies.map((TokenFrequencies, Index) => (

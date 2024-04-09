@@ -22,6 +22,7 @@ function LDApage() {
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
 
   const [topicsGenerated, setTopicsGenerated] = useState([]);
+  const [clustersPredicted, setClustersPredicted] = useState([]);
   const [topicCoheranceScores, setTopicCoheranceScores] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -116,13 +117,14 @@ function LDApage() {
       setTopicsGenerated(responseData['topics'])
       setTopicCoheranceScores(responseData['topic_coherance_score'])
       // console.log(responseData['clusters'])
-      console.log(responseData['topics'])
+      console.log(JSON.stringify(responseData['topics']))
       console.log(responseData['topic_coherance_score'])
 
     }
   };
 
   const buildLDAClusterSummary = async (ldaResults) => {
+    setClustersPredicted(ldaResults['predicted_clusters'])
     ldaResults['document_topic_distribution'].forEach((item, index) => {
       documentsProvider[index].documentTopicDistribution = item
     })
@@ -132,6 +134,8 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
     ))
+    console.log({ "document_topic_distribution": ldaResults['document_topic_distribution'] })
+    console.log(ldaResults['predicted_clusters'])
     // console.log(documentsProvider)
   };
 
@@ -292,7 +296,7 @@ function LDApage() {
           </div >
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <VisualizationSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} />
+            <VisualizationSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} />
           </div >
         ) : (
           < div class="ml-80 flex flex-wrap items-center">
