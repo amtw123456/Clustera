@@ -76,9 +76,6 @@ def text_clustering_lda(request):
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
 
-    print(document_topic_distribution)
-    print(predicted_clusters)
-
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,
