@@ -35,7 +35,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
 
     let data: DataItem[] = [];
     reducedData.forEach((item, index) => {
-        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > 0.7) {
+        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > 0.1) {
             data.push({
                 name: "Document: " + index,
                 documentTopicDistribution: (documetsData[index] as any).documentTopicDistribution,
@@ -111,7 +111,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
                     cx={xPos}
                     cy={yPos}
                     className={className}
-                    stroke={d.color}
+                    stroke={"black"}
                     fill={d.color}
                     strokeWidth={1}
                 />
@@ -181,7 +181,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
 
     return (
         <div style={{ position: "relative" }}>
-            <svg width={width} height={height} shapeRendering={"crispEdges"}>
+            <svg width={width} height={height}>
                 <g>
                     <Axes
                         x={xScale(0.42)}

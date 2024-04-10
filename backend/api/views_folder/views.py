@@ -128,7 +128,7 @@ def reduce_dtd_to_tsne(request):
 
     tsne = TSNE(n_components=2, perplexity=30,
                 learning_rate=100, n_iter=1000, verbose=1,
-                random_state=0, angle=0.50)
+                random_state=0, angle=0.75)
     # tsne = TSNE(n_components=2, random_state=42, perplexity=10)
     reduced_data = tsne.fit_transform(np.array(responseData['document_topic_distribution']))
 
