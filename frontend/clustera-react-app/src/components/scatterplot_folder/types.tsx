@@ -1,4 +1,5 @@
 export type DataItem = {
+    documentTopicDistribution: [];
     name: string;
     x: number;
     y: number;
@@ -12,6 +13,7 @@ export type ScatterplotProps = {
     height: number;
     reducedData: [];
     clusterLabel: [];
+    documetsData: Object[]
 };
 
 // Information needed to build the tooltip

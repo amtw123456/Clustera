@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as d3 from "d3";
 import { InteractionData, ScatterplotProps, DataItem } from "./types";
+import { AppContext } from '../../providers/AppState.jsx';
 import { Axes } from "./Axes";
 import styles from "./scatterplot.module.css";
 import { Tooltip } from "./Tooltip";
 
 
-const Scatterplot = ({ width, height, reducedData, clusterLabel }: ScatterplotProps) => {
-    console.log(reducedData)
-    console.log(clusterLabel)
+const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
-
+    console.log((documetsData[0] as any).documentTopicDistribution)
     const colors = [
         "#e0ac2b", // Orange
         "#e85252", // Red
@@ -28,15 +27,40 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel }: ScatterplotPr
         "#738678", // Dark green
     ];
 
+    var maxXScale = 0;
+    var maxYScale = 0;
+
+    var minXScale = 0;
+    var minYScale = 0;
+
     let data: DataItem[] = [];
     reducedData.forEach((item, index) => {
-        data.push({
-            name: "Document: " + index,
-            x: parseInt(item[0]),
-            y: parseInt(item[1]),
-            size: 1,
-            color: colors[clusterLabel[index]]
-        });
+        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > 0.7) {
+            data.push({
+                name: "Document: " + index,
+                documentTopicDistribution: (documetsData[index] as any).documentTopicDistribution,
+                x: parseFloat(item[0]),
+                y: parseFloat(item[1]),
+                size: 1,
+                color: colors[clusterLabel[index]]
+            });
+        }
+
+        if (maxXScale < parseFloat(item[0])) {
+            maxXScale = parseFloat(item[0])
+        }
+
+        if (maxYScale < parseFloat(item[1])) {
+            maxYScale = parseFloat(item[1])
+        }
+
+        if (minXScale > parseFloat(item[0])) {
+            minXScale = parseFloat(item[0])
+        }
+
+        if (minYScale > parseFloat(item[1])) {
+            minYScale = parseFloat(item[1])
+        }
     })
 
     const sortedData = data.sort((a, b) => b.size - a.size);
@@ -44,8 +68,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel }: ScatterplotPr
     const [interactionData, setInteractionData] = useState<InteractionData>();
 
     // This part of the code is where the range of the scatterplot will be found
-    const xScale = d3.scaleLinear().domain([-1000, 1000]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([-1000, 1000]).range([height, 0]);
+    var xScale = d3.scaleLinear().domain([minXScale + (minXScale / 10), maxYScale + (maxYScale / 10)]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 10), maxYScale + (maxYScale / 10)]).range([height, 0]);
     const sizeScale = d3.scaleSqrt().domain([0, 32]).range([3, 40]);
 
     // All squares, 1 per country

@@ -25,12 +25,20 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
 
             <div className={styles.topHalfContainer} style={{ borderColor: color }}>
                 <div className={styles.row}>
-                    <span>Vulnerability index</span>
-                    <b>{Math.round(x * 100) / 100}</b>
+                    <div className="flex-col flex justify-center mb-10">
+                        {
+                            interactionData.documentTopicDistribution.map((TopicDistribution, Index) => (
+                                <div>
+                                    {TopicDistribution * 100}
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <b></b>
                 </div>
                 <div className={styles.row}>
-                    <span>Readiness index</span>
-                    <b>{Math.round(y * 100) / 100}</b>
+                    <span>================</span>
+                    <b></b>
                 </div>
             </div>
 
@@ -38,9 +46,9 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
 
             <div className={styles.row}>
                 <span>
-                    CO2 emission
+                    ============
                     <br />
-                    (tons per capita)
+                    =============
                 </span>
                 <b>{Math.round(size * 100) / 100}</b>
             </div>

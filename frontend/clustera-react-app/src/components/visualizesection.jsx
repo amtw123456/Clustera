@@ -85,6 +85,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
             <Scatterplot
                 reducedData={tsneReducedData}
                 clusterLabel={clustersPredicted}
+                documetsData={summarizedDocuments}
                 width={1500}
                 height={900 - HEADER_HEIGHT - 2 * PADDING}
             />
