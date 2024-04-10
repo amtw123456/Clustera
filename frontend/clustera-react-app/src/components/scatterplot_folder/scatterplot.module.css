@@ -1,6 +1,6 @@
 .scatterplotSquare {
     fill-opacity: .7;
-    stroke-width: .5px;
+    /* stroke-width: .5px; */
     stroke: "white";
 
 }

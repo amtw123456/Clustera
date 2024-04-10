@@ -9,7 +9,6 @@ import { Tooltip } from "./Tooltip";
 
 const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
-    console.log((documetsData[0] as any).documentTopicDistribution)
     const colors = [
         "#e0ac2b", // Orange
         "#e85252", // Red
@@ -34,6 +33,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
     var minYScale = 0;
 
     let data: DataItem[] = [];
+
     reducedData.forEach((item, index) => {
         if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > 0.1) {
             data.push({
