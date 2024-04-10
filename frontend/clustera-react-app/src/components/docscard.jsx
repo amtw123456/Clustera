@@ -263,8 +263,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
     useEffect(() => {
         setIsComponentLoading(false);
-        console.log(summarizedDocuments)
-
+        // console.log(summarizedDocuments)
     }, []);
 
     return (
