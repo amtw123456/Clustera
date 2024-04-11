@@ -88,15 +88,15 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                 </div>
             </div>
         ) : (
-            <div class="flex-col px-2 py-1 flex w-full m-3 rounded-lg drop-shadow-lg max-w-[1580px]">
+            <div class="flex-col px-2 py-1 flex w-full m-3 border-2 rounded-lg drop-shadow-lg max-w-[1580px]">
                 <Scatterplot
                     reducedData={tsneReducedData}
                     clusterLabel={clustersPredicted}
                     documetsData={summarizedDocuments}
                     width={1500}
-                    height={900 - HEADER_HEIGHT - 2 * PADDING}
+                    height={920 - HEADER_HEIGHT - 2 * PADDING}
                 />
-                <div class="flex flex-row flex-wrap justify-start mt-3 max-w-[1580px]">
+                <div class="flex flex-row flex-wrap justify-start mt-16 max-w-[1580px]">
                     {
                         TopicTokenFrequencies.map((TokenFrequencies, Index) => (
                             <div class="flex-col flex justify-center mb-10">

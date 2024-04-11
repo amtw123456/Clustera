@@ -68,12 +68,12 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
     const [interactionData, setInteractionData] = useState<InteractionData>();
 
     // This part of the code is where the range of the scatterplot will be found
-    var xScale = d3.scaleLinear().domain([minXScale + (minXScale / 10), maxYScale + (maxYScale / 10)]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 10), maxYScale + (maxYScale / 10)]).range([height, 0]);
+    const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 6), maxYScale + (maxYScale / 6)]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 6), maxYScale + (maxYScale / 6)]).range([height, 0]);
     const sizeScale = d3.scaleSqrt().domain([0, 32]).range([3, 40]);
 
     // All squares, 1 per country
-    const squares = sortedData.map((d, i) => {
+    const scatterPlots = sortedData.map((d, i) => {
         const size = sizeScale(d.size);
 
         const xPos = xScale(d.x) - size / 2;
@@ -81,8 +81,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
 
         const isDimmed = interactionData && interactionData.color !== d.color;
         const className = isDimmed
-            ? styles.scatterplotSquare + " " + styles.dimmed
-            : styles.scatterplotSquare;
+            ? styles.scatterPlotsCircle + " " + styles.dimmed
+            : styles.scatterPlotsCircle;
 
         return (
             <g
@@ -182,14 +182,19 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
     return (
         <div style={{ position: "relative" }}>
             <svg width={width} height={height}>
-                <g>
+                <g className="ml-5">
                     <Axes
                         x={xScale(0.42)}
                         y={yScale(0.41)}
                         width={width + 100}
                         height={height + 100}
+                        rangex1={minXScale}
+                        rangex2={maxXScale}
+                        rangey1={minYScale}
+                        rangey2={maxYScale}
+
                     />
-                    {squares}
+                    {scatterPlots}
                     {annotations}
                 </g>
             </svg>

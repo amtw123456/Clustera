@@ -1,4 +1,4 @@
-.scatterplotSquare {
+.scatterPlotsCircle {
     fill-opacity: .7;
     /* stroke-width: .5px; */
     stroke: "white";
@@ -12,7 +12,7 @@
     transition-duration: .5s;
 }
 
-.scatterplotSquare:hover {
+.scatterPlotsCircle:hover {
     cursor: pointer;
     opacity: 1;
     stroke: black;
