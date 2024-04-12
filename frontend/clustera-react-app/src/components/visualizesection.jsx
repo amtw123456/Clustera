@@ -88,7 +88,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                 </div>
             </div>
         ) : (
-            <div class="flex-col px-2 py-1 flex w-full m-3 border-2 rounded-lg drop-shadow-lg max-w-[1580px]">
+            <div class="flex-col px-2 py-1 flex w-full m-3 border rounded-lg drop-shadow-lg max-w-[1580px]">
                 <Scatterplot
                     reducedData={tsneReducedData}
                     clusterLabel={clustersPredicted}

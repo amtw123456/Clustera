@@ -159,7 +159,29 @@ function LDApage() {
       <NavigationBar />
 
       <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
-        <div class="ml-4 pt-4 mb-12 font-bold text-2xl">LDA Clustering</div>
+        <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
+        {
+          isDataSummaryBool ? (
+            <div class="ml-4 mb-12 italic text-base">Data Summary</div>
+          ) : isDocumentSummaryBool ? (
+            <div class="ml-4 mb-12 italic text-base">Documents Summary</div>
+          ) : isClusteredGeneratedBool ? (
+            <div class="ml-4 mb-12 italic text-base">Clusters Generated</div>
+          ) : isDocumentTopicDistributionBool ? (
+            <div class="ml-4 mb-12 italic text-base">Docoument Topic Distribution</div>
+          ) : isTopicsGeneratedBool ? (
+            <div class="ml-4 mb-12 italic text-base">Topics Generated</div>
+          ) : isClassifierBool ? (
+            <div class="ml-4 mb-12 italic text-base">Classifier</div>
+          ) : isVisualizeBool ? (
+            <div class="ml-4 mb-12 italic text-base">Visualize</div>
+          ) : isExportBool ? (
+            <div class="ml-4 mb-12 italic text-base">Export</div>
+          ) : <></>
+        }
+
+
+
 
         <div class="mt-4 mx-4 my-5">
           <div class="font-bold text-sm mb-2">Cluster Vectorizer:</div>
@@ -174,7 +196,6 @@ function LDApage() {
         <a className="my-anchor-element">◕‿‿◕</a> */}
 
         <div class="mx-4 my-5 flex-row flex">
-
           <div>
             <div class="flex flex-row justify-center">
               <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>

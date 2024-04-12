@@ -14,49 +14,18 @@ type AxesProps = {
 export const Axes = ({ x, y, width, height, rangex1, rangey1, rangex2, rangey2 }: AxesProps) => {
     const averageRangeOfX = ((Math.abs(rangex1) + Math.abs(rangex2)) / 27)
     const averageRangeOfY = ((Math.abs(rangey1) + Math.abs(rangey2)) / 17)
-    console.log(rangex1)
-    console.log(rangey1)
-    console.log(rangex2)
-    console.log(rangey2)
+
     return (
         <g>
             {/* vertical and horizontal lines */}
-            {/* <line stroke="currentColor" y2={height}></line> */}
+            {/* <line stroke="currentColor" y2={height - 140} x1={50} x2={50} shapeRendering={"crispEdges"}></line> */}
             <line stroke="currentColor" x2={width} x1={50}></line>
             <line stroke="currentColor" x1={0 + 50} x2={width} y1={height - 140} y2={height - 140} shapeRendering={"crispEdges"}></line>
             <line stroke="currentColor" x1={width - 100} x2={width - 100} y1={0} y2={height - 140}></line>
 
-            {/* <line
-                x1={0}
-                x2={width}
-                y1={y}
-                y2={y}
-                stroke="#ababab"
-                strokeDasharray="4"
-            />
-            <line
-                x1={width / 2}
-                x2={width / 2}
-                y1={0}
-                y2={height}
-                stroke="#ababab"
-                strokeDasharray="4"
-            /> */}
-
-            {/* labels for X axis */}
             {[...Array(29)].map((x, i) =>
                 <g>
                     <line stroke="gray" strokeWidth={0.2} x1={(i * 50) + 50} x2={(i * 50) + 50} y1={0} y2={height - 140} shapeRendering={"crispEdges"}></line>
-                    {/* <text
-                        x={i * (50) + 90}
-                        y={height - 120}
-                        fill="black"
-                        fontSize={12}
-                        // textRendering={"optimizeLegibility"}
-                        dominantBaseline={"Auto"}
-                    >
-                        100
-                    </text> */}
                 </g>
             )}
             {[...Array(28)].map((x, i) =>
@@ -65,21 +34,18 @@ export const Axes = ({ x, y, width, height, rangex1, rangey1, rangex2, rangey2 }
                     y={height - 120}
                     fill="black"
                     fontSize={10}
-                    // textRendering={"optimizeLegibility"}
                     dominantBaseline={"Auto"}
                 >
                     {(averageRangeOfX * i + rangex1).toFixed(2)}
                 </text>
             )}
-            {/* <line stroke="currentColor" strokeWidth={1} x1={x + 100} x2={x + 100} y1={0} y2={width} shapeRendering={"crispEdges"}></line>
-            <line stroke="currentColor" strokeWidth={1} x1={100} x2={100} y1={0} y2={width} shapeRendering={"crispEdges"}></line> */}
+
             {[...Array(19)].map((x, i) =>
                 <g>
                     <line stroke="gray" strokeWidth={0.2} x1={0 + 50} x2={width - 100} y1={38 * i} y2={38 * i} shapeRendering={"crispEdges"}></line>
 
                 </g>
             )}
-
 
             {[...Array(18)].map((x, i) =>
                 <text
