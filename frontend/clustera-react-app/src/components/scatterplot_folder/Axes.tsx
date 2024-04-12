@@ -18,7 +18,7 @@ export const Axes = ({ x, y, width, height, rangex1, rangey1, rangex2, rangey2 }
     return (
         <g>
             {/* vertical and horizontal lines */}
-            {/* <line stroke="currentColor" y2={height - 140} x1={50} x2={50} shapeRendering={"crispEdges"}></line> */}
+            <line stroke="currentColor" y2={height - 140} x1={50} x2={50} shapeRendering={"crispEdges"}></line>
             <line stroke="currentColor" x2={width} x1={50}></line>
             <line stroke="currentColor" x1={0 + 50} x2={width} y1={height - 140} y2={height - 140} shapeRendering={"crispEdges"}></line>
             <line stroke="currentColor" x1={width - 100} x2={width - 100} y1={0} y2={height - 140}></line>

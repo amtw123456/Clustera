@@ -68,8 +68,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
     const [interactionData, setInteractionData] = useState<InteractionData>();
 
     // This part of the code is where the range of the scatterplot will be found
-    const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 6), maxYScale + (maxYScale / 6)]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 6), maxYScale + (maxYScale / 6)]).range([height, 0]);
+    const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 5), maxYScale + (maxYScale / 5)]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 5), maxYScale + (maxYScale / 5)]).range([height, 0]);
     const sizeScale = d3.scaleSqrt().domain([0, 32]).range([3, 40]);
 
     // All squares, 1 per country
@@ -181,11 +181,11 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
 
     return (
         <div style={{ position: "relative" }}>
-            <svg width={width} height={height}>
+            <svg width={width} height={height} className='mt-3'>
                 <g className="ml-5">
                     <Axes
-                        x={xScale(0.42)}
-                        y={yScale(0.41)}
+                        x={xScale(0.23)}
+                        y={yScale(0.24)}
                         width={width + 100}
                         height={height + 100}
                         rangex1={minXScale}

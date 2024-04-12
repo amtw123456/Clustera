@@ -14,6 +14,14 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
     const [isComponentLoading, setIsComponentLoading] = useState(true);
     const [tsneReducedData, setTsneReducedData] = useState([]);
 
+    const [showScatterplotChart, setShowScatterplotChart] = useState(true);
+    const [showWordcloudCharts, setShowWordcloudCharts] = useState(false);
+
+    const toggleChartType = () => {
+        setShowScatterplotChart(prevState => !prevState);
+        setShowWordcloudCharts(prevState => !prevState);
+    };
+
 
     const TopicTokenFrequencies = [];
     const document_topic_distribution = [];
@@ -88,15 +96,33 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                 </div>
             </div>
         ) : (
-            <div class="flex-col px-2 py-1 flex w-full m-3 border rounded-lg drop-shadow-lg max-w-[1580px]">
-                <Scatterplot
-                    reducedData={tsneReducedData}
-                    clusterLabel={clustersPredicted}
-                    documetsData={summarizedDocuments}
-                    width={1500}
-                    height={920 - HEADER_HEIGHT - 2 * PADDING}
-                />
-                <div class="flex flex-row flex-wrap justify-start mt-16 max-w-[1580px]">
+            <div class="flex-col px-2 py-1 flex w-full mx-3 border rounded-lg drop-shadow-lg max-w-[1580px]">
+                <div class="flex flex-row justify-end mr-12 mt-2">
+                    {
+                        showScatterplotChart ? (
+                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow">Scatterplot</button>
+                        ) : (
+                            <button disabled={true} onClick={() => toggleChartType()} class="bg-blue-700 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow">Scatterplot</button>
+                        )
+                    }
+                    {
+                        showWordcloudCharts ? (
+                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow ml-8">Wordcloud</button>
+                        ) : (
+                            <button disabled={true} onClick={() => toggleChartType()} class="bg-blue-700 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow ml-8">Wordcloud</button>
+                        )
+                    }
+                </div>
+
+                {showScatterplotChart ? (
+                    < Scatterplot
+                        reducedData={tsneReducedData}
+                        clusterLabel={clustersPredicted}
+                        documetsData={summarizedDocuments}
+                        width={1500}
+                        height={920 - HEADER_HEIGHT - 2 * PADDING}
+                    />
+                ) : <div class="flex flex-row flex-wrap justify-start mt-16 max-w-[1580px]">
                     {
                         TopicTokenFrequencies.map((TokenFrequencies, Index) => (
                             <div class="flex-col flex justify-center mb-10">
@@ -106,6 +132,9 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         ))
                     }
                 </div>
+                }
+
+
             </div>
         )
     );

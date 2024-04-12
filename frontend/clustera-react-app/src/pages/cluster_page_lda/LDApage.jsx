@@ -162,26 +162,23 @@ function LDApage() {
         <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
         {
           isDataSummaryBool ? (
-            <div class="ml-4 mb-12 italic text-base">Data Summary</div>
+            <div class="ml-4 italic text-base">Data Summary</div>
           ) : isDocumentSummaryBool ? (
-            <div class="ml-4 mb-12 italic text-base">Documents Summary</div>
+            <div class="ml-4 italic text-base">Documents Summary</div>
           ) : isClusteredGeneratedBool ? (
-            <div class="ml-4 mb-12 italic text-base">Clusters Generated</div>
+            <div class="ml-4 italic text-base">Clusters Generated</div>
           ) : isDocumentTopicDistributionBool ? (
-            <div class="ml-4 mb-12 italic text-base">Docoument Topic Distribution</div>
+            <div class="ml-4 italic text-base">Docoument Topic Distribution</div>
           ) : isTopicsGeneratedBool ? (
-            <div class="ml-4 mb-12 italic text-base">Topics Generated</div>
+            <div class="ml-4 italic text-base">Topics Generated</div>
           ) : isClassifierBool ? (
-            <div class="ml-4 mb-12 italic text-base">Classifier</div>
+            <div class="ml-4 italic text-base">Classifier</div>
           ) : isVisualizeBool ? (
-            <div class="ml-4 mb-12 italic text-base">Visualize</div>
+            <div class="ml-4 italic text-base">Visualize</div>
           ) : isExportBool ? (
-            <div class="ml-4 mb-12 italic text-base">Export</div>
+            <div class="ml-4 italic text-base">Export</div>
           ) : <></>
         }
-
-
-
 
         <div class="mt-4 mx-4 my-5">
           <div class="font-bold text-sm mb-2">Cluster Vectorizer:</div>
@@ -190,10 +187,6 @@ function LDApage() {
             <option value="count-vectorizer">Count Vectorizer</option>
           </select>
         </div>
-
-
-        {/* <a className="my-anchor-element">◕‿‿◕</a>
-        <a className="my-anchor-element">◕‿‿◕</a> */}
 
         <div class="mx-4 my-5 flex-row flex">
           <div>
@@ -235,8 +228,8 @@ function LDApage() {
                 </div>
             }
           </button>
-
         </div>
+
       </div >
 
       <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
