@@ -437,7 +437,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                     </div>
                     <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "9vh" }}>
                         {listOfTopics.map((topic, innerIndex) => (
-                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
+                            <div class="flex h-[28px] border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                 <div class="px-3 py-[0.5px]">{topic}</div>
                             </div>
                         ))}

@@ -97,19 +97,19 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
             </div>
         ) : (
             <div class="flex-col px-2 py-1 flex w-full mx-3 border rounded-lg drop-shadow-lg max-w-[1580px]">
-                <div class="flex flex-row justify-end mr-12 mt-2">
+                <div class="flex flex-row justify-start ml-12 mt-2">
                     {
                         showScatterplotChart ? (
-                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow">Scatterplot</button>
-                        ) : (
                             <button disabled={true} onClick={() => toggleChartType()} class="bg-blue-700 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow">Scatterplot</button>
+                        ) : (
+                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow">Scatterplot</button>
                         )
                     }
                     {
                         showWordcloudCharts ? (
-                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow ml-8">Wordcloud</button>
-                        ) : (
                             <button disabled={true} onClick={() => toggleChartType()} class="bg-blue-700 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow ml-8">Wordcloud</button>
+                        ) : (
+                            <button onClick={() => toggleChartType()} class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded shadow ml-8">Wordcloud</button>
                         )
                     }
                 </div>
@@ -119,7 +119,8 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         reducedData={tsneReducedData}
                         clusterLabel={clustersPredicted}
                         documetsData={summarizedDocuments}
-                        width={1500}
+                        noOfClusters={noOfClusters}
+                        width={1550}
                         height={920 - HEADER_HEIGHT - 2 * PADDING}
                     />
                 ) : <div class="flex flex-row flex-wrap justify-start mt-16 max-w-[1580px]">

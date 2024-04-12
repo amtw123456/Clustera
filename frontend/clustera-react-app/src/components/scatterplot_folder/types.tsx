@@ -11,6 +11,7 @@ export type DataItem = {
 export type ScatterplotProps = {
     width: number;
     height: number;
+    noOfClusters: number;
     reducedData: [];
     clusterLabel: [];
     documetsData: Object[]

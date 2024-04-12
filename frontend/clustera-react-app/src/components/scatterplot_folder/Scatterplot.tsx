@@ -7,8 +7,9 @@ import styles from "./scatterplot.module.css";
 import { Tooltip } from "./Tooltip";
 
 
-const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }: ScatterplotProps) => {
+const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
+    console.log(noOfClusters)
     const colors = [
         "#e0ac2b", // Orange
         "#e85252", // Red
@@ -68,11 +69,10 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
     const [interactionData, setInteractionData] = useState<InteractionData>();
 
     // This part of the code is where the range of the scatterplot will be found
-    const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 5), maxYScale + (maxYScale / 5)]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 5), maxYScale + (maxYScale / 5)]).range([height, 0]);
-    const sizeScale = d3.scaleSqrt().domain([0, 32]).range([3, 40]);
+    const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 2), maxXScale + (maxXScale / 2)]).range([0, width - 250]);
+    const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 2), maxYScale + (maxYScale / 2)]).range([height - 50, 0]);
+    const sizeScale = d3.scaleSqrt().domain([0, 16]).range([3, 40]);
 
-    // All squares, 1 per country
     const scatterPlots = sortedData.map((d, i) => {
         const size = sizeScale(d.size);
 
@@ -96,15 +96,6 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
                 }
                 onMouseLeave={() => setInteractionData(undefined)}
             >
-                {/* <rect
-                    x={xPos}
-                    y={yPos}
-                    opacity={1}
-                    fill={d.color}
-                    width={size}
-                    height={size}
-                    className={className}
-                /> */}
                 <circle
                     key={i}
                     r={7}
@@ -115,6 +106,29 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
                     fill={d.color}
                     strokeWidth={1}
                 />
+            </g>
+        );
+    });
+
+    const scatterplotLegends = [...Array(noOfClusters)].map((x, i) => {
+        return (
+            <g key={i}>  {/* Add a unique key for each legend */}
+                <circle
+                    r={4}
+                    cx={1340}
+                    cy={18 * (i + 1) - 5}
+                    fill={colors[i]}
+                />
+                <text
+                    x={1360}
+                    y={18 * (i + 1) - 4}
+                    fontSize={16}
+                    fontWeight={500}
+                    dominantBaseline="middle" // vertical alignment
+                >
+                    Cluster {i + 1}
+
+                </text>
             </g>
         );
     });
@@ -180,12 +194,15 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
         });
 
     return (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} >
             <svg width={width} height={height} className='mt-3'>
                 <g className="ml-5">
+                    {annotations}
+                    {scatterplotLegends}
+
                     <Axes
-                        x={xScale(0.23)}
-                        y={yScale(0.24)}
+                        x={xScale(0.4)}
+                        y={yScale(0.4)}
                         width={width + 100}
                         height={height + 100}
                         rangex1={minXScale}
@@ -195,7 +212,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
 
                     />
                     {scatterPlots}
-                    {annotations}
+
                 </g>
             </svg>
             <div
@@ -210,7 +227,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData }:
             >
                 <Tooltip interactionData={interactionData} />
             </div>
-        </div>
+        </div >
     );
 };
 
