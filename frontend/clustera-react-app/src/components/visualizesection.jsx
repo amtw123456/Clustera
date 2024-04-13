@@ -7,7 +7,7 @@ import { data } from "./scatterplot_folder/data";
 const HEADER_HEIGHT = 120;
 const PADDING = 20;
 
-function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters }) {
+function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters, documentTopicDistributionThreshold }) {
 
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
@@ -123,7 +123,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         clusterLabel={clustersPredicted}
                         documetsData={summarizedDocuments}
                         noOfClusters={noOfClusters}
-                        documentTopicDistributionThreshold={tsneParameters.documentTopicDistributionThreshold}
+                        documentTopicDistributionThreshold={documentTopicDistributionThreshold}
                         width={1550}
                         height={920 - HEADER_HEIGHT - 2 * PADDING}
                     />

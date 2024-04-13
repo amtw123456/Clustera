@@ -9,6 +9,7 @@ import { AppContext } from '../../providers/AppState.jsx';
 import NavigationBar from '../../components/navbar.jsx';
 import { ImNotification } from "react-icons/im";
 import { Tooltip } from 'react-tooltip'
+import { filter } from 'd3';
 
 
 
@@ -146,7 +147,6 @@ function LDApage() {
     angle: angle,
     noOfIterations: noOfIterations,
     learningRate: learningRate,
-    documentTopicDistributionThreshold: documentTopicDistributionThreshold
   });
 
   const recomputeTsneValue = async () => {
@@ -154,7 +154,7 @@ function LDApage() {
     updateTsneParameters('angle', angle)
     updateTsneParameters('noOfIterations', noOfIterations)
     updateTsneParameters('learningRate', learningRate)
-    updateTsneParameters('documentTopicDistributionThreshold', documentTopicDistributionThreshold)
+    filterOutDocuments()
   }
 
   const updateTsneParameters = (key, value) => {
@@ -482,7 +482,7 @@ function LDApage() {
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
             {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
-            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} tsneParameters={tsneParameters} />
+            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
         ) : (
           < div class="ml-80 flex flex-wrap items-center">
