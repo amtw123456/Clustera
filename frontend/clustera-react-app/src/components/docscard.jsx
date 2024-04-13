@@ -261,7 +261,7 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
 }
 
 
-function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated }) {
+function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -348,22 +348,23 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                     </div>
                                     <div class="overflow-auto mr-3 h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify ml-5 drop-shadow-lg" style={{ maxHeight: "50vh" }}>
                                         {clustersGenerated[index].map((value, innerIndex) => (
-                                            <div key={index} class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
-                                                <div key={innerIndex}>
+                                            Math.max(...summarizedDocuments[value].documentTopicDistribution) > documentTopicDistributionThreshold ? (
+                                                <div key={index} class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
+                                                    <div key={innerIndex}>
 
-                                                    <div class="font-bold">Document Number: {value} </div>
-                                                    <div class="italic mb-3">
-                                                        {"Cluster Topic Distribution: " + (Math.max(...summarizedDocuments[value].documentTopicDistribution))}
+                                                        <div class="font-bold">Document Number: {value} </div>
+                                                        <div class="italic mb-3">
+                                                            {"Cluster Topic Distribution: " + (Math.max(...summarizedDocuments[value].documentTopicDistribution))}
+                                                        </div>
+                                                        <div>
+                                                            {/* {summarizedDocuments[value].documentTopicDistribution} */}
+                                                        </div>
+                                                        <div class="overflow-auto h-[100px] pr-3" style={{ maxHeight: "80vh" }}>
+                                                            {summarizedDocuments[value].uDocument}&nbsp; < AiFillEye className="inline-block text-purple-800 text-lg" />
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        {/* {summarizedDocuments[value].documentTopicDistribution} */}
-                                                    </div>
-                                                    <div class="overflow-auto h-[100px] pr-3" style={{ maxHeight: "80vh" }}>
-                                                        {summarizedDocuments[value].uDocument}&nbsp; < AiFillEye className="inline-block text-purple-800 text-lg" />
-                                                    </div>
-
                                                 </div>
-                                            </div>
+                                            ) : <></>
                                         ))}
                                     </div>
 
@@ -453,7 +454,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
     );
 }
 
-function DocumentTopicDistributionCard({ summarizedDocuments }) {
+function DocumentTopicDistributionCard({ summarizedDocuments, documentTopicDistributionThreshold }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -474,24 +475,26 @@ function DocumentTopicDistributionCard({ summarizedDocuments }) {
             </div>
         ) : (
             summarizedDocuments.map((document, innerIndex) => (
-                <div className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
-                    <div class="ml-3 font-bold italic">Document Topic Distribution:</div>
-                    <div class="ml-2 flex flex-row flex-wrap">
-                        {
-                            document.documentTopicDistribution.map((topicDistribution, innerIndex) => (
-                                Math.max(...document.documentTopicDistribution) === topicDistribution ? (
-                                    <div class="flex border font-bold text-teal-400 m-1 rounded-md bg-teal-100 border-teal-400">
-                                        <div class="px-3 py-[0.5px] ml-1 ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}%</div>
-                                    </div>
-                                ) :
-                                    <div class="flex border font-bold text-green-400 m-1 rounded-md bg-green-100 border-green-400">
-                                        <div class="px-3 py-[0.5px] ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}% </div>
-                                    </div>
-                            ))
-                        }
-                    </div>
-                    <div class="ml-3">{document.uDocument.slice(0, 150)}......</div>
-                </div >
+                Math.max(...document.documentTopicDistribution) > documentTopicDistributionThreshold ? (
+                    <div className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden" >
+                        <div class="ml-3 font-bold italic">Document Topic Distribution:</div>
+                        <div class="ml-2 flex flex-row flex-wrap">
+                            {
+                                document.documentTopicDistribution.map((topicDistribution, innerIndex) => (
+                                    Math.max(...document.documentTopicDistribution) === topicDistribution ? (
+                                        <div class="flex border font-bold text-teal-400 m-1 rounded-md bg-teal-100 border-teal-400">
+                                            <div class="px-3 py-[0.5px] ml-1 ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}%</div>
+                                        </div>
+                                    ) :
+                                        <div class="flex border font-bold text-green-400 m-1 rounded-md bg-green-100 border-green-400">
+                                            <div class="px-3 py-[0.5px] ml-[6px]">Topic {innerIndex}: {(topicDistribution * 100).toFixed(4)}% </div>
+                                        </div>
+                                ))
+                            }
+                        </div>
+                        <div class="ml-3">{document.uDocument.slice(0, 150)}......</div>
+                    </div >
+                ) : <></>
             ))
         )
     );
