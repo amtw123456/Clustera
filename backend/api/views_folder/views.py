@@ -125,11 +125,11 @@ def text_tokenization(request):
 @api_view(['POST'])
 def reduce_dtd_to_tsne(request):
     responseData = json.loads(request.body)
-
-    # tsne = TSNE(n_components=2, perplexity=40,
-    #             learning_rate=30, n_iter=1000, verbose=1,
-    #             random_state=0, angle=0.75)
-    tsne = TSNE(n_components=2, random_state=42, perplexity=32)
+    
+    tsne = TSNE(n_components=2, perplexity=responseData['perplexity'],
+                learning_rate=responseData['learningRate'], n_iter=responseData['noOfIterations'],
+                random_state=0, angle=responseData['angle'] ,early_exaggeration=120)
+    # tsne = TSNE(n_components=2, random_state=42, perplexity=32)
     reduced_data = tsne.fit_transform(np.array(responseData['document_topic_distribution']))
 
     # Display the shape of the reduced_data array

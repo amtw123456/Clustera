@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as d3 from "d3";
 import { InteractionData, ScatterplotProps, DataItem } from "./types";
 import { AppContext } from '../../providers/AppState.jsx';
@@ -9,7 +9,6 @@ import { Tooltip } from "./Tooltip";
 
 const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
-    console.log(noOfClusters)
     const colors = [
         "#e0ac2b", // Orange
         "#e85252", // Red
@@ -71,6 +70,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
     // This part of the code is where the range of the scatterplot will be found
     const xScale = d3.scaleLinear().domain([minXScale + (minXScale / 2), maxXScale + (maxXScale / 2)]).range([0, width - 250]);
     const yScale = d3.scaleLinear().domain([minYScale + (minYScale / 2), maxYScale + (maxYScale / 2)]).range([height - 50, 0]);
+
     const sizeScale = d3.scaleSqrt().domain([0, 16]).range([3, 40]);
 
     const scatterPlots = sortedData.map((d, i) => {
@@ -115,20 +115,39 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
             <g key={i}>  {/* Add a unique key for each legend */}
                 <circle
                     r={4}
-                    cx={1340}
-                    cy={18 * (i + 1) - 5}
+                    cx={1320}
+                    cy={19 * (i + 1) - 3}
                     fill={colors[i]}
                 />
                 <text
-                    x={1360}
-                    y={18 * (i + 1) - 4}
+                    x={1340}
+                    y={19 * (i + 1) - 2}
                     fontSize={16}
                     fontWeight={500}
                     dominantBaseline="middle" // vertical alignment
                 >
-                    Cluster {i + 1}
-
+                    Cluster {i}
                 </text>
+                {/* <rect
+                    x={1380}
+                    y={19 * (i + 1) - 10}
+                    width="12"
+                    height="12"
+                    fill="none"
+                    stroke="black"
+                    strokeWidth="1"
+                    shapeRendering={"crispEdges"}
+                /> */}
+                {/* {checked[i] && ( // checked is an array indicating the checked state, adjust as needed
+                    <line
+                        x1={1380}
+                        y1={19 * (i + 1) - 10}
+                        x2={1392}
+                        y2={19 * (i + 1) + 2}
+                        stroke="black"
+                        strokeWidth="2"
+                    />
+                )} */}
             </g>
         );
     });

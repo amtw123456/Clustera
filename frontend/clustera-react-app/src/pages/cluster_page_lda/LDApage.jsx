@@ -38,6 +38,7 @@ function LDApage() {
 
   const [isCorporaNotClustered, setIsCorporaNotClustered] = useState(true)
 
+  // data summary hooks
   const [noOfClustersInput, setNoOfClustersInput] = useState(1)
   const [vectorizerType, setVectorizerType] = useState('tfidf');
   const [minimumDf, setMinimumDf] = useState(1);
@@ -64,25 +65,14 @@ function LDApage() {
         else {
           stateSetterMap[key](false);
         }
+
+
       }
 
     } else {
       console.error(`State ${stateName} does not exist`);
     }
   };
-
-  useEffect(() => {
-    // This will log the updated state whenever the component mounts
-    // console.log(uploadedData)
-    // console.log(preprocessedText)
-
-  }, []); // Empty dependency array ensures the effect runs only once
-
-  useEffect(() => {
-
-    console.log(clustersProvider)
-
-  }, [clustersProvider]);
 
   const clusterUsingLda = async () => {
     var responseData;
@@ -130,14 +120,6 @@ function LDApage() {
     ))
   };
 
-  const createClusters = async (numberOfClusters) => {
-    var listOfClusters = []
-    for (let i = 0; i < numberOfClusters; i++) {
-      listOfClusters.push(new Cluster([], null, i, null))
-    }
-
-  }
-
   const handleInputNoOfClusters = (e) => {
     setNoOfClustersInput(parseInt(e.target.value));
   };
@@ -154,6 +136,49 @@ function LDApage() {
     setVectorizerType(e.target.value);
   };
 
+
+  const [perplexity, setPerplexity] = useState(20)
+  const [angle, setAngle] = useState(0.5);
+  const [noOfIterations, setNoOfIterations] = useState(500);
+  const [learningRate, setLearningRate] = useState(30);
+  const [tsneParameters, setTsneParameters] = useState({
+    perplexity: perplexity,
+    angle: angle,
+    noOfIterations: noOfIterations,
+    learningRate: learningRate
+  });
+
+  const recomputeTsneValue = async () => {
+    updateTsneParameters('perplexity', perplexity)
+    updateTsneParameters('angle', angle)
+    updateTsneParameters('noOfIterations', noOfIterations)
+    updateTsneParameters('learningRate', learningRate)
+    console.log("REND")
+  }
+
+  const updateTsneParameters = (key, value) => {
+    setTsneParameters(prevState => ({
+      ...prevState,
+      [key]: value
+    }));
+  };
+
+  const handleInputPerplexity = (e) => {
+    setPerplexity(parseInt(e.target.value));
+  };
+
+  const handleInputAngle = (e) => {
+    setAngle(parseFloat(e.target.value));
+  };
+
+  const handleInputNoOfIterations = (e) => {
+    setNoOfIterations(parseInt(e.target.value));
+  };
+
+  const handleInputLearningRate = (e) => {
+    setLearningRate(parseInt(e.target.value));
+  };
+
   return (
     <div class="">
       <NavigationBar />
@@ -162,7 +187,57 @@ function LDApage() {
         <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
         {
           isDataSummaryBool ? (
-            <div class="ml-4 italic text-base">Data Summary</div>
+            <>
+              <div class="ml-4 italic text-base">Data Summary</div>
+              <div class="mt-4 mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Cluster Vectorizer:</div>
+                <select class="block px-3 w-52 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={vectorizerType} onChange={handleVectorizerChange}>
+                  <option value="tfidf-vectorizer">TF-IDF Vectorizer</option>
+                  <option value="count-vectorizer">Count Vectorizer</option>
+                </select>
+              </div>
+              <div class="mx-4 my-5 flex-row flex">
+                <div>
+                  <div class="flex flex-row justify-center">
+                    <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+                    <div class="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
+                  </div>
+                  <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
+                  <Tooltip anchorSelect=".min-df-tooltip" place="right">
+                    <div class='text-xs'>min_df = 5 means "ignore terms that appear in less than 5 documents".</div>
+                  </Tooltip>
+                </div>
+                <div class="ml-12">
+                  <div class="flex flex-row justify-center">
+                    <a className="max-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+                    <div class="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
+                    <Tooltip anchorSelect=".max-df-tooltip" place="right">
+                      <div class='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
+                    </Tooltip>
+                  </div>
+                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
+                </div>
+              </div>
+              <div class="mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Number of Clusters:</div>
+                <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+              </div>
+              <div class="flex justify-center mt-12">
+                <button onClick={() => clusterUsingLda()}>{ }
+                  {
+                    isLoading ? (
+                      <svg aria-hidden="true" role="status" class="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                      </svg>
+                    ) :
+                      < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                        Cluster Documents
+                      </div>
+                  }
+                </button>
+              </div>
+            </>
           ) : isDocumentSummaryBool ? (
             <div class="ml-4 italic text-base">Documents Summary</div>
           ) : isClusteredGeneratedBool ? (
@@ -174,61 +249,61 @@ function LDApage() {
           ) : isClassifierBool ? (
             <div class="ml-4 italic text-base">Classifier</div>
           ) : isVisualizeBool ? (
-            <div class="ml-4 italic text-base">Visualize</div>
+            <>
+              <div class="ml-4 italic text-base">Visualize</div>
+              <div class="mx-4 my-5 flex-row flex">
+                <div>
+                  <div class="flex flex-row justify-center">
+                    <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+                    <div class="flex ml-1 font-bold text-sm mb-2">Perplexity:</div>
+                  </div>
+                  <input type="number" placeholder="" min="1" max={documentsProvider.length - 1} class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={perplexity} onInput={(e) => handleInputPerplexity(e)} />
+                  <Tooltip anchorSelect=".min-df-tooltip" place="right">
+                    <div class='text-xs'>min_df = 5 means "ignore terms that appear in less than 5 documents".</div>
+                  </Tooltip>
+                </div>
+                <div class="ml-12">
+                  <div class="flex flex-row justify-center">
+                    <a className="max-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
+                    <div class="flex ml-1 font-bold text-sm mb-2">Angle:</div>
+                    <Tooltip anchorSelect=".max-df-tooltip" place="right">
+                      <div class='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
+                    </Tooltip>
+                  </div>
+                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={angle} onInput={(e) => handleInputAngle(e)} />
+                </div>
+              </div>
+              <div class="mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Number of Iterations:</div>
+                <input type="number" placeholder="" min="250" step="25" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfIterations} onInput={(e) => handleInputNoOfIterations(e)} />
+              </div>
+              <div class="mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Learning Rate:</div>
+                <input type="number" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
+              </div>
+              <div class="flex justify-center mt-12">
+                <button onClick={() => recomputeTsneValue()}>
+                  {
+                    isLoading ? (
+                      <svg aria-hidden="true" role="status" class="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                      </svg>
+                    ) :
+                      < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                        Cluster Documents
+                      </div>
+                  }
+                </button>
+              </div>
+            </>
+
           ) : isExportBool ? (
             <div class="ml-4 italic text-base">Export</div>
           ) : <></>
         }
 
-        <div class="mt-4 mx-4 my-5">
-          <div class="font-bold text-sm mb-2">Cluster Vectorizer:</div>
-          <select class="block px-3 w-52 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={vectorizerType} onChange={handleVectorizerChange}>
-            <option value="tfidf-vectorizer">TF-IDF Vectorizer</option>
-            <option value="count-vectorizer">Count Vectorizer</option>
-          </select>
-        </div>
 
-        <div class="mx-4 my-5 flex-row flex">
-          <div>
-            <div class="flex flex-row justify-center">
-              <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
-              <div class="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
-            </div>
-            <input type="number" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
-            <Tooltip anchorSelect=".min-df-tooltip" place="right">
-              <div class='text-xs'>min_df = 5 means "ignore terms that appear in less than 5 documents".</div>
-            </Tooltip>
-          </div>
-          <div class="ml-12">
-            <div class="flex flex-row justify-center">
-              <a className="max-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
-              <div class="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
-              <Tooltip anchorSelect=".max-df-tooltip" place="right">
-                <div class='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
-              </Tooltip>
-            </div>
-            <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
-          </div>
-        </div>
-        <div class="mx-4 my-5">
-          <div class="font-bold text-sm mb-2">Number of Clusters:</div>
-          <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
-        </div>
-        <div class="flex justify-center mt-12">
-          <button onClick={() => clusterUsingLda()}>{ }
-            {
-              isLoading ? (
-                <svg aria-hidden="true" role="status" class="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                </svg>
-              ) :
-                < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                  Cluster Documents
-                </div>
-            }
-          </button>
-        </div>
 
       </div >
 
@@ -338,7 +413,8 @@ function LDApage() {
           </div >
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <VisualizationSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} />
+            {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
+            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} tsneParameters={tsneParameters} />
           </div >
         ) : (
           < div class="ml-80 flex flex-wrap items-center">
@@ -354,3 +430,4 @@ function LDApage() {
 }
 
 export default LDApage;
+

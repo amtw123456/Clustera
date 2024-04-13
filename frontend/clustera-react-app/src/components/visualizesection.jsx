@@ -7,7 +7,7 @@ import { data } from "./scatterplot_folder/data";
 const HEADER_HEIGHT = 120;
 const PADDING = 20;
 
-function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated }) {
+function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters }) {
 
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
@@ -22,7 +22,6 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
         setShowWordcloudCharts(prevState => !prevState);
     };
 
-
     const TopicTokenFrequencies = [];
     const document_topic_distribution = [];
     summarizedDocuments.map((item, index) => (
@@ -31,6 +30,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
 
     const getTsneData = async () => {
         var responseData;
+        console.log(tsneParameters)
         try {
             const response = await fetch(REACT_APP_BACKEND_API_URL + 'tsne', {
                 method: 'POST',
@@ -38,7 +38,11 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "document_topic_distribution": document_topic_distribution
+                    "document_topic_distribution": document_topic_distribution,
+                    'perplexity': tsneParameters.perplexity,
+                    'angle': tsneParameters.angle,
+                    'learningRate': tsneParameters.learningRate,
+                    'noOfIterations': tsneParameters.noOfIterations,
                 }),
             });
 
@@ -62,7 +66,6 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
     Object.keys(topicsGenerated).forEach(key => {
         const tokenFrequencies = {};
         const arrayOfTopics = topicsGenerated[key];
-        // console.log(`Cluster Name: ${key}, Values: ${arrayOfTopics.join(', ')}`);
         arrayOfTopics.map((value, innerIndex) => (
             tokenFrequencies[value] = 0
         ))
