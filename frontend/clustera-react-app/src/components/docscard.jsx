@@ -159,8 +159,9 @@ function WordCountCard({ wordCounts }) {
     );
 }
 
-function SDocumentsCard({ summarizedDocuments }) {
+function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshold }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
+    console.log(documentTopicDistributionThreshold)
 
     useEffect(() => {
         setIsComponentLoading(false);
@@ -180,78 +181,80 @@ function SDocumentsCard({ summarizedDocuments }) {
             </div>
         ) : (
             summarizedDocuments.map((item, index) => (
-                <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden" key={index}>
-                    <div className="my-2 pb-2 pt-2 px-2">
-                        <div>
-                            {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
-                            <AiFillEye className="inline-block text-purple-800 text-lg" />
-                            {"      "}
-                            <Popup
-                                contentStyle={{
-                                    borderRadius: "10px",
-                                    border: "none",
-                                    padding: "0",
-                                }}
-                                trigger={<button class="inline-block text-purple-600 p-0">Read Full</button>}
-                                modal
-                                nested
-                            >
-                                {close => (
-                                    <div class="overflow-auto mr-1">
-                                        <div style={{ maxHeight: "90vh" }}>
-                                            <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col">
-                                                <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
-                                                <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div>
-                                            </div>
-                                            <div class="overflow-auto h-[220px] px-5 pb-5 text-justify flex flex-col mr-1" style={{ maxHeight: "30vh" }}>
-                                                <div class="text-base mb-3 font-bold inline-block"> Document Text</div>
-                                                <div class="pb-5">{item.uDocument}</div>
-                                            </div>
-                                            <div className="border-t border-gray-300 my-4"></div>
-                                            <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col mr-1" style={{ maxHeight: "30vh" }}>
-                                                <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
-                                                <div className="pb-5">{item.pDocument}</div>
-                                            </div>
-                                            <div className="border-t border-gray-300"></div>
-                                            <div class="px-5 pt-2">
-                                                <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
-                                                <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
-                                                    {item.topics.map((topic, index) => (
-                                                        <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
-                                                            <div class="px-3 py-[0.5px]">{topic}</div>
-                                                        </div>
-                                                    ))}
+                Math.max(...item.documentTopicDistribution) > documentTopicDistributionThreshold ? (
+                    <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
+                        <div className="my-2 pb-2 pt-2 px-2">
+                            <div>
+                                {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}
+                                <AiFillEye className="inline-block text-purple-800 text-lg" />
+                                {"      "}
+                                <Popup
+                                    contentStyle={{
+                                        borderRadius: "10px",
+                                        border: "none",
+                                        padding: "0",
+                                    }}
+                                    trigger={<button class="inline-block text-purple-600 p-0">Read Full</button>}
+                                    modal
+                                    nested
+                                >
+                                    {close => (
+                                        <div class="overflow-auto mr-1">
+                                            <div style={{ maxHeight: "90vh" }}>
+                                                <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col">
+                                                    <div class="flex flex-row items-end"><IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1}</div></div>
+                                                    <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div>
                                                 </div>
-                                            </div>
-                                            <div className="border-t mt-4 border-gray-300"></div>
-                                            <div class="px-5 pt-2 flex flex-col">
-                                                <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
-                                                <div class="m-1 flex flex-wrap text-justify" key={index}>
-                                                    {/* {item.documentTopicDistribution} */}
-                                                    {item.documentTopicDistribution.map((distribution, index) => (
-                                                        <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
-                                                            <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
-                                                        </div>
-                                                    ))}
+                                                <div class="overflow-auto h-[220px] px-5 pb-5 text-justify flex flex-col mr-1" style={{ maxHeight: "30vh" }}>
+                                                    <div class="text-base mb-3 font-bold inline-block"> Document Text</div>
+                                                    <div class="pb-5">{item.uDocument}</div>
                                                 </div>
-                                            </div>
+                                                <div className="border-t border-gray-300 my-4"></div>
+                                                <div className="overflow-auto h-[150px] px-5 pb-5 text-justify flex flex-col mr-1" style={{ maxHeight: "30vh" }}>
+                                                    <div className="text-base mb-3 font-bold inline-block"> Document Tokens</div>
+                                                    <div className="pb-5">{item.pDocument}</div>
+                                                </div>
+                                                <div className="border-t border-gray-300"></div>
+                                                <div class="px-5 pt-2">
+                                                    <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
+                                                    <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
+                                                        {item.topics.map((topic, index) => (
+                                                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                                                <div class="px-3 py-[0.5px]">{topic}</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div className="border-t mt-4 border-gray-300"></div>
+                                                <div class="px-5 pt-2 flex flex-col">
+                                                    <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
+                                                    <div class="m-1 flex flex-wrap text-justify" key={index}>
+                                                        {/* {item.documentTopicDistribution} */}
+                                                        {item.documentTopicDistribution.map((distribution, index) => (
+                                                            <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
+                                                                <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
 
-                                            <div className="border-t border-gray-300 my-4"></div>
-                                            <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
-                                                <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
-                                                <div className="flex flex-col justify-right">
-                                                    <div className="text-sm italic">Length of Documents: {item.uDocument.length}</div>
-                                                    <div className="text-sm italic pl-7">Number of Tokens: {item.documentTokens.length}</div>
+                                                <div className="border-t border-gray-300 my-4"></div>
+                                                <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
+                                                    <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
+                                                    <div className="flex flex-col justify-right">
+                                                        <div className="text-sm italic">Length of Documents: {item.uDocument.length}</div>
+                                                        <div className="text-sm italic pl-7">Number of Tokens: {item.documentTokens.length}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </Popup>
-                        </div>
+                                    )}
+                                </Popup>
+                            </div>
 
+                        </div >
                     </div >
-                </div >
+                ) : <></>
             ))
         )
     );

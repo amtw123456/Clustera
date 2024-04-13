@@ -23,7 +23,7 @@ lemma = WordNetLemmatizer()
 
 # Extract text content from the data
 
-custom_stopwords = set(["im", "i'm", "ve", "would"])
+custom_stopwords = set(["im", "i'm", "ve", "would" , 'ive'])
 stop_words = set(stopwords.words('english')).union(custom_stopwords)
 stop_words = sorted(stop_words)
 punctuation = set(string.punctuation)
@@ -71,9 +71,8 @@ def text_tokenization(request):
     filtered_documents = []
     for document in texts:
         temp = []
-        # print()
         document = document.translate(translator)
-        document = document.replace('“', '').replace('”', '').replace('’', "'")
+        document = document.replace('“', '').replace('”', '').replace('’', "'").replace('.', '')
         document = document.lower()
 
         # for word in document.split():
@@ -89,15 +88,16 @@ def text_tokenization(request):
     
     total_word_counts = count_words_in_documents(filtered_documents)
     # print(total_word_counts.items())
-    filtered_words = [word for word, count in total_word_counts.items() if count < 0]
+    filtered_words = [word for word, count in total_word_counts.items() if count < 1]
 
     PreProcessedInfo = []
     for document in filtered_documents:
         temp = []
 
         for word in document.split():
-            if word not in stop_words and not word.isdigit() and word not in filtered_words:
-                temp.append(word)
+            if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 30:
+                lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                temp.append(lemmatized_word)
 
         # document = ", ".join(temp)  
         # temp = []
