@@ -7,7 +7,7 @@ import styles from "./scatterplot.module.css";
 import { Tooltip } from "./Tooltip";
 
 
-const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters }: ScatterplotProps) => {
+const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
     const colors = [
         "#e0ac2b", // Orange
@@ -35,7 +35,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
     let data: DataItem[] = [];
 
     reducedData.forEach((item, index) => {
-        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > 0.1) {
+        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > documentTopicDistributionThreshold) {
             data.push({
                 name: "Document: " + index,
                 documentTopicDistribution: (documetsData[index] as any).documentTopicDistribution,
@@ -128,26 +128,6 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                 >
                     Cluster {i}
                 </text>
-                {/* <rect
-                    x={1380}
-                    y={19 * (i + 1) - 10}
-                    width="12"
-                    height="12"
-                    fill="none"
-                    stroke="black"
-                    strokeWidth="1"
-                    shapeRendering={"crispEdges"}
-                /> */}
-                {/* {checked[i] && ( // checked is an array indicating the checked state, adjust as needed
-                    <line
-                        x1={1380}
-                        y1={19 * (i + 1) - 10}
-                        x2={1392}
-                        y2={19 * (i + 1) + 2}
-                        stroke="black"
-                        strokeWidth="2"
-                    />
-                )} */}
             </g>
         );
     });

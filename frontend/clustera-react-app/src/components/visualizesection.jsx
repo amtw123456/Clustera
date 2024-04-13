@@ -123,6 +123,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         clusterLabel={clustersPredicted}
                         documetsData={summarizedDocuments}
                         noOfClusters={noOfClusters}
+                        documentTopicDistributionThreshold={tsneParameters.documentTopicDistributionThreshold}
                         width={1550}
                         height={920 - HEADER_HEIGHT - 2 * PADDING}
                     />

@@ -137,6 +137,7 @@ function LDApage() {
   };
 
 
+  const [documentTopicDistributionThreshold, setDocumentTopicDistributionThreshold] = useState(0.00)
   const [perplexity, setPerplexity] = useState(20)
   const [angle, setAngle] = useState(0.5);
   const [noOfIterations, setNoOfIterations] = useState(500);
@@ -145,7 +146,8 @@ function LDApage() {
     perplexity: perplexity,
     angle: angle,
     noOfIterations: noOfIterations,
-    learningRate: learningRate
+    learningRate: learningRate,
+    documentTopicDistributionThreshold: documentTopicDistributionThreshold
   });
 
   const recomputeTsneValue = async () => {
@@ -153,6 +155,7 @@ function LDApage() {
     updateTsneParameters('angle', angle)
     updateTsneParameters('noOfIterations', noOfIterations)
     updateTsneParameters('learningRate', learningRate)
+    updateTsneParameters('documentTopicDistributionThreshold', documentTopicDistributionThreshold)
     console.log("REND")
   }
 
@@ -178,6 +181,11 @@ function LDApage() {
   const handleInputLearningRate = (e) => {
     setLearningRate(parseInt(e.target.value));
   };
+
+  const handleInputDocumentTopicDistributionThreshold = (e) => {
+    setDocumentTopicDistributionThreshold(parseFloat(e.target.value));
+  };
+
 
   return (
     <div class="">
@@ -239,15 +247,40 @@ function LDApage() {
               </div>
             </>
           ) : isDocumentSummaryBool ? (
-            <div class="ml-4 italic text-base">Documents Summary</div>
+            <>
+              <div class="ml-4 italic text-base">Documents Summary</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : isClusteredGeneratedBool ? (
-            <div class="ml-4 italic text-base">Clusters Generated</div>
+            <>
+              <div class="ml-4 italic text-base">Clusters Generated</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : isDocumentTopicDistributionBool ? (
-            <div class="ml-4 italic text-base">Docoument Topic Distribution</div>
+            <>
+              <div class="ml-4 italic text-base">Docoument Topic Distribution</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : isTopicsGeneratedBool ? (
-            <div class="ml-4 italic text-base">Topics Generated</div>
+            <>
+              <div class="ml-4 italic text-base">Topics Generated</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : isClassifierBool ? (
-            <div class="ml-4 italic text-base">Classifier</div>
+            <>
+              <div class="ml-4 italic text-base">Classifier</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : isVisualizeBool ? (
             <>
               <div class="ml-4 italic text-base">Visualize</div>
@@ -281,6 +314,10 @@ function LDApage() {
                 <div class="font-bold text-sm mb-2">Learning Rate:</div>
                 <input type="number" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
               </div>
+              <div class="mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
               <div class="flex justify-center mt-12">
                 <button onClick={() => recomputeTsneValue()}>
                   {
@@ -291,7 +328,7 @@ function LDApage() {
                       </svg>
                     ) :
                       < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                        Cluster Documents
+                        Recompute Scatterplot Values
                       </div>
                   }
                 </button>
