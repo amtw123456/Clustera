@@ -196,6 +196,9 @@ function LDApage() {
       if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold) {
         documentsProvider[i].includeToClusterBool = false;
       }
+      else {
+        documentsProvider[i].includeToClusterBool = true;
+      }
     }
   };
 
