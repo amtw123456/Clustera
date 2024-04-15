@@ -88,7 +88,7 @@ def text_tokenization(request):
     
     total_word_counts = count_words_in_documents(filtered_documents)
     # print(total_word_counts.items())
-    filtered_words = [word for word, count in total_word_counts.items() if count < 1]
+    filtered_words = [word for word, count in total_word_counts.items() if count < 0]
 
     PreProcessedInfo = []
     for document in filtered_documents:
@@ -96,8 +96,8 @@ def text_tokenization(request):
 
         for word in document.split():
             if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 30:
-                lemmatized_word = WordNetLemmatizer().lemmatize(word)
-                temp.append(lemmatized_word)
+                # lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                temp.append(word)
 
         # document = ", ".join(temp)  
         # temp = []

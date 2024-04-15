@@ -1,6 +1,7 @@
 import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.jsx';
 import DataSummarySection from '../../components/datasummary.jsx';
 import VisualizationSection from '../../components/visualizesection.jsx';
+import Classifier from '../../components/classifier.jsx';
 
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
@@ -21,6 +22,8 @@ function LDApage() {
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
+  const { classifierModel, setClassifierModel } = useContext(AppContext);
+
 
   const [topicsGenerated, setTopicsGenerated] = useState([]);
   const [clustersPredicted, setClustersPredicted] = useState([]);
@@ -98,7 +101,6 @@ function LDApage() {
       console.error('Error during text preprocessing:', error);
     } finally {
       setIsCorporaNotClustered(false);
-
       buildLDAClusterSummary(responseData)
       setClustersProvider(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
@@ -187,6 +189,12 @@ function LDApage() {
   const filterOutDocuments = () => {
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
   };
+
+  const trainClassifier = () => {
+    console.log(classifierModel)
+    setClassifierModel(false)
+    console.log(classifierModel)
+  }
 
 
   return (
@@ -292,7 +300,7 @@ function LDApage() {
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
                     < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
+                      Train Classifier
                     </div>
                   }
                 </button>
@@ -308,8 +316,18 @@ function LDApage() {
           ) : isClassifierBool ? (
             <>
               <div class="ml-4 italic text-base">Classifier</div>
-              <div class="mx-4 mt-12 my-5 flex-row flex">
-                <div class="italic">No Options for this section</div>
+              <div class="mx-4 my-5">
+                <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
+              <div class="flex justify-center mt-12">
+                <button onClick={() => trainClassifier()}>{ }
+                  {
+                    < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                      Train Classifier
+                    </div>
+                  }
+                </button>
               </div>
             </>
           ) : isVisualizeBool ? (
@@ -484,14 +502,18 @@ function LDApage() {
             {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
             <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
-        ) : (
-          < div class="ml-80 flex flex-wrap items-center">
-            <div class="flex-1">
-              <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
-              <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
-            </div>
+        ) : isClassifierBool ?
+          <div class="ml-80 flex flex-row flex-wrap">
+            <Classifier classifierModel={classifierModel} />
           </div >
-        )
+          : (
+            < div class="ml-80 flex flex-wrap items-center">
+              <div class="flex-1">
+                <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
+                <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
+              </div>
+            </div >
+          )
       }
     </div >
   );

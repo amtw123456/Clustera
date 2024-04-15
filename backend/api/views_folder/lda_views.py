@@ -3,10 +3,12 @@ from rest_framework.response import Response
 
 from gensim.models.coherencemodel import CoherenceModel
 from gensim import corpora
+import codecs
 
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+import pickle
 import nltk
 import time
 import numpy as np
@@ -75,11 +77,28 @@ def text_clustering_lda(request):
 
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
+ 
+    print(vectorizer)
+    # vectorizer = str(pickle.dumps(vectorizer))
+    # print(vectorizer)
+    # lda = str(pickle.dumps(lda))
+
+    pickled_vectorizer = codecs.encode(pickle.dumps(vectorizer), "base64").decode()
+    pickled_lda_model = codecs.encode(pickle.dumps(lda), "base64").decode()
+    # unpickled = pickle.loads(codecs.decode(pickled_vectorizer.encode(), "base64"))
+    # print(unpickled)
 
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,
         "topic_coherance_score" : topic_coherance_score,
         "clusters" : clusters,
-        "topics" : topics
+        "topics" : topics,
+        "vectorizer" : pickled_vectorizer,
+        "lda_model" : pickled_lda_model,
+
     })
+
+
+def train_classifier(request):
+   pass
