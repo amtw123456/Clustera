@@ -120,6 +120,10 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
     ))
+    documentsProvider.map((item, index) => (
+      documentsProvider[index].includeToClusterBool = true
+    ))
+    console.log(documentsProvider)
   };
 
   const handleInputNoOfClusters = (e) => {
@@ -188,7 +192,16 @@ function LDApage() {
 
   const filterOutDocuments = () => {
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
+    for (let i = 0; i < documentsProvider.length; i++) {
+      if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold) {
+        documentsProvider[i].includeToClusterBool = false;
+      }
+    }
   };
+
+  const buildClassifierParamters = () => {
+
+  }
 
   const trainClassifier = () => {
     console.log(classifierModel)

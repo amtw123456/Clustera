@@ -1,5 +1,5 @@
 export class Document {
-    constructor(uDocument, pDocument, clusterId, clusterLabel, topics, documentTopicDistribution, documentTokens) {
+    constructor(uDocument, pDocument, clusterId, clusterLabel, topics, documentTopicDistribution, documentTokens, includeToClusterBool) {
         this.uDocument = uDocument;
         this.pDocument = pDocument;
         this.clusterId = clusterId;
@@ -7,6 +7,7 @@ export class Document {
         this.documentTokens = documentTokens;
         this.documentTopicDistribution = documentTopicDistribution;
         this.topics = topics;
+        this.includeToClusterBool = includeToClusterBool
     }
 }
 

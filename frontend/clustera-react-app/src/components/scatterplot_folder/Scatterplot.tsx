@@ -35,7 +35,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
     let data: DataItem[] = [];
 
     reducedData.forEach((item, index) => {
-        if ((documetsData[index] as any).documentTopicDistribution[clusterLabel[index]] > documentTopicDistributionThreshold) {
+        console.log((documetsData[index] as any).includeToClusterBool)
+        if ((documetsData[index] as any).includeToClusterBool) {
             data.push({
                 name: "Document: " + index,
                 documentTopicDistribution: (documetsData[index] as any).documentTopicDistribution,
