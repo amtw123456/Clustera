@@ -1,5 +1,8 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
 
 from gensim.models.coherencemodel import CoherenceModel
 from gensim import corpora
@@ -99,6 +102,35 @@ def text_clustering_lda(request):
 
     })
 
+@api_view(['POST'])
+def train_lda_classifier(request):
+   classfierTrainingData = json.loads(request.body)
+   classfierTrainingData = classfierTrainingData['lda_training_data']
+   
+   lda_trained_classifier = make_pipeline(CountVectorizer(stop_words='english'),
+                      MultinomialNB())
+   
+   lda_trained_classifier = lda_trained_classifier.fit(classfierTrainingData[0], classfierTrainingData[1])
+   
+   pickled_lda_classifier = codecs.encode(pickle.dumps(lda_trained_classifier), "base64").decode()
 
-def train_classifier(request):
-   pass
+   return Response(data={
+      "lda_trained_classifier" : pickled_lda_classifier
+   })
+   
+
+@api_view(['POST'])
+def lda_classify_document(request):
+   payload = json.loads(request.body)
+   classifier = payload['lda_trained_classifier']
+   documets = payload['documents']
+
+   classifier = pickle.loads(codecs.decode(classifier.encode(), "base64"))
+   documentClassifierResult = classifier.predict(documets)
+
+   return Response(
+        data={
+           "lda_classifier_result" : documentClassifierResult,
+        }
+   )
+   

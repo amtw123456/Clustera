@@ -2,7 +2,7 @@ import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTo
 import DataSummarySection from '../../components/datasummary.jsx';
 import VisualizationSection from '../../components/visualizesection.jsx';
 import Classifier from '../../components/classifier.jsx';
-
+import { DocumentClassifierTrainingData } from '../../modals/modals.js'
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
 import { Link } from 'react-router-dom'
@@ -203,13 +203,41 @@ function LDApage() {
   };
 
   const buildClassifierParamters = () => {
-
+    filterOutDocuments()
+    const classifierDocumentsText = []
+    const classifierDocumentClusterId = []
+    const classifierDocumentId = []
+    for (let i = 0; i < documentsProvider.length; i++) {
+      if (documentsProvider[i].includeToClusterBool) {
+        classifierDocumentsText.push(documentsProvider[i].pDocument)
+        classifierDocumentClusterId.push(documentsProvider[i].clusterId)
+        classifierDocumentId.push(documentsProvider[i].documentId)
+      }
+    }
+    console.log()
+    return [classifierDocumentsText, classifierDocumentClusterId, classifierDocumentId]
   }
 
-  const trainClassifier = () => {
-    console.log(classifierModel)
-    setClassifierModel(false)
-    console.log(classifierModel)
+  const trainClassifier = async () => {
+    var responseData;
+    try {
+      const response = await fetch(REACT_APP_BACKEND_API_URL + 'trainldaclassifier', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "lda_training_data": buildClassifierParamters(),
+        }),
+      });
+
+      responseData = await response.json();
+
+    } catch (error) {
+      console.error('Error during text preprocessing:', error);
+    } finally {
+      setClassifierModel(responseData['lda_trained_classifier'])
+    }
   }
 
 
@@ -316,7 +344,7 @@ function LDApage() {
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
                     < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Train Classifier
+                      Filter Documents
                     </div>
                   }
                 </button>

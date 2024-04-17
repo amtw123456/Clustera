@@ -9,7 +9,7 @@ export const AppStateProvider = ({ children }) => {
     // const [topicsGenerated, setTopicsGenerated] = useState([]);
     const [documentsProvider, setDocumentsProvider] = useState([]);
     const [clustersProvider, setClustersProvider] = useState([]);
-    const [classifierModel, setClassifierModel] = useState(true);
+    const [classifierModel, setClassifierModel] = useState(false);
 
     return (
         <AppContext.Provider value={
