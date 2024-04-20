@@ -21,6 +21,12 @@ import string
 import json
 import os
 
+custom_stopwords = set(["im", "i'm", "ve", "would" , 'ive'])
+stop_words = set(stopwords.words('english')).union(custom_stopwords)
+stop_words = sorted(stop_words)
+punctuation = set(string.punctuation)
+translator = str.maketrans("", "", string.punctuation)
+
 # samle text_clustering_lda payload
 '''
 {
@@ -123,14 +129,37 @@ def train_lda_classifier(request):
 def lda_classify_document(request):
    payload = json.loads(request.body)
    classifier = payload['lda_trained_classifier']
-   documets = payload['documents']
+   documents = payload['documents'][0]
 
    classifier = pickle.loads(codecs.decode(classifier.encode(), "base64"))
-   documentClassifierResult = classifier.predict(documets)
 
+   documents = documents.translate(translator)
+   documents = documents.replace('“', '').replace('”', '').replace('’', "'").replace('.', '')
+   documents = documents.lower()
+   
+   temp = []
+   for word in documents.split():
+     if word not in stop_words and not word.isdigit():
+        temp.append(word)
+
+   documents = " ".join(temp)    
+  
+   documentClassifierResult = classifier.predict([documents])
+   documentClassifierResultEstimate = classifier.predict_proba([documents])
+
+        # for word in document.split():
+        #     if word not in stop_words and not word.isdigit():
+        #         temp.append(word)
+
+        # temp = []
+        # for word in document.split(): 
+        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
+        #     temp.append(lemmatized_word)
+        
    return Response(
         data={
            "lda_classifier_result" : documentClassifierResult,
+           "lda_classifier_result_destribution" : documentClassifierResultEstimate
         }
    )
    

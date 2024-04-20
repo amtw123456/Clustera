@@ -193,12 +193,15 @@ function LDApage() {
   const filterOutDocuments = () => {
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
     for (let i = 0; i < documentsProvider.length; i++) {
-      if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold) {
-        documentsProvider[i].includeToClusterBool = false;
+      if (documentsProvider[i].documentTopicDistribution != null) {
+        if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold) {
+          documentsProvider[i].includeToClusterBool = false;
+        }
+        else {
+          documentsProvider[i].includeToClusterBool = true;
+        }
       }
-      else {
-        documentsProvider[i].includeToClusterBool = true;
-      }
+
     }
   };
 
@@ -548,7 +551,7 @@ function LDApage() {
           </div >
         ) : isClassifierBool ?
           <div class="ml-80 flex flex-row flex-wrap">
-            <Classifier classifierModel={classifierModel} />
+            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} />
           </div >
           : (
             < div class="ml-80 flex flex-wrap items-center">
