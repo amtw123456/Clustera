@@ -7,9 +7,6 @@ import { data } from "./scatterplot_folder/data";
 function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters, documentTopicDistributionThreshold, classifierModel }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
-
-
-
     const [classifierResult, setClassifierResult] = useState();
     const [classifierResultDistribution, setClassifierResultDistribution] = useState();
     const [isComponentLoading, setIsComponentLoading] = useState(true);
@@ -17,10 +14,10 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
     useEffect(() => {
         setIsComponentLoading(false);
 
-
     }, []);
 
     const ldaClassifyDocument = async () => {
+        setIsComponentLoading(true);
         var responseData
         var classifierTextInput = document.getElementById("classifierTextInput");
 
@@ -43,8 +40,7 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
         } finally {
             setClassifierResult(responseData['lda_classifier_result'])
             setClassifierResultDistribution(responseData['lda_classifier_result_destribution'])
-            console.log(classifierResult)
-            console.log(classifierResultDistribution)
+            setIsComponentLoading(false);
         }
     };
 
