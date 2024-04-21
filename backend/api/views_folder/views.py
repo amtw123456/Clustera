@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from sklearn.metrics.pairwise import cosine_similarity
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -23,7 +24,7 @@ lemma = WordNetLemmatizer()
 
 # Extract text content from the data
 
-custom_stopwords = set(["im", "i'm", "ve", "would" , 'ive'])
+custom_stopwords = set(["im", "i'm", "ve", "would" , 'ive', 'x200b'])
 stop_words = set(stopwords.words('english')).union(custom_stopwords)
 stop_words = sorted(stop_words)
 punctuation = set(string.punctuation)
@@ -137,4 +138,11 @@ def reduce_dtd_to_tsne(request):
 
     return Response(data={
         "reduced_data": reduced_data,
+    })
+
+# Create your views here.
+@api_view(['POST'])
+def compute_documents_cosine_similarity(request):
+    return Response(data={
+        "document_cosine_similarity": cosine_similarity('red', 'green'),
     })
