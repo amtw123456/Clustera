@@ -161,10 +161,13 @@ function WordCountCard({ wordCounts }) {
 
 function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshold }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
-    console.log(documentTopicDistributionThreshold)
 
     useEffect(() => {
         setIsComponentLoading(false);
+        // console.log(summarizedDocuments)
+        summarizedDocuments.map((item, index) => {
+            console.log(item.topics); // Log each element of the array
+        });
 
     }, []);
 
@@ -217,6 +220,7 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
                                                 <div className="border-t border-gray-300"></div>
                                                 <div class="px-5 pt-2">
                                                     <div class="font-bold mb-2 px-1">Topics Related to the Document</div>
+
                                                     <div class="flex flex-row flex-wrap text-justify justify-start" key={index}>
                                                         {item.topics.map((topic, index) => (
                                                             <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
@@ -266,7 +270,6 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
     useEffect(() => {
         setIsComponentLoading(false);
-        // console.log(summarizedDocuments)
     }, []);
 
     return (
@@ -281,45 +284,35 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                 </div>
             </div>
         ) : (
-            Array.from(Array(noOfClusters), (item, index) => (
+            Array.from(Array(noOfClusters - 1), (item, index) => (
                 <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div class="w-auto rounded-r-lg mt-2">
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
                             {"Cluster Label: Sports"}
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
-                            {"Cluster No: " + index}
+                            {"Cluster No: " + (index + 1)}
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
-                            {"No. of Documents in Cluster: " + clustersGenerated[index].length}
+                            {"No. of Documents in Cluster: " + clustersGenerated[index + 1].length}
                         </div>
                         <div className="border-t my-2 border-gray-300"></div>
                         <div class="flex px-2 text-base text-gray-800 ml-1 mb-1 flex justify-left font-bold">
                             {"Top 7 Terms:"}
                         </div>
-                        <div class="px-2 flex flex-row flex-wrap text-justify justify-start items-center" key={index}>
-                            {topicsGenerated[index].slice(0, 8).map((topic, index) => (
-                                <div class="flex border text-base font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                        <div class="px-2 flex flex-row flex-wrap text-justify justify-start items-center">
+                            {topicsGenerated[index + 1].slice(0, 8).map((topic, index) => (
+                                <div class="flex border text-base font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                     <div class="px-3 py-[0.5px]">{topic}</div>
                                 </div>
                             ))}
-                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
-                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index].length - 8}</div>
+                            <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
+                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index + 1].length - 8}</div>
                             </div>
                         </div>
                     </div>
-                    {/* <div key={index} class="overflow-hidden justify-between px-3 py-2 flex flex-row rounded-l-lg w-[1100px] flex-wrap h-32 max-w-[1100px]">
-                        {summarizedDocuments.map((value, innerIndex) => (
-                            // Check if value.clusterid is equal to index
-                            value.clusterId === index && (
-                                <div key={innerIndex}>
-                                    {innerIndex}&nbsp;
-                                </div>
-                            )
-                        ))}
-                    </div> */}
+
                     < div class="flex ml-3 justify-center mt-3 items-center" >
-                        {/* {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "} */}
                         < AiFillEye className="inline-block text-purple-800 text-lg" />
                         {"      "}
                         < Popup
@@ -341,15 +334,14 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                     <div class="border-b px-5 pb-4 border-gray-300 my-4 flex flex-col ">
                                         <div class="flex flex-row items-end">
                                             <div class="text-3xl ml-7 font-bold inline-block">
-                                                <div class="text-xl font-bold inline-block"> Cluster {index} documents</div>
+                                                <div class="text-xl font-bold inline-block"> Cluster {index + 1} documents</div>
                                             </div>
                                         </div>
-                                        {/* <div class="pl-2 text-lg"> Assigned Cluster: {item.clusterId}</div> */}
                                     </div>
                                     <div class="overflow-auto mr-3 h-[450px] px-5 pb-5 text-justify flex flex-row flex-wrap justify ml-5 drop-shadow-lg" style={{ maxHeight: "50vh" }}>
-                                        {clustersGenerated[index].map((value, innerIndex) => (
+                                        {clustersGenerated[index + 1].map((value, innerIndex) => (
                                             summarizedDocuments[value].includeToClusterBool ? (
-                                                <div key={index} class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
+                                                <div class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
                                                     <div key={innerIndex}>
                                                         <div class="font-bold">Document Number: {value} </div>
                                                         {/* <div class="italic">Included to Cluster: {summarizedDocuments[value].includeToClusterBool.toString()} </div> */}
@@ -372,8 +364,8 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                     <div class="px-5 pt-2">
                                         <div class="font-bold ml-5 mb-2 px-1">Topics of the Cluster</div>
                                         <div class="ml-5 flex flex-row flex-wrap text-justify justify-start" key={index}>
-                                            {topicsGenerated[index].map((topic, index) => (
-                                                <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400" key={index}>
+                                            {topicsGenerated[index + 1].map((topic, index) => (
+                                                <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                                     <div class="px-3 py-[0.5px]">{topic}</div>
                                                 </div>
                                             ))}
@@ -399,8 +391,6 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                     </div >
                 </div >
             ))
-
-
         )
     );
 }
@@ -425,7 +415,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                 </div>
             </div>
         ) : (
-            topicsGenerated.map((listOfTopics, index) => (
+            topicsGenerated.slice(1).map((listOfTopics, index) => (
                 <div key={index} className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div>
                         <div class="flex flex-row items-center ml-3">
@@ -433,9 +423,9 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                             <div class="font-bold italic ml-1">Category name</div>
                         </div>
                         <div class="flex flex-row items-center">
-                            <div class="ml-3 mb-1 italic">Topics of Cluster {index}</div>
+                            <div class="ml-3 mb-1 italic">Topics of Cluster {index + 1}</div>
                             <div class="ml-3 mb-1 italic">|</div>
-                            <div class="ml-3 mb-1 italic">Coherance Score of Cluster {index} topics: {topicCoheranceGenerated[index]}</div>
+                            <div class="ml-3 mb-1 italic">Coherance Score of Cluster {index + 1} topics: {topicCoheranceGenerated[index + 1]}</div>
                         </div>
                         <div className="border-t border-gray-300 my-1"></div>
                     </div>
@@ -445,9 +435,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                                 <div class="px-3 py-[0.5px]">{topic}</div>
                             </div>
                         ))}
-
                     </div>
-
                 </div >
             ))
         )

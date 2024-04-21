@@ -45,10 +45,10 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
                 <div class="text-center font-bold">Classifier Labels</div>
                 <div class="w-full overflow-hidden justify-center">
                     <div class="flex-row flex-wrap flex mt-4 justify-center">
-                        {topicsGenerated.map((topics, innerIndex) => (
+                        {topicsGenerated.slice(1).map((topics, index) => (
                             <div class="border flex flex-col w-80 mx-3 my-1 h-[100px] overflow-auto rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400 justify-center px-2">
                                 <div class="flex flex-row flex-wrap italic max-w-[500px] mt-2 font-bold text-base justify-center">
-                                    <div>Cluster {innerIndex}: Cluster Label</div>
+                                    <div>Cluster {index + 1}: Cluster Label</div>
                                     <div class="flex text-sm flex px-1"></div>
                                     <div class="overflow-auto flex flex-wrap items-center">
                                         {
@@ -102,7 +102,7 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
                                 classifierResultDistribution !== undefined ? (
                                     classifierResultDistribution.map((topicDistributionList, index) => (
                                         topicDistributionList.map((topicDistribution, index) => (
-                                            <div class="px-2 py-1 flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">{index}: {(topicDistribution * 100).toFixed(2)}%</div>
+                                            <div class="px-2 py-1 flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">{index + 1}: {(topicDistribution * 100).toFixed(2)}%</div>
                                         ))
                                     ))
                                 ) :

@@ -35,7 +35,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
     let data: DataItem[] = [];
 
     reducedData.forEach((item, index) => {
-        console.log((documetsData[index] as any).includeToClusterBool)
+
         if ((documetsData[index] as any).includeToClusterBool) {
             data.push({
                 name: "Document: " + index,

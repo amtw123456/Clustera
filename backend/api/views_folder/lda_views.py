@@ -44,6 +44,13 @@ translator = str.maketrans("", "", string.punctuation)
 # Create your views here.
 @api_view(['POST'])
 def text_clustering_lda(request):
+    def all_equal(iterator):
+      iterator = iter(iterator)
+      try:
+          first = next(iterator)
+      except StopIteration:
+          return True
+      return all(first == x for x in iterator)
     tokens = []
     responseData = json.loads(request.body)
 
@@ -64,28 +71,38 @@ def text_clustering_lda(request):
     lda = LatentDirichletAllocation(n_components=n_topics, random_state=43)
 
     document_topic_distribution = lda.fit_transform(X)
-    predicted_clusters = np.argmax(document_topic_distribution, axis=1)
+    # print(document_topic_distribution)
+    # predicted_clusters = np.argmax(document_topic_distribution, axis=1)
+    predicted_clusters = []
+    for topic_distribution in document_topic_distribution:
+       if(all_equal(topic_distribution)):
+          predicted_clusters.append(0)
+       else:
+          predicted_clusters.append(np.argmax(topic_distribution, axis=0) + 1)
+          
 
     feature_names = vectorizer.get_feature_names_out()
-    topic_coherance_score = []
-    topics = []
+    topic_coherance_score = [0]
+    topics = [['No Topics', 'No T']]
     clusters = {}
 
     for topic_idx, topic in enumerate(lda.components_):
         top_words_indices = topic.argsort()[:-45:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
-
-    for index, topic in enumerate(topics):
+    
+    for index, topic in enumerate(topics[1:]):
         coherence_model_lda = CoherenceModel(topics=[topic], texts=tokens, dictionary=dictionary, coherence='u_mass')
         coherence_score = coherence_model_lda.get_coherence()
         topic_coherance_score.append(coherence_score)
     
-    for i in range(0, n_topics):
+    for i in range(0, n_topics + 1):
       clusters[i] = []
 
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
+
+    print(clusters)
  
     print(vectorizer)
     # vectorizer = str(pickle.dumps(vectorizer))
@@ -103,8 +120,8 @@ def text_clustering_lda(request):
         "topic_coherance_score" : topic_coherance_score,
         "clusters" : clusters,
         "topics" : topics,
-        "vectorizer" : pickled_vectorizer,
-        "lda_model" : pickled_lda_model,
+        # "vectorizer" : pickled_vectorizer,
+        # "lda_model" : pickled_lda_model,
 
     })
 

@@ -2,17 +2,13 @@ import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTo
 import DataSummarySection from '../../components/datasummary.jsx';
 import VisualizationSection from '../../components/visualizesection.jsx';
 import Classifier from '../../components/classifier.jsx';
-import { DocumentClassifierTrainingData } from '../../modals/modals.js'
 import React, { useEffect, useState, useContext } from "react";
 import { Cluster } from '../../modals/modals.js'
-import { Link } from 'react-router-dom'
 import { AppContext } from '../../providers/AppState.jsx';
 import NavigationBar from '../../components/navbar.jsx';
 import { ImNotification } from "react-icons/im";
 import { Tooltip } from 'react-tooltip'
 import { filter } from 'd3';
-
-
 
 function LDApage() {
 
@@ -103,6 +99,7 @@ function LDApage() {
       setIsCorporaNotClustered(false);
       buildLDAClusterSummary(responseData)
       setClustersProvider(responseData['clusters'])
+      console.log(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
       setTopicCoheranceScores(responseData['topic_coherance_score'])
       setIsLoading(false);
@@ -111,15 +108,21 @@ function LDApage() {
 
   const buildLDAClusterSummary = async (ldaResults) => {
     setClustersPredicted(ldaResults['predicted_clusters'])
+
     ldaResults['document_topic_distribution'].forEach((item, index) => {
       documentsProvider[index].documentTopicDistribution = item
     })
     ldaResults['predicted_clusters'].forEach((item, index) => {
       documentsProvider[index].clusterId = item
     })
-    documentsProvider.map((item, index) => (
-      documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
-    ))
+    documentsProvider.map((item, index) => {
+      if (documentsProvider[index].clusterId == 0) {
+        documentsProvider[index].topics = ["No Topics"]
+      }
+      else {
+        documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
+      }
+    })
     documentsProvider.map((item, index) => (
       documentsProvider[index].includeToClusterBool = true
     ))
@@ -211,13 +214,13 @@ function LDApage() {
     const classifierDocumentClusterId = []
     const classifierDocumentId = []
     for (let i = 0; i < documentsProvider.length; i++) {
-      if (documentsProvider[i].includeToClusterBool) {
+      if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
         classifierDocumentsText.push(documentsProvider[i].pDocument)
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
         classifierDocumentId.push(documentsProvider[i].documentId)
       }
     }
-    console.log()
+    console.log(classifierDocumentClusterId)
     return [classifierDocumentsText, classifierDocumentClusterId, classifierDocumentId]
   }
 
@@ -534,7 +537,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection topicsGenerated={topicsGenerated} noOfClusters={noOfClustersInput} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
+            <DataSummarySection topicsGenerated={topicsGenerated} noOfClusters={noOfClustersInput + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
@@ -542,7 +545,7 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
@@ -555,7 +558,7 @@ function LDApage() {
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
             {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
-            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
+            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput + 1} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
         ) : isClassifierBool ?
           <div class="ml-80 flex flex-row flex-wrap">
