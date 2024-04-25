@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from sklearn.metrics.pairwise import cosine_similarity
-
+from sklearn.metrics import silhouette_score, pairwise_distances
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
@@ -129,8 +129,11 @@ def reduce_dtd_to_tsne(request):
     
     tsne = TSNE(n_components=2, perplexity=responseData['perplexity'],
                 learning_rate=responseData['learningRate'], n_iter=responseData['noOfIterations'],
-                random_state=0, angle=responseData['angle'] ,early_exaggeration=120)
+                random_state=7, angle=responseData['angle'] ,early_exaggeration=120, init='pca')
     # tsne = TSNE(n_components=2, random_state=42, perplexity=32)
+    # from sklearn.decomposition import PCA
+
+    # pca = PCA(n_components=2)  
     reduced_data = tsne.fit_transform(np.array(responseData['document_topic_distribution']))
 
     # Display the shape of the reduced_data array
@@ -143,6 +146,24 @@ def reduce_dtd_to_tsne(request):
 # Create your views here.
 @api_view(['POST'])
 def compute_documents_cosine_similarity(request):
-    return Response(data={
-        "document_cosine_similarity": cosine_similarity('red', 'green'),
-    })
+    return Response(
+        data={
+            "document_cosine_similarity": cosine_similarity('red', 'green'),
+        }
+    )
+
+@api_view(['POST'])
+def compute_clusters_silhouette_score(request):
+    payload = json.loads(request.body)
+    documentTopicDistribution = payload['lda_document_topic_distribution']
+    documentLabels = payload['document_labels']
+
+    document_similarity_matrix = pairwise_distances(documentTopicDistribution, metric='cosine')
+    silhouette_scores = silhouette_score(document_similarity_matrix, documentLabels)
+    print(silhouette_score)
+
+    return Response(
+        data={
+            "silhoutte_score": silhouette_scores,
+        }
+    )

@@ -1,12 +1,16 @@
 // Sidebar.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
 import PieChart from './piechart.tsx'
 
-function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
-
+function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
+    const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     useEffect(() => {
-        console.log(clustersGenerated)
+        var temp = 0;
+        topicCoheranceGenerated.slice(1).map((coheranceScore, index) => {
+            temp += coheranceScore;
+        });
+        setAverageCoheranceScore(temp / topicCoheranceGenerated.length)
     }, []);
 
     return (
@@ -73,8 +77,10 @@ function DataSummarySection({ summarizedDocuments, noOfClusters, topicCoheranceG
                 <div class="flex flex-row w-1/2 justify-start border rounded-lg mr-1">
                     <div class="w-full">
                         <div class="flex flex-col items-center">
-                            <div>Evaluation Scores</div>
-
+                            <div class="italic font-bold">Data Summary</div>
+                            <div>Silhouette score: {silhouetteScoreGenerated}</div>
+                            <div>Coherance Score: {averageCoheranceScore}</div>
+                            <div>Number of unlabeled documents: {clustersGenerated[0].length}</div>
                         </div>
                     </div>
                 </div>

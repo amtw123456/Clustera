@@ -1,4 +1,5 @@
 import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.jsx';
+
 import DataSummarySection from '../../components/datasummary.jsx';
 import VisualizationSection from '../../components/visualizesection.jsx';
 import Classifier from '../../components/classifier.jsx';
@@ -20,7 +21,7 @@ function LDApage() {
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
   const { classifierModel, setClassifierModel } = useContext(AppContext);
 
-
+  const [silhouettescore, setSilhouettescore] = useState(0);
   const [topicsGenerated, setTopicsGenerated] = useState([]);
   const [clustersPredicted, setClustersPredicted] = useState([]);
   const [topicCoheranceScores, setTopicCoheranceScores] = useState([]);
@@ -40,6 +41,7 @@ function LDApage() {
 
   // data summary hooks
   const [noOfClustersInput, setNoOfClustersInput] = useState(1)
+  const [noOfClustersInputParams, setNoOfClustersInputParams] = useState(1)
   const [vectorizerType, setVectorizerType] = useState('tfidf');
   const [minimumDf, setMinimumDf] = useState(1);
   const [maximumDf, setMaximumDf] = useState(2);
@@ -73,9 +75,42 @@ function LDApage() {
     }
   };
 
+  const computeClusterSilhoutteScore = async () => {
+    var responseData;
+    const classifierDocumentClusterId = []
+    const classifierTopicDistribution = []
+    for (let i = 0; i < documentsProvider.length; i++) {
+      if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
+        classifierDocumentClusterId.push(documentsProvider[i].clusterId)
+        classifierTopicDistribution.push(documentsProvider[i].documentTopicDistribution)
+      }
+    }
+    try {
+      const response = await fetch(REACT_APP_BACKEND_API_URL + 'silhouettescore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "lda_document_topic_distribution": classifierTopicDistribution,
+          "document_labels": classifierDocumentClusterId,
+        }),
+      });
+
+      responseData = await response.json();
+
+    } catch (error) {
+      console.error('Error during text preprocessing:', error);
+    } finally {
+      setIsLoading(false);
+      setSilhouettescore(responseData['silhoutte_score'])
+    }
+  }
+
   const clusterUsingLda = async () => {
     var responseData;
     setIsLoading(true);
+    setNoOfClustersInputParams(noOfClustersInput)
     try {
       const response = await fetch(REACT_APP_BACKEND_API_URL + 'lda', {
         method: 'POST',
@@ -99,10 +134,10 @@ function LDApage() {
       setIsCorporaNotClustered(false);
       buildLDAClusterSummary(responseData)
       setClustersProvider(responseData['clusters'])
-      console.log(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
       setTopicCoheranceScores(responseData['topic_coherance_score'])
-      setIsLoading(false);
+      computeClusterSilhoutteScore()
+
     }
   };
 
@@ -126,7 +161,6 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].includeToClusterBool = true
     ))
-    console.log(documentsProvider)
   };
 
   const handleInputNoOfClusters = (e) => {
@@ -210,18 +244,23 @@ function LDApage() {
 
   const buildClassifierParamters = () => {
     filterOutDocuments()
-    const classifierDocumentsText = []
+
     const classifierDocumentClusterId = []
+    const classifierTopicDistribution = []
+    const classifierDocumentsText = []
     const classifierDocumentId = []
+
+
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
-        classifierDocumentsText.push(documentsProvider[i].pDocument)
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
+        classifierTopicDistribution.push(documentsProvider[i].documentTopicDistribution)
+        classifierDocumentsText.push(documentsProvider[i].pDocument)
         classifierDocumentId.push(documentsProvider[i].documentId)
+
       }
     }
-    console.log(classifierDocumentClusterId)
-    return [classifierDocumentsText, classifierDocumentClusterId, classifierDocumentId]
+    return [classifierDocumentsText, classifierDocumentClusterId, classifierTopicDistribution, classifierDocumentId]
   }
 
   const trainClassifier = async () => {
@@ -247,7 +286,6 @@ function LDApage() {
       setIsLoading(false);
     }
   }
-
 
   return (
     <div class="">
@@ -537,7 +575,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection topicsGenerated={topicsGenerated} noOfClusters={noOfClustersInput + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
+            <DataSummarySection topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInput + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">

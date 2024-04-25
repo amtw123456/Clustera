@@ -24,9 +24,11 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
 
     const TopicTokenFrequencies = [];
     const document_topic_distribution = [];
-    summarizedDocuments.map((item, index) => (
+    const document_text = [];
+    summarizedDocuments.map((item, index) => {
         document_topic_distribution.push(summarizedDocuments[index].documentTopicDistribution)
-    ))
+        document_text.push(summarizedDocuments[index].pDocument)
+    })
 
     const getTsneData = async () => {
         var responseData;
@@ -39,6 +41,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                 },
                 body: JSON.stringify({
                     "document_topic_distribution": document_topic_distribution,
+                    'document_text': document_text,
                     'perplexity': tsneParameters.perplexity,
                     'angle': tsneParameters.angle,
                     'learningRate': tsneParameters.learningRate,
@@ -129,7 +132,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                     />
                 ) : <div class="flex flex-row flex-wrap justify-start mt-16 max-w-[1580px]">
                     {
-                        TopicTokenFrequencies.map((TokenFrequencies, Index) => (
+                        TopicTokenFrequencies.slice(1).map((TokenFrequencies, Index) => (
                             <div class="flex-col flex justify-center mb-10">
                                 <WordCloudChart width={750} height={350} TokenFrequencies={TokenFrequencies} />
                                 <div class="text-center font-bold">Wordcloud of Cluster: {Index}</div>

@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-
+from sklearn.metrics import silhouette_score, pairwise_distances
 from gensim.models.coherencemodel import CoherenceModel
 from gensim import corpora
+from sklearn.manifold import TSNE
 import codecs
 
 from nltk.stem import WordNetLemmatizer
@@ -51,6 +52,7 @@ def text_clustering_lda(request):
       except StopIteration:
           return True
       return all(first == x for x in iterator)
+    
     tokens = []
     responseData = json.loads(request.body)
 
@@ -102,18 +104,11 @@ def text_clustering_lda(request):
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
 
-    print(clusters)
- 
-    print(vectorizer)
-    # vectorizer = str(pickle.dumps(vectorizer))
-    # print(vectorizer)
-    # lda = str(pickle.dumps(lda))
-
-    pickled_vectorizer = codecs.encode(pickle.dumps(vectorizer), "base64").decode()
-    pickled_lda_model = codecs.encode(pickle.dumps(lda), "base64").decode()
-    # unpickled = pickle.loads(codecs.decode(pickled_vectorizer.encode(), "base64"))
-    # print(unpickled)
-
+    # pickled_vectorizer = codecs.encode(pickle.dumps(vectorizer), "base64").decode()
+    # pickled_lda_model = codecs.encode(pickle.dumps(lda), "base64").decode()
+    
+    # print("Silhouette Score:", silhouette_avg)
+    
     return Response(data={
         "document_topic_distribution" : document_topic_distribution,
         "predicted_clusters": predicted_clusters,
@@ -122,14 +117,18 @@ def text_clustering_lda(request):
         "topics" : topics,
         # "vectorizer" : pickled_vectorizer,
         # "lda_model" : pickled_lda_model,
-
     })
 
 @api_view(['POST'])
 def train_lda_classifier(request):
    classfierTrainingData = json.loads(request.body)
    classfierTrainingData = classfierTrainingData['lda_training_data']
+
+  #  document_similarity_matrix = pairwise_distances(classfierTrainingData[2], metric='cosine')
+  #  silhouette_scores = silhouette_score(document_similarity_matrix, classfierTrainingData[1])
    
+  #  print("Average Silhouette Score:", silhouette_scores)
+          
    lda_trained_classifier = make_pipeline(CountVectorizer(stop_words='english'),
                       MultinomialNB())
    
@@ -149,7 +148,6 @@ def lda_classify_document(request):
    documents = payload['documents'][0]
 
    classifier = pickle.loads(codecs.decode(classifier.encode(), "base64"))
-
    documents = documents.translate(translator)
    documents = documents.replace('“', '').replace('”', '').replace('’', "'").replace('.', '')
    documents = documents.lower()
@@ -164,15 +162,6 @@ def lda_classify_document(request):
    documentClassifierResult = classifier.predict([documents])
    documentClassifierResultEstimate = classifier.predict_proba([documents])
 
-        # for word in document.split():
-        #     if word not in stop_words and not word.isdigit():
-        #         temp.append(word)
-
-        # temp = []
-        # for word in document.split(): 
-        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
-        #     temp.append(lemmatized_word)
-        
    return Response(
         data={
            "lda_classifier_result" : documentClassifierResult,

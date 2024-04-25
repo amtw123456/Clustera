@@ -165,10 +165,6 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
     useEffect(() => {
         setIsComponentLoading(false);
         // console.log(summarizedDocuments)
-        summarizedDocuments.map((item, index) => {
-            console.log(item.topics); // Log each element of the array
-        });
-
     }, []);
 
     return (
