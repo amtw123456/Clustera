@@ -32,7 +32,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
 
     const getTsneData = async () => {
         var responseData;
-        console.log(tsneParameters)
+        // console.log(tsneParameters)
         try {
             const response = await fetch(REACT_APP_BACKEND_API_URL + 'tsne', {
                 method: 'POST',

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import UploadPage from './pages/upload_page/UploadPage.jsx';
 import DocPage from './pages/documents_page/DocPage.jsx';
 import LDApage from './pages/cluster_page_lda/LDApage.jsx';
@@ -12,7 +11,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
     return (
-
         <BrowserRouter>
             <AppStateProvider>
                 <Routes>
@@ -25,10 +23,7 @@ function App() {
                 </Routes>
             </AppStateProvider >
         </BrowserRouter>
-
     );
 }
-
-ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;
