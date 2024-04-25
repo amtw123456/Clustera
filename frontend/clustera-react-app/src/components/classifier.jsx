@@ -53,7 +53,7 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
                                     <div class="overflow-auto flex flex-wrap items-center">
                                         {
                                             topics.slice(0, 7).map((topic, topicIndex) => (
-                                                <div class="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400" key={topicIndex}>{topic}</div>
+                                                <div class="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
                                             ))
                                         }
                                     </div>

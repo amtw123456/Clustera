@@ -63,11 +63,16 @@ function LDApage() {
       for (const key in stateSetterMap) {
         if (stateName == key) {
           stateSetterMap[key](true);
+
         }
         else {
           stateSetterMap[key](false);
         }
         filterOutDocuments()
+
+        if (stateName == "isClassifierBool") {
+          trainClassifier()
+        }
       }
 
     } else {
@@ -181,7 +186,7 @@ function LDApage() {
 
   const [documentTopicDistributionThresholdState, setDocumentTopicDistributionThresholdState] = useState(0.00)
   const [documentTopicDistributionThreshold, setDocumentTopicDistributionThreshold] = useState(0.00)
-  const [perplexity, setPerplexity] = useState(20)
+  const [perplexity, setPerplexity] = useState(100)
   const [angle, setAngle] = useState(0.5);
   const [noOfIterations, setNoOfIterations] = useState(500);
   const [learningRate, setLearningRate] = useState(30);
