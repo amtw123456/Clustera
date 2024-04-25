@@ -405,6 +405,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsG
         // Add your logic here to handle closing or saving data
 
         topicsGeneratedLabel[index] = newInputLabel
+        setNewInputLabel('')
         setReRenderComponent(true)
 
         close()
