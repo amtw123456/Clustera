@@ -5,12 +5,18 @@ import PieChart from './piechart.tsx'
 
 function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
+    const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
     useEffect(() => {
         var temp = 0;
         topicCoheranceGenerated.slice(1).map((coheranceScore, index) => {
             temp += coheranceScore;
         });
-        setAverageCoheranceScore(temp / topicCoheranceGenerated.length)
+        setAverageCoheranceScore(temp / (topicCoheranceGenerated.length - 1))
+        temp = 0
+        Array.from(Array(noOfClusters - 1), (item, index) => {
+            temp += clustersGenerated[index + 1].length;
+        });
+        setNumberOfClusteredDocuments(temp)
     }, []);
 
     return (
@@ -78,9 +84,10 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                     <div class="w-full">
                         <div class="flex flex-col items-center">
                             <div class="italic font-bold">Data Summary</div>
-                            <div>Silhouette score: {silhouetteScoreGenerated}</div>
-                            <div>Coherance Score: {averageCoheranceScore}</div>
-                            <div>Number of unlabeled documents: {clustersGenerated[0].length}</div>
+                            <div class="mt-12">Silhouette score: {silhouetteScoreGenerated}</div>
+                            <div class="mt-4">Coherance Score: {averageCoheranceScore}</div>
+                            <div class="mt-4">Number of unclustered documents: {clustersGenerated[0].length}</div>
+                            <div class="mt-4">Number of clustered documents: {numberOfClusteredDocuments}</div>
                         </div>
                     </div>
                 </div>
