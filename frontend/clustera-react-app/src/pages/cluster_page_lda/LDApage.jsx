@@ -23,6 +23,7 @@ function LDApage() {
 
   const [silhouettescore, setSilhouettescore] = useState(0);
   const [topicsGenerated, setTopicsGenerated] = useState([]);
+  const [topicsGeneratedLabel, setTopicsGeneratedLabel] = useState([]);
   const [clustersPredicted, setClustersPredicted] = useState([]);
   const [topicCoheranceScores, setTopicCoheranceScores] = useState([]);
 
@@ -140,6 +141,7 @@ function LDApage() {
       buildLDAClusterSummary(responseData)
       setClustersProvider(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
+      setTopicsGeneratedLabel(Array.from({ length: noOfClustersInput }, () => (null)))
       setTopicCoheranceScores(responseData['topic_coherance_score'])
       computeClusterSilhoutteScore()
 
@@ -580,7 +582,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
+            <DataSummarySection topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
@@ -592,7 +594,7 @@ function LDApage() {
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <TopicsGeneratedCard topicsGenerated={topicsGenerated} topicCoheranceGenerated={topicCoheranceScores} />
+            <TopicsGeneratedCard topicsGenerated={topicsGenerated} topicCoheranceGenerated={topicCoheranceScores} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
         ) : isDocumentTopicDistributionBool ? (
           <div class="ml-80 flex flex-row flex-wrap">

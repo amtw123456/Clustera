@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
 import PieChart from './piechart.tsx'
 
-function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated }) {
+function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel }) {
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
     useEffect(() => {
@@ -59,7 +59,13 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                             </div>
                                         </div>
                                         <div class="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
-                                            <div class="flex text-base flex ml-[3px] px-1 ">Cluster Category Label: NaN</div>
+                                            <div class="flex text-base flex ml-[3px] px-1 ">Cluster Category Label: </div>
+                                            {
+                                                topicsGeneratedLabel[index] === null ? (
+                                                    <div class="font-bold italic ml-1">Input Category name</div>
+                                                ) :
+                                                    <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                            }
                                             {/* <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
                                         </div>
                                     </div>

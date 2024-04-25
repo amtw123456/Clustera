@@ -310,7 +310,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
 
                     < div class="flex ml-3 justify-center mt-3 items-center" >
                         < AiFillEye className="inline-block text-purple-800 text-lg" />
-                        {"      "}
+
                         < Popup
                             contentStyle={{
                                 borderRadius: "10px",
@@ -391,13 +391,33 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
     );
 }
 
-function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
+function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsGeneratedLabel }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
+    const [reRenderComponent, setReRenderComponent] = useState(false)
+    const [newInputLabel, setNewInputLabel] = useState('');
 
     useEffect(() => {
         setIsComponentLoading(false);
 
     }, []);
+
+    function setClusterCategoryLabel(index, close) {
+        // Add your logic here to handle closing or saving data
+
+        topicsGeneratedLabel[index] = newInputLabel
+        setReRenderComponent(true)
+
+        close()
+    }
+
+    const handleInputLabelChange = (event) => {
+        // Update the input value state
+        setNewInputLabel(event.target.value);
+    };
+
+    useEffect(() => {
+        setReRenderComponent(false)
+    }, [reRenderComponent]);
 
     return (
         isComponentLoading ? (
@@ -415,8 +435,53 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                 <div key={index} className="h-36 w-full pt-1 m-3 justify-start rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div>
                         <div class="flex flex-row items-center ml-3">
-                            <FaEdit class="text-purple-400 hover:text-purple-600 hover:cursor-pointer" />
-                            <div class="font-bold italic ml-1">Category name</div>
+                            < Popup
+                                contentStyle={{
+                                    borderRadius: "10px",
+                                    overflow: "auto",
+                                    border: "none",
+                                    padding: "0",
+                                    width: '500px',
+                                    height: '150px',
+                                }}
+                                trigger=
+                                {
+                                    < button class="inline-block text-purple-600 p-0" >
+                                        <div onClick={null} className="text-purple-400 hover:text-purple-600 hover:cursor-pointer">
+                                            <FaEdit />
+                                        </div>
+                                    </button >
+                                }
+                                modal
+                                nested
+                            >
+                                {close => (
+                                    <div style={{ maxHeight: "90vh" }}>
+                                        <div class="px-5 pb-2 flex flex-col items-center">
+                                            <div class="flex flex-row items-end">
+                                                <div class="text-3xl ml-7 font-bold inline-block text">
+                                                    <div class="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                value={newInputLabel}
+                                                onChange={handleInputLabelChange}
+                                                placeholder=""
+                                                class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
+                                            />
+                                            <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+
+                                        </div>
+                                    </div>
+                                )}
+                            </Popup >
+                            {
+                                topicsGeneratedLabel[index] === null ? (
+                                    <div class="font-bold italic ml-1">Input Category name</div>
+                                ) :
+                                    <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                            }
                         </div>
                         <div class="flex flex-row items-center">
                             <div class="ml-3 mb-1 italic">Topics of Cluster {index + 1}</div>
@@ -424,7 +489,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated }) {
                             <div class="ml-3 mb-1 italic">Coherance Score of Cluster {index + 1} topics: {topicCoheranceGenerated[index + 1]}</div>
                         </div>
                         <div className="border-t border-gray-300 my-1"></div>
-                    </div>
+                    </div >
                     <div class="ml-2 flex flex-row flex-wrap overflow-auto h-[100px]" style={{ maxHeight: "9vh" }}>
                         {listOfTopics.map((topic, innerIndex) => (
                             <div class="flex h-[28px] border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
