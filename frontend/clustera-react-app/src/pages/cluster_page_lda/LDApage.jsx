@@ -575,7 +575,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInput + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
+            <DataSummarySection topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
@@ -583,7 +583,7 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInput + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
@@ -596,7 +596,7 @@ function LDApage() {
         ) : isVisualizeBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
             {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
-            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInput + 1} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
+            <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInputParams + 1} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
           </div >
         ) : isClassifierBool ?
           <div class="ml-80 flex flex-row flex-wrap">
