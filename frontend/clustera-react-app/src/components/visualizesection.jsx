@@ -122,7 +122,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         reducedData={tsneReducedData}
                         clusterLabel={clustersPredicted}
                         documetsData={summarizedDocuments}
-                        noOfClusters={noOfClusters - 1}
+                        noOfClusters={noOfClusters}
                         topicsGeneratedLabel={topicsGeneratedLabel}
                         documentTopicDistributionThreshold={documentTopicDistributionThreshold}
                         width={1550}

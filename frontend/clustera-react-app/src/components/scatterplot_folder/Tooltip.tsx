@@ -13,6 +13,7 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
     }
 
     const { xPos, yPos, name, color } = interactionData;
+    console.log(interactionData)
 
     return (
         <div
@@ -60,10 +61,9 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
                             (
                                 <div className="font-bold italic ml-1">Cluster {interactionData.documentInformation[2]}</div>
                             ) : (
-                                <div className="font-bold italic ml-1">{interactionData.topicsLabel[interactionData.documentInformation[2]]} [Cluster {interactionData.documentInformation[2] + 1}]</div>
+                                <div className="font-bold italic ml-1">{interactionData.topicsLabel[interactionData.documentInformation[2]]} [Cluster {interactionData.documentInformation[2]}]</div>
                             )
                     }
-                    {/* {interactionData.documentInformation[2]} */}
                 </div>
                 {/* <b>{Math.round(size * 100) / 100}</b> */}
             </div>

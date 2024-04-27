@@ -61,7 +61,6 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
         "#ffccbc", // Light pink
     ];
 
-
     var maxXScale = 0;
     var maxYScale = 0;
 
@@ -150,36 +149,55 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
 
     const scatterplotLegends = [...Array(noOfClusters)].map((x, i) => {
         return (
-            <g key={i}>  {/* Add a unique key for each legend */}
-                <circle
-                    r={4}
-                    cx={1320}
-                    cy={19 * (i + 1) - 3}
-                    fill={colors[i]}
-                />
-                {
-                    topicsGeneratedLabel[i] === null ? (
-                        <text
-                            x={1340}
-                            y={19 * (i + 1) - 2}
-                            fontSize={11}
-                            fontWeight={500}
-                            dominantBaseline="middle" // vertical alignment
-                        >
-                            Cluster {i + 1}
-                        </text>
-                    ) :
-                        <text
-                            x={1340}
-                            y={19 * (i + 1) - 2}
-                            fontSize={11}
-                            fontWeight={500}
-                            dominantBaseline="middle" // vertical alignment
-                        >
-                            {topicsGeneratedLabel[i]} [Cluster {i + 1}]
-                        </text>
-                }
-            </g>
+            i === 0 ? (
+                <g key={i}>  {/* Add a unique key for each legend */}
+                    <circle
+                        r={4}
+                        cx={1320}
+                        cy={19 * (i + 1) - 3}
+                        fill={colors[i]}
+                    />
+                    <text
+                        x={1340}
+                        y={19 * (i + 1) - 2}
+                        fontSize={11}
+                        fontWeight={500}
+                        dominantBaseline="middle" // vertical alignment
+                    >
+                        Cluster {i}
+                    </text>
+                </g>
+            ) :
+                <g key={i}>  {/* Add a unique key for each legend */}
+                    <circle
+                        r={4}
+                        cx={1320}
+                        cy={19 * (i + 1) - 3}
+                        fill={colors[i]}
+                    />
+                    {
+                        topicsGeneratedLabel[i - 1] === null ? (
+                            <text
+                                x={1340}
+                                y={19 * (i + 1) - 2}
+                                fontSize={11}
+                                fontWeight={500}
+                                dominantBaseline="middle" // vertical alignment
+                            >
+                                Cluster {i}
+                            </text>
+                        ) :
+                            <text
+                                x={1340}
+                                y={19 * (i + 1) - 2}
+                                fontSize={11}
+                                fontWeight={500}
+                                dominantBaseline="middle" // vertical alignment
+                            >
+                                {topicsGeneratedLabel[i - 1]} [Cluster {i}]
+                            </text>
+                    }
+                </g>
         );
     });
 
