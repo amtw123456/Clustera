@@ -10,6 +10,7 @@ import { Tooltip } from "./Tooltip";
 const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold, topicsGeneratedLabel }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
     const colors = [
+        "#ffffff",
         "#e0ac2b", // Orange
         "#e85252", // Red
         "#6689c6", // Blue
@@ -156,6 +157,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         cx={1320}
                         cy={19 * (i + 1) - 3}
                         fill={colors[i]}
+                        strokeWidth={1}
+                        stroke={"gray"}
                     />
                     <text
                         x={1340}
@@ -174,6 +177,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         cx={1320}
                         cy={19 * (i + 1) - 3}
                         fill={colors[i]}
+                        strokeWidth={1}
+                        stroke={"gray"}
                     />
                     {
                         topicsGeneratedLabel[i - 1] === null ? (

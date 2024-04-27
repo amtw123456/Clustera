@@ -13,6 +13,7 @@ const MARGIN_Y = 50;
 const INFLEXION_PADDING = 1; // space between donut and label inflexion point
 
 const colors = [
+    "#ffffff",
     "#e0ac2b", // Orange
     "#e85252", // Red
     "#6689c6", // Blue
