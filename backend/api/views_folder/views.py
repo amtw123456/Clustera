@@ -160,7 +160,6 @@ def compute_clusters_silhouette_score(request):
 
     document_similarity_matrix = pairwise_distances(documentTopicDistribution, metric='cosine')
     silhouette_scores = silhouette_score(document_similarity_matrix, documentLabels)
-    print(silhouette_score)
 
     return Response(
         data={

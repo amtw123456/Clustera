@@ -29,29 +29,31 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
     return (
         <div class="flex-1 flex-col flex items-center">
-            <div class="w-4/5 h-[500px] border border-gray-200 mt-36">
+            <div class="w-3/5 h-[500px] border border-gray-200 mt-36">
                 <div class="flex flex-col items-center">
                     <div>Export Section</div>
-                    <div class="w-full px-3 h-[225px] overflow-auto">
-                        <div>Clusters</div>
-                        {
-
-                            Array.from(Array(noOfClusters - 1), (item, index) => (
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        {
-                                            topicsGeneratedLabel[index] === null ? (
-                                                <div>Cluster {index + 1} Label: Unlabeled</div>
-                                            ) :
-                                                // <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
-                                                <div>Cluster {index + 1} Label: {topicsGeneratedLabel[index]}</div>
-                                        }
-                                    </div>
-                                </div>
-                            ))
-
-                        }
+                    <div class="w-full px-3">
+                        <div class="w-1/3 h-[225px] overflow-auto">
+                            <div class="w-full flex flex-col items-center ">
+                                <div class="font-bold">Clusters</div>
+                                {
+                                    Array.from(Array(noOfClusters - 1), (item, index) => (
+                                        <div class="flex flex-row">
+                                            <input type="checkbox" />
+                                            <div class="ml-3 flex-grow">
+                                                {
+                                                    topicsGeneratedLabel[index] === null ? (
+                                                        <div>Cluster {index + 1} Label: Unlabeled</div>
+                                                    ) :
+                                                        // <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                                        <div>Cluster {index + 1} Label: {topicsGeneratedLabel[index]}</div>
+                                                }
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <button onClick={handleExportClick}>
