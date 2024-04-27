@@ -7,7 +7,7 @@ import styles from "./scatterplot.module.css";
 import { Tooltip } from "./Tooltip";
 
 
-const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold }: ScatterplotProps) => {
+const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold, topicsGeneratedLabel }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
     const colors = [
         "#e0ac2b", // Orange
@@ -120,15 +120,28 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                     cy={19 * (i + 1) - 3}
                     fill={colors[i]}
                 />
-                <text
-                    x={1340}
-                    y={19 * (i + 1) - 2}
-                    fontSize={16}
-                    fontWeight={500}
-                    dominantBaseline="middle" // vertical alignment
-                >
-                    Cluster {i}
-                </text>
+                {
+                    topicsGeneratedLabel[i] === null ? (
+                        <text
+                            x={1340}
+                            y={19 * (i + 1) - 2}
+                            fontSize={16}
+                            fontWeight={500}
+                            dominantBaseline="middle" // vertical alignment
+                        >
+                            Cluster {i + 1}
+                        </text>
+                    ) :
+                        <text
+                            x={1340}
+                            y={19 * (i + 1) - 2}
+                            fontSize={16}
+                            fontWeight={500}
+                            dominantBaseline="middle" // vertical alignment
+                        >
+                            {topicsGeneratedLabel[i]} [Cluster {i + 1}]
+                        </text>
+                }
             </g>
         );
     });

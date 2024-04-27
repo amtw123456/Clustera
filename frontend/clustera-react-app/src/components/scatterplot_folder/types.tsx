@@ -15,6 +15,7 @@ export type ScatterplotProps = {
     documentTopicDistributionThreshold: number;
     reducedData: [];
     clusterLabel: [];
+    topicsGeneratedLabel: [];
     documetsData: Object[]
 };
 

@@ -2,10 +2,36 @@
 import React, { useEffect, useState } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
 import PieChart from './piechart.tsx'
+import { IoDocumentSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+import Popup from 'reactjs-popup';
 
 function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel }) {
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
+
+    const [reRenderComponent, setReRenderComponent] = useState(false)
+    const [newInputLabel, setNewInputLabel] = useState('');
+
+    function setClusterCategoryLabel(index, close) {
+        // Add your logic here to handle closing or saving data
+
+        topicsGeneratedLabel[index] = newInputLabel
+        setNewInputLabel('')
+        setReRenderComponent(true)
+
+        close()
+    }
+
+    const handleInputLabelChange = (event) => {
+        // Update the input value state
+        setNewInputLabel(event.target.value);
+    };
+
+    useEffect(() => {
+        setReRenderComponent(false)
+    }, [reRenderComponent]);
+
     useEffect(() => {
         var temp = 0;
         topicCoheranceGenerated.slice(1).map((coheranceScore, index) => {
@@ -61,10 +87,98 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                         <div class="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
                                             <div class="flex text-base flex ml-[3px] px-1 items-center">Cluster Label: </div>
                                             {
-                                                topicsGeneratedLabel[index] === null ? (
-                                                    <div class="font-bold italic ml-1 border rounded-md m-1 px-1 text-yellow-400 bg-yellow-100 border-yellow-400">Input Category name?</div>
+                                                topicsGeneratedLabel[index] === null ? (<>
+
+                                                    < Popup
+                                                        contentStyle={{
+                                                            borderRadius: "10px",
+                                                            overflow: "auto",
+                                                            border: "none",
+                                                            padding: "0",
+                                                            width: '500px',
+                                                            height: '150px',
+                                                        }}
+                                                        trigger=
+                                                        {
+                                                            < button class="inline-block border text-purple-600 p-0 flex flex-row items-center bg-yellow-100 border-yellow-400 text-yellow-400 rounded-md m-1 px-1 text-yellow-400">
+                                                                <div class="font-bold italic ml-1">Input Category name?</div>
+                                                                <div onClick={null} class="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
+                                                                    <FaEdit />
+                                                                </div>
+                                                            </button >
+                                                        }
+                                                        modal
+                                                        nested
+                                                    >
+                                                        {close => (
+                                                            <div style={{ maxHeight: "90vh" }}>
+                                                                <div class="px-5 pb-2 flex flex-col items-center">
+                                                                    <div class="flex flex-row items-end">
+                                                                        <div class="text-3xl ml-7 font-bold inline-block text">
+                                                                            <div class="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input
+                                                                        type="text"
+                                                                        value={newInputLabel}
+                                                                        onChange={handleInputLabelChange}
+                                                                        placeholder=""
+                                                                        class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
+                                                                    />
+                                                                    <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </Popup >
+                                                </>
+
+
                                                 ) :
-                                                    <div class="font-bold italic ml-1 text-yellow-400 m-1 px-1 border rounded-md bg-yellow-100 border-yellow-400">{topicsGeneratedLabel[index]}</div>
+                                                    <div class="font-bold italic ml-1 m-1 px-1 border rounded-md bg-yellow-100 border-yellow-400">
+                                                        < Popup
+                                                            contentStyle={{
+                                                                borderRadius: "10px",
+                                                                overflow: "auto",
+                                                                border: "none",
+                                                                padding: "0",
+                                                                width: '500px',
+                                                                height: '150px',
+                                                            }}
+                                                            trigger=
+                                                            {
+                                                                < button class="inline-block text-purple-600 p-0 flex flex-row items-center text-yellow-400 ">
+                                                                    <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                                                    <div onClick={null} class="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
+                                                                        <FaEdit />
+                                                                    </div>
+                                                                </button >
+                                                            }
+                                                            modal
+                                                            nested
+                                                        >
+                                                            {close => (
+                                                                <div style={{ maxHeight: "90vh" }}>
+                                                                    <div class="px-5 pb-2 flex flex-col items-center">
+                                                                        <div class="flex flex-row items-end">
+                                                                            <div class="text-3xl ml-7 font-bold inline-block text">
+                                                                                <div class="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={newInputLabel}
+                                                                            onChange={handleInputLabelChange}
+                                                                            placeholder=""
+                                                                            class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
+                                                                        />
+                                                                        <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </Popup >
+                                                    </div>
                                             }
                                             {/* <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
                                         </div>

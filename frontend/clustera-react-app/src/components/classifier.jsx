@@ -46,7 +46,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
         return (
             <div className="w-[750px] h-8 bg-gray-300 rounded">
                 {/* Render the filled portion */}
-                <div className="h-full bg-blue-500 rounded" style={{ width: filledWidth }}>
+                <div className="h-full bg-blue-800 rounded" style={{ width: filledWidth }}>
                     <div class="ml-1 text-white text-sm p-1">{percentage}%</div>
 
                 </div>
