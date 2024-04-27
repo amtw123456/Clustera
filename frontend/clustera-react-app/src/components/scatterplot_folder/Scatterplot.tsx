@@ -75,7 +75,8 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
         if ((documetsData[index] as any).includeToClusterBool) {
             data.push({
                 name: "Document: " + index,
-                documentTopicDistribution: (documetsData[index] as any).documentTopicDistribution,
+                documentInformation: [(documetsData[index] as any).documentTopicDistribution, (documetsData[index] as any).clusterLabel, (documetsData[index] as any).clusterId],
+                topicsLabel: topicsGeneratedLabel,
                 x: parseFloat(item[0]),
                 y: parseFloat(item[1]),
                 size: 1,

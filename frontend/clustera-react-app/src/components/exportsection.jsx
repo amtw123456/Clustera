@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import WordCloudChart from './wordcloudchart.tsx';
-import Scatterplot from "./scatterplot_folder/Scatterplot.tsx";
-import { data } from "./scatterplot_folder/data.tsx";
-
 
 function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clustersGenerated, documentTopicDistributionThreshold, topicsGeneratedLabel }) {
 

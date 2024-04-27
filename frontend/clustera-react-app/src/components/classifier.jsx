@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from '../providers/AppState.jsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
-import { data } from "./scatterplot_folder/data";
 
 
 function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) {

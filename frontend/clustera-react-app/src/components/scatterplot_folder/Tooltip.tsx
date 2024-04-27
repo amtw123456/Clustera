@@ -1,3 +1,4 @@
+import { index } from "d3";
 import styles from "./tooltip.module.css";
 import { InteractionData } from "./types";
 import React, { useState } from 'react';
@@ -11,7 +12,7 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
         return null;
     }
 
-    const { xPos, yPos, name, color, x, y, size } = interactionData;
+    const { xPos, yPos, name, color } = interactionData;
 
     return (
         <div
@@ -27,17 +28,23 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
                 <div className={styles.row}>
                     <div className="flex-col flex justify-center mb-10">
                         {
-                            interactionData.documentTopicDistribution.map((TopicDistribution, Index) => (
-                                <div>
-                                    {TopicDistribution * 100}
+                            interactionData.documentInformation[0].map((topicDistribution, index) => (
+                                <div className="flex flex-row">
+                                    <div>
+                                        {(topicDistribution * 100).toFixed(2)}%
+                                    </div>
+                                    <div>
+                                        {
+                                            interactionData.topicsLabel[index] === null ? (
+                                                <div className="font-bold italic ml-1">Cluster {index + 1}</div>
+                                            ) :
+                                                <div className="font-bold italic ml-1">{interactionData.topicsLabel[index]} [Cluster {index + 1}]</div>
+                                        }
+                                    </div>
                                 </div>
                             ))
                         }
                     </div>
-                    <b></b>
-                </div>
-                <div className={styles.row}>
-                    <span>================</span>
                     <b></b>
                 </div>
             </div>
@@ -45,12 +52,20 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
             <div className={styles.separator} />
 
             <div className={styles.row}>
-                <span>
-                    ============
-                    <br />
-                    =============
-                </span>
-                <b>{Math.round(size * 100) / 100}</b>
+                <div>
+                    {
+                        interactionData.documentInformation[2] === 0 ? (
+                            <div className="font-bold italic ml-1">Unclustered</div>
+                        ) : interactionData.topicsLabel[interactionData.documentInformation[2]] === null ?
+                            (
+                                <div className="font-bold italic ml-1">Cluster {interactionData.documentInformation[2]}</div>
+                            ) : (
+                                <div className="font-bold italic ml-1">{interactionData.topicsLabel[interactionData.documentInformation[2]]} [Cluster {interactionData.documentInformation[2] + 1}]</div>
+                            )
+                    }
+                    {/* {interactionData.documentInformation[2]} */}
+                </div>
+                {/* <b>{Math.round(size * 100) / 100}</b> */}
             </div>
         </div>
     );

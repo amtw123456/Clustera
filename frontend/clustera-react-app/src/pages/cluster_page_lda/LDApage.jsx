@@ -166,8 +166,14 @@ function LDApage() {
         documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
       }
     })
+
     documentsProvider.map((item, index) => (
       documentsProvider[index].includeToClusterBool = true
+    ))
+
+
+    documentsProvider.map((item, index) => (
+      documentsProvider[index].clusterLabel = "Unlabeled"
     ))
   };
 
@@ -265,7 +271,6 @@ function LDApage() {
         classifierTopicDistribution.push(documentsProvider[i].documentTopicDistribution)
         classifierDocumentsText.push(documentsProvider[i].pDocument)
         classifierDocumentId.push(documentsProvider[i].documentId)
-
       }
     }
     return [classifierDocumentsText, classifierDocumentClusterId, classifierTopicDistribution, classifierDocumentId]

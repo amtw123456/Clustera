@@ -1,5 +1,6 @@
 export type DataItem = {
-    documentTopicDistribution: [];
+    documentInformation: [[], string, number];
+    topicsLabel: [];
     name: string;
     x: number;
     y: number;

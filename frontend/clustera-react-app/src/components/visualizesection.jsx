@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
-import { data } from "./scatterplot_folder/data";
 const HEADER_HEIGHT = 120;
 const PADDING = 20;
 
