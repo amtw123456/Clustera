@@ -164,7 +164,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         fontWeight={500}
                         dominantBaseline="middle" // vertical alignment
                     >
-                        Cluster {i}
+                        Unlabeled Documents [Cluster {i}]
                     </text>
                 </g>
             ) :
