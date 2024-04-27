@@ -262,7 +262,7 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
 }
 
 
-function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold }) {
+function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold, topicsGeneratedLabel }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -285,7 +285,14 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                 <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div class="w-auto rounded-r-lg mt-2">
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
-                            {"Cluster Label: Sports"}
+
+                            {
+                                topicsGeneratedLabel[index] === null ? (
+                                    <div>Cluster Label: Unlabeled</div>
+                                ) :
+                                    // <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                    <div>Cluster Label: {topicsGeneratedLabel[index]}</div>
+                            }
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
                             {"Cluster No: " + (index + 1)}
@@ -349,7 +356,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                                             {/* {summarizedDocuments[value].documentTopicDistribution} */}
                                                         </div>
                                                         <div class="overflow-auto h-[100px] pr-3" style={{ maxHeight: "80vh" }}>
-                                                            {summarizedDocuments[value].uDocument}&nbsp; < AiFillEye className="inline-block text-purple-800 text-lg" />
+                                                            {summarizedDocuments[value].uDocument}&nbsp;
                                                         </div>
                                                     </div>
                                                 </div>

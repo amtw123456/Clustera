@@ -125,7 +125,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         <text
                             x={1340}
                             y={19 * (i + 1) - 2}
-                            fontSize={16}
+                            fontSize={11}
                             fontWeight={500}
                             dominantBaseline="middle" // vertical alignment
                         >
@@ -135,7 +135,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         <text
                             x={1340}
                             y={19 * (i + 1) - 2}
-                            fontSize={16}
+                            fontSize={11}
                             fontWeight={500}
                             dominantBaseline="middle" // vertical alignment
                         >

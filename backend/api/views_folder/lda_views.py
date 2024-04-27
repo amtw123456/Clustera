@@ -92,6 +92,7 @@ def text_clustering_lda(request):
         top_words_indices = topic.argsort()[:-45:-1]  # Get indices of top 10 words for each topic
         top_words = [feature_names[i] for i in top_words_indices]
         topics.append(top_words)
+        print(top_words)
     
     for index, topic in enumerate(topics[1:]):
         coherence_model_lda = CoherenceModel(topics=[topic], texts=tokens, dictionary=dictionary, coherence='u_mass')

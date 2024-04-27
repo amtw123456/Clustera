@@ -253,7 +253,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                 </div>
                 <div class="flex flex-row w-3/4 border rounded-lg ml-1">
                     <div class="w-full">
-                        <div class="text-center mt-1 font-bold">Topics Word Frequency Counts</div>
+                        <div class="text-center mt-1 font-bold italic">Topics Word Frequency Counts</div>
                         <div class="w-full h-[340px] mt-1 overflow-hidden flex-wrap flex flex-col ">
                             {
                                 topicsGenerated.slice(1).map((topics, index) => (

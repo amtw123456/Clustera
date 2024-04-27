@@ -1,6 +1,6 @@
 import { SDocumentsCard, ClusteredGeneratedCard, TopicsGeneratedCard, DocumentTopicDistributionCard } from '../../components/docscard.jsx';
-
 import DataSummarySection from '../../components/datasummary.jsx';
+import ExportSection from '../../components/exportsection.jsx';
 import VisualizationSection from '../../components/visualizesection.jsx';
 import Classifier from '../../components/classifier.jsx';
 import React, { useEffect, useState, useContext } from "react";
@@ -10,6 +10,7 @@ import NavigationBar from '../../components/navbar.jsx';
 import { ImNotification } from "react-icons/im";
 import { Tooltip } from 'react-tooltip'
 import { filter } from 'd3';
+// import ExportSection from '../../components/exportsection.jsx';
 
 function LDApage() {
 
@@ -488,7 +489,12 @@ function LDApage() {
             </>
 
           ) : isExportBool ? (
-            <div class="ml-4 italic text-base">Export</div>
+            <>
+              <div class="ml-4 italic text-base">Export</div>
+              <div class="mx-4 mt-12 my-5 flex-row flex">
+                <div class="italic">No Options for this section</div>
+              </div>
+            </>
           ) : <></>
         }
 
@@ -590,7 +596,7 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} />
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
@@ -605,18 +611,21 @@ function LDApage() {
             {/* {the key for this part of the code forces the VisualizationSection to rebuild everytime the tsneParameter is Updated} */}
             <VisualizationSection key={JSON.stringify(tsneParameters)} summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} clustersPredicted={clustersPredicted} noOfClusters={noOfClustersInputParams + 1} tsneParameters={tsneParameters} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
-        ) : isClassifierBool ?
+        ) : isClassifierBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
             <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
-          : (
-            < div class="ml-80 flex flex-wrap items-center">
-              <div class="flex-1">
-                <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
-                <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
-              </div>
-            </div >
-          )
+        ) : isExportBool ? (
+          <div class="ml-80 flex flex-row flex-wrap">
+            <ExportSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} />
+          </div >
+        ) :
+          < div class="ml-80 flex flex-wrap items-center">
+            <div class="flex-1">
+              <div class="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Summarize Documents loaded yet to the page!</div>
+              <div class="text-center text-blue-600 text-xl underline-offset-4">Please press the Cluster Documents button in the Sidebar!</div>
+            </div>
+          </div >
       }
     </div >
   );

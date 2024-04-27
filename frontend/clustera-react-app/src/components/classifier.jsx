@@ -44,7 +44,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
         const filledWidth = `${percentage}%`;
 
         return (
-            <div className="w-[750px] h-8 bg-gray-300 rounded">
+            <div className="w-[1100px] h-8 bg-gray-300 rounded">
                 {/* Render the filled portion */}
                 <div className="h-full bg-blue-800 rounded" style={{ width: filledWidth }}>
                     <div class="ml-1 text-white text-sm p-1">{percentage}%</div>
@@ -66,9 +66,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
 
                                     {
                                         topicsGeneratedLabel[index] === null ? (
-                                            <>No Label yet [Cluster {index + 1}]</>
+                                            <>Unlabeled Cluster [Cluster {index + 1}]</>
                                         ) :
-                                            <> {topicsGeneratedLabel[index]} [Cluster {index + 1}]</>
+                                            <>{topicsGeneratedLabel[index]} [Cluster {index + 1}]</>
                                     }
 
 
