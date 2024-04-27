@@ -44,7 +44,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
         const filledWidth = `${percentage}%`;
 
         return (
-            <div className="w-[750px] h-8 bg-gray-200 rounded">
+            <div className="w-[750px] h-8 bg-gray-300 rounded">
                 {/* Render the filled portion */}
                 <div className="h-full bg-blue-500 rounded" style={{ width: filledWidth }}>
                     <div class="ml-1 text-white text-sm p-1">{percentage}%</div>
@@ -56,10 +56,10 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
 
     return (
         classifierModel ? (
-            <div class="flex-1 px-5 w-full items-center ">
-                <div class="text-center font-bold">Classifier Labels</div>
-                <div class="w-full overflow-hidden justify-center">
-                    <div class="flex-row flex-wrap flex mt-4 justify-center">
+            <div class="flex-1 px-5 w-full">
+                <div class="ml-12 font-bold">Classifier Labels</div>
+                <div class="w-full overflow-hidden">
+                    <div class="flex-row flex-wrap flex mt-4">
                         {topicsGenerated.slice(1).map((topics, index) => (
                             <div class="border flex flex-col w-80 mx-3 my-1 h-[100px] overflow-auto rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400 justify-center px-2">
                                 <div class="flex flex-row flex-wrap italic max-w-[500px] mt-2 font-bold text-base justify-center">
@@ -77,13 +77,11 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
                         ))}
                     </div>
                 </div>
-
-
-                <div class="justify-center flex mt-5">
-                    <textarea id="classifierTextInput" class="p-2 border rounded-md focus:border-blue-500 focus:outline-none" placeholder="Enter a text to classify" rows="4" cols="140"></textarea>
+                <div class="flex mt-5 ml-3">
+                    <textarea id="classifierTextInput" class="p-2 border rounded-md focus:border-blue-500 focus:outline-none" placeholder="Enter a text to classify" rows="4" cols="180"></textarea>
                 </div>
 
-                <div class="flex justify-center mt-12">
+                <div class="flex ml-3 mt-6">
                     <button onClick={() => ldaClassifyDocument()}>
                         {
                             isClassifierLoading ? (
@@ -100,9 +98,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
                     </button>
                 </div >
 
-                <div class="flex justify-center mt-6">
+                <div class="flex ml-3 mt-6">
                     <div class="flex-col flex items-center">
-                        {
+                        {/* {
                             classifierResult !== undefined ? (
 
                                 <div class="justify-center flex border w-[150px] font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
@@ -111,19 +109,18 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
 
                             ) :
                                 <></>
-                        }
+                        } */}
                         <div className="flex flex-col h-1/2">
                             {
                                 classifierResultDistribution !== undefined ? (
-
                                     classifierResultDistribution.map((topicDistributionList, index) => (
                                         topicDistributionList.map((topicDistribution, index) => (
                                             <>
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
-                                                        <div class="font-bold italic ml-1">Cluster {index + 1}</div>
+                                                        <div class="font-bold   ml-1">Cluster {index + 1}</div>
                                                     ) :
-                                                        <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                                        <div class="font-bold ml-1">{topicsGeneratedLabel[index]}</div>
                                                 }
                                                 <Rectangle percentage={(topicDistribution * 100).toFixed(2)} />
                                             </>
@@ -132,7 +129,17 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
                                         ))
                                     ))
                                 ) :
-                                    <></>
+                                    topicsGenerated.slice(1).map((topicDistributionList, index) => (
+                                        <>
+                                            {
+                                                topicsGeneratedLabel[index] === null ? (
+                                                    <div class="font-bold ml-1">Cluster {index + 1}</div>
+                                                ) :
+                                                    <div class="font-bold ml-1">{topicsGeneratedLabel[index]}</div>
+                                            }
+                                            <Rectangle percentage={0} />
+                                        </>
+                                    ))
                             }
                         </div>
                     </div>
