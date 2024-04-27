@@ -26,7 +26,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
     return (
         <div class="flex-1 flex-col flex items-center">
             <div class="w-3/5 h-[500px] border border-gray-200 mt-36">
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center px-6">
                     <div class="font-bold text-lg">Export Section</div>
                     <div class="w-full px-3 mt-4 flex flex-row">
                         <div class="w-2/5 h-[225px] overflow-auto">
@@ -51,14 +51,46 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                             </div>
                         </div>
                         <div class="ml-4 w-3/5 h-[225px] overflow-auto">
-                            <div class="flex flex-row items-center">
-                                <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
-                                <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="ml-3 block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
-                            </div>
-                            <div class="flex flex-row">
-                                <input type="checkbox" />
-                                <div class="ml-3">
-                                    Download all Clusters
+                            <div class="flex flex-col">
+                                <div class="flex flex-row items-center">
+                                    <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="ml-3 block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Download all Clusters
+                                    </div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Include Document Tokens
+                                    </div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Include Cluster Label
+                                    </div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Include Topics
+                                    </div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Include Document Topic Distribution
+                                    </div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" />
+                                    <div class="ml-3">
+                                        Include pre-processed text
+                                    </div>
                                 </div>
                             </div>
                         </div>

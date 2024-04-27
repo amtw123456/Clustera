@@ -54,7 +54,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                     <div class="font-bold w-full h-[15px] text-center mb-5">Topics Summary</div>
                     <div class="w-full flex flex-col w-[480px]">
                         {topicsGenerated.slice(1).map((topics, index) => (
-                            <div class="border-yellow flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-teal-400 mb-1 rounded-md border-teal-400">
+                            <div class="border-yellow flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-black-400 mb-1 rounded-md border-teal-400">
                                 <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
                                     <div class="flex text-base flex ml-[3px] px-1 ">Topic {index + 1}:</div>
                                     <div class="overflow-hidden flex flex-wrap">
@@ -80,7 +80,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                             <div class="font-bold h-[15px] text-center mb-5">Cluster Summary</div>
                             <div class="flex flex-col">
                                 {Array.from(Array(noOfClusters - 1), (item, index) => (
-                                    <div class="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-teal-400 rounded-md border-teal-400">
+                                    <div class="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-black-400 rounded-md border-teal-400">
                                         <div class="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
                                             <div class="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
                                             <div class="flex flex-wrap">
