@@ -229,12 +229,13 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
                                                 <div class="px-5 pt-2 flex flex-col">
                                                     <div class="flex font-bold mb-2 px-2">Document Topic Distribution</div>
                                                     <div class="m-1 flex flex-wrap text-justify" key={index}>
-                                                        {/* {item.documentTopicDistribution} */}
-                                                        {item.documentTopicDistribution.map((distribution, index) => (
-                                                            <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
-                                                                <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
-                                                            </div>
-                                                        ))}
+                                                        {
+                                                            item.documentTopicDistribution.map((distribution, index) => (
+                                                                <div style={{ width: 'calc(20% - 8px)' }} class="flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400" key={index}>
+                                                                    <div class="px-2 py-[0.5px] text-sm">Topic {index + 1}:&nbsp; {(distribution * 100).toString().slice(0, 9) + "%"}</div>
+                                                                </div>
+                                                            ))
+                                                        }
                                                     </div>
                                                 </div>
 

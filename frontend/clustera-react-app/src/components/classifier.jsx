@@ -4,7 +4,7 @@ import Scatterplot from "./scatterplot_folder/Scatterplot";
 import { data } from "./scatterplot_folder/data";
 
 
-function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters, documentTopicDistributionThreshold, classifierModel }) {
+function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
     const [classifierResult, setClassifierResult] = useState();
@@ -39,6 +39,21 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
         }
     };
 
+    const Rectangle = ({ percentage }) => {
+        // Calculate the width of the filled portion based on the percentage
+        const filledWidth = `${percentage}%`;
+
+        return (
+            <div className="w-[750px] h-8 bg-gray-200 rounded">
+                {/* Render the filled portion */}
+                <div className="h-full bg-blue-500 rounded" style={{ width: filledWidth }}>
+                    <div class="ml-1 text-white text-sm p-1">{percentage}%</div>
+
+                </div>
+            </div>
+        );
+    };
+
     return (
         classifierModel ? (
             <div class="flex-1 px-5 w-full items-center ">
@@ -48,7 +63,7 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
                         {topicsGenerated.slice(1).map((topics, index) => (
                             <div class="border flex flex-col w-80 mx-3 my-1 h-[100px] overflow-auto rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400 justify-center px-2">
                                 <div class="flex flex-row flex-wrap italic max-w-[500px] mt-2 font-bold text-base justify-center">
-                                    <div>Cluster {index + 1}: Cluster Label</div>
+                                    <div>Cluster {index + 1}: {topicsGeneratedLabel[index]}</div>
                                     <div class="flex text-sm flex px-1"></div>
                                     <div class="overflow-auto flex flex-wrap items-center">
                                         {
@@ -97,12 +112,23 @@ function Classifier({ summarizedDocuments, noOfClusters, clustersPredicted, topi
                             ) :
                                 <></>
                         }
-                        <div className="flex flex-row">
+                        <div className="flex flex-col h-1/2">
                             {
                                 classifierResultDistribution !== undefined ? (
+
                                     classifierResultDistribution.map((topicDistributionList, index) => (
                                         topicDistributionList.map((topicDistribution, index) => (
-                                            <div class="px-2 py-1 flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">{index + 1}: {(topicDistribution * 100).toFixed(2)}%</div>
+                                            <>
+                                                {
+                                                    topicsGeneratedLabel[index] === null ? (
+                                                        <div class="font-bold italic ml-1">Cluster {index + 1}</div>
+                                                    ) :
+                                                        <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                                }
+                                                <Rectangle percentage={(topicDistribution * 100).toFixed(2)} />
+                                            </>
+                                            // <div class="px-2 py-1 flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">{index + 1}: {(topicDistribution * 100).toFixed(2)}%</div>
+                                            // <div><Rectangle percentage={50} /></div>
                                         ))
                                     ))
                                 ) :

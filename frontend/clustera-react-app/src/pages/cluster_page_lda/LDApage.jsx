@@ -607,7 +607,7 @@ function LDApage() {
           </div >
         ) : isClassifierBool ?
           <div class="ml-80 flex flex-row flex-wrap">
-            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} />
+            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} />
           </div >
           : (
             < div class="ml-80 flex flex-wrap items-center">
