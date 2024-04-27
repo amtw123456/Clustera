@@ -96,7 +96,7 @@ def text_tokenization(request):
         temp = []
 
         for word in document.split():
-            if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 30:
+            if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
                 # lemmatized_word = WordNetLemmatizer().lemmatize(word)
                 temp.append(word)
 

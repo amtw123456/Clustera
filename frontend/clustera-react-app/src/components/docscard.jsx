@@ -285,7 +285,6 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                 <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div class="w-auto rounded-r-lg mt-2">
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
-
                             {
                                 topicsGeneratedLabel[index] === null ? (
                                     <div>Cluster Label: Unlabeled</div>
