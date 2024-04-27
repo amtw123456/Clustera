@@ -16,15 +16,51 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
         "#9a6fb0", // Purple
         "#a53253", // Dark red
         "#69b3a2", // Light blue
-
-        // New unique colors
         "#ffc107", // Yellow
         "#3f51b5", // Indigo
         "#43a047", // Green
         "#f9845e", // Light orange
         "#d81b60", // Dark pink
         "#738678", // Dark green
+        "#8d6e63", // Brown
+        "#4dd0e1", // Turquoise
+        "#ff6e40", // Dark orange
+        "#ffeb3b", // Amber
+        "#4caf50", // Light green
+        "#ab47bc", // Dark purple
+        "#03a9f4", // Light blue
+        "#9c27b0", // Dark violet
+        "#9e9d24", // Olive
+        "#ef5350", // Coral
+        "#4db6ac", // Teal
+        "#7e57c2", // Light purple
+        "#f06292", // Pink
+        "#4caf50", // Green
+        "#e91e63", // Pink
+        "#cddc39", // Lime
+        "#00bcd4", // Cyan
+        "#673ab7", // Deep purple
+        "#009688", // Dark cyan
+        "#8bc34a", // Lime green
+        "#607d8b", // Blue grey
+        "#795548", // Brown
+        "#ffcdd2", // Light pink
+        "#9fa8da", // Light indigo
+        "#fff176", // Light yellow
+        "#ffcc80", // Light orange
+        "#a5d6a7", // Light green
+        "#90a4ae", // Blue grey
+        "#bcaaa4", // Brown
+        "#d7ccc8", // Light brown
+        "#f8bbd0", // Light pink
+        "#e1bee7", // Light purple
+        "#b2dfdb", // Light cyan
+        "#c8e6c9", // Light green
+        "#ffecb3", // Light amber
+        "#ffe0b2", // Light orange
+        "#ffccbc", // Light pink
     ];
+
 
     var maxXScale = 0;
     var maxYScale = 0;
