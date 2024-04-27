@@ -57,9 +57,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
     return (
         classifierModel ? (
             <div class="flex-1 px-5 w-full">
-                <div class="ml-12 font-bold">Classifier Labels</div>
+                <div class="ml-4 font-bold">Classifier Labels</div>
                 <div class="w-full overflow-hidden">
-                    <div class="flex-row flex-wrap flex mt-4">
+                    <div class="flex-row flex-wrap flex mt-1">
                         {topicsGenerated.slice(1).map((topics, index) => (
                             <div class="border flex flex-col w-80 mx-3 my-1 h-[100px] overflow-auto rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400 justify-center px-2">
                                 <div class="flex flex-row flex-wrap italic max-w-[500px] mt-2 font-bold text-base justify-center">
