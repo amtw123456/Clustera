@@ -1,12 +1,13 @@
 // Sidebar.jsx
-import React, { useEffect, useState } from 'react';
-import WordCloudChart from './wordcloudchart.tsx';
+import React, { useEffect, useState, useContext } from 'react';
 import PieChart from './piechart.tsx'
-import { IoDocumentSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import Popup from 'reactjs-popup';
+import { AppContext } from '../providers/AppState.jsx';
 
 function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel }) {
+    const { wordCounts, setWordCounts } = useContext(AppContext);
+
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
 
@@ -57,9 +58,11 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                 <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
                                     <div class="flex text-base flex ml-[3px] px-1 ">Topic {index + 1}:</div>
                                     <div class="overflow-hidden flex flex-wrap">
-                                        {topics.slice(0, 5).map((topic, topicIndex) => (
-                                            <div class="flex ml-[3px] px-1 border font-bold text-base text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
-                                        ))}
+                                        {
+                                            topics.slice(0, 5).map((topic, topicIndex) => (
+                                                <div class="flex ml-[3px] px-1 border font-bold text-base text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                            ))
+                                        }
                                     </div>
                                 </div>
                                 <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
@@ -248,13 +251,36 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-row w-3/4 justify-start border rounded-lg ml-1">
-                    <div class="w-full"></div>
-                    {/* <WordCloudChart width={500} height={250} /> */}
-                </div>
-            </div>
+                <div class="flex flex-row w-3/4 border rounded-lg ml-1">
+                    <div class="w-full">
+                        <div class="text-center mt-1 font-bold">Topics Word Frequency Counts</div>
+                        <div class="w-full h-[340px] mt-1 overflow-hidden flex-wrap flex flex-col ">
+                            {
+                                topicsGenerated.slice(1).map((topics, index) => (
+                                    topics.slice(0, 7).map((topic, topicIndex) => (
+                                        <div class="ml-[2px] w-[145px] px-1 mt-1 rounded-md">
+                                            <div class="flex flex-row items-center">
+                                                <div class="font-bold text-sm ">
+                                                    {topic}: &nbsp;
+                                                </div>
+                                                <div class="text-sm">
+                                                    {wordCounts.find(item => item[0] === topic)[1]}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))))
+                            }
 
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
         </div >
+
+
     );
 }
 
