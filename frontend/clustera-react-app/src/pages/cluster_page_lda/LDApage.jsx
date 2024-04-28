@@ -368,20 +368,16 @@ function LDApage() {
                   <li class="mt-1">Topic Coherence Score which gauges the interpretability of the generated topics, with lower scores indicating higher interpretability.</li>
                   <li class="mt-1">Silhouette Score which serves as an indicator of the overall quality of clusters. A value closer to 1 suggests better clustering quality.</li>
                 </ul>
-
               </div>
-
-
-
             </>
           ) : isDocumentSummaryBool ? (
             <>
               <div class="ml-4 italic text-base">Documents Summary</div>
-              <div class="mx-4 my-5">
+              <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
-              <div class="flex justify-center mt-12">
+              <div class="flex justify-center mt-6">
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
                     < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
@@ -389,16 +385,24 @@ function LDApage() {
                     </div>
                   }
                 </button>
+              </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Document Summary)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
               </div>
             </>
           ) : isClusteredGeneratedBool ? (
             <>
               <div class="ml-4 italic text-base">Clusters Generated</div>
-              <div class="mx-4 my-5">
+              <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
-              <div class="flex justify-center mt-12">
+              <div class="flex justify-center mt-6">
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
                     < div class="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
@@ -406,6 +410,14 @@ function LDApage() {
                     </div>
                   }
                 </button>
+              </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Clusters Generated)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
               </div>
             </>
           ) : isDocumentTopicDistributionBool ? (
@@ -424,22 +436,38 @@ function LDApage() {
                   }
                 </button>
               </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Docoument Topic Distribution)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
+              </div>
             </>
           ) : isTopicsGeneratedBool ? (
             <>
               <div class="ml-4 italic text-base">Topics Generated</div>
-              <div class="mx-4 mt-12 my-5 flex-row flex">
+              <div class="mx-4 mt-6 my-5 flex-row flex">
                 <div class="italic">No Options for this section</div>
+              </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Topics Generated)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
               </div>
             </>
           ) : isClassifierBool ? (
             <>
               <div class="ml-4 italic text-base">Classifier</div>
-              <div class="mx-4 my-5">
+              <div class="mx-3 my-5">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
-              <div class="flex justify-center mt-12">
+              <div class="flex justify-center mt-6">
                 <button onClick={() => trainClassifier()}>{ }
                   {
                     isLoading ? (
@@ -454,11 +482,19 @@ function LDApage() {
                   }
                 </button>
               </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Classifier)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
+              </div>
             </>
           ) : isVisualizeBool ? (
             <>
               <div class="ml-4 italic text-base">Visualize</div>
-              <div class="mx-4 my-5 flex-row flex">
+              <div class="mx-4 my-3 flex-row flex">
                 <div>
                   <div class="flex flex-row justify-center">
                     <a className="min-df-tooltip"><ImNotification class="flex mt-1 text-xs" /></a>
@@ -480,19 +516,19 @@ function LDApage() {
                   <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={angle} onInput={(e) => handleInputAngle(e)} />
                 </div>
               </div>
-              <div class="mx-4 my-5">
+              <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Number of Iterations:</div>
                 <input type="number" placeholder="" min="250" step="25" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfIterations} onInput={(e) => handleInputNoOfIterations(e)} />
               </div>
-              <div class="mx-4 my-5">
+              <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Learning Rate:</div>
                 <input type="number" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
               </div>
-              <div class="mx-4 my-5">
+              <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
-              <div class="flex justify-center mt-12">
+              <div class="flex justify-center mt-6">
                 <button onClick={() => recomputeTsneValue()}>
                   {
                     isLoading ? (
@@ -506,6 +542,14 @@ function LDApage() {
                       </div>
                   }
                 </button>
+              </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Visualize)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+
+                </ul>
               </div>
             </>
 
