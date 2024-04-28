@@ -13,22 +13,13 @@ export function Upload() {
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
-
-    setIsLoading(true);
     setUploadedData(jsonData);
     buildDocumentsFromUpload(jsonData);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3500);
-    // setUploadedData(jsonData);
-    // buildDocumentsFromUpload(jsonData);
-
-
   }, [jsonData]);
 
   const uploadDocuments = (e) => {
     const file = e.target.files[0];
+    setIsLoading(true);
 
     if (file) {
       const fileReader = new FileReader();
@@ -47,6 +38,9 @@ export function Upload() {
           console.error("Error parsing JSON:", error);
         }
       };
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3500);
     }
   };
 

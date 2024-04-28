@@ -13,7 +13,6 @@ export const Tooltip = ({ interactionData }: TooltipProps) => {
     }
 
     const { xPos, yPos, name, color } = interactionData;
-    console.log(interactionData)
 
     return (
         <div

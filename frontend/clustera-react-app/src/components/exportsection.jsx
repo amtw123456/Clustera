@@ -4,6 +4,45 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [includeAllClusters, setIncludeAllClusters] = useState(true)
+    const [includeDocumentTokens, setIncludeDocumentTokens] = useState(true)
+    const [includeClusterLabel, setIncludeClusterLabel] = useState(true)
+    const [includeTopicsRelatedToDocument, setIncludeTopicsRelatedToDocument] = useState(true)
+    const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(true)
+    const [includePreProcessedText, setIncludePreProcessedText] = useState(true)
+    const [checkboxes, setCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
+
+    const handleDownloadOptionsCheckboxChange = (checkboxName) => {
+        switch (checkboxName) {
+            case 'includeAllClusters':
+                setIncludeAllClusters(!includeAllClusters);
+                break;
+            case 'includeDocumentTokens':
+                setIncludeDocumentTokens(!includeDocumentTokens);
+                break;
+            case 'includeClusterLabel':
+                setIncludeClusterLabel(!includeClusterLabel);
+                break;
+            case 'includeTopicsRelatedToDocument':
+                setIncludeTopicsRelatedToDocument(!includeTopicsRelatedToDocument);
+                break;
+            case 'includeDocumentTopicDistribution':
+                setIncludeDocumentTopicDistribution(!includeDocumentTopicDistribution);
+                break;
+            case 'includePreProcessedText':
+                setIncludePreProcessedText(!includePreProcessedText);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleIncludeClusterCheckboxChange = (index) => {
+        const newCheckboxes = [...checkboxes];
+        newCheckboxes[index] = !newCheckboxes[index];
+        setCheckboxes(newCheckboxes);
+    };
+
     const handleExportClick = () => {
         setIsLoading(true);
 
@@ -23,6 +62,11 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
         }, 1000);
     };
 
+
+    useEffect(() => {
+        console.log(checkboxes)
+    }, [checkboxes]);
+
     return (
         <div class="flex-1 flex-col flex items-center">
             <div class="w-3/5 h-[500px] border border-gray-200 mt-36">
@@ -33,9 +77,9 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                             <div class="w-full flex flex-col">
                                 <div class="font-bold text-center">Pick Clusters to Download</div>
                                 {
-                                    Array.from(Array(noOfClusters - 1), (item, index) => (
+                                    checkboxes.map((isChecked, index) => (
                                         <div class="flex flex-row">
-                                            <input type="checkbox" />
+                                            <input type="checkbox" checked={isChecked} onChange={() => handleIncludeClusterCheckboxChange(index)} />
                                             <div class="ml-3 flex-grow">
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
@@ -56,40 +100,30 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                                     <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                                     <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="ml-3 block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
                                 </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Download all Clusters
+                                <div>
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeAllClusters} onChange={() => handleDownloadOptionsCheckboxChange('includeAllClusters')} />
+                                        <div className="ml-3">Include All Clusters</div>
                                     </div>
-                                </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Include Document Tokens
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeDocumentTokens} onChange={() => handleDownloadOptionsCheckboxChange('includeDocumentTokens')} />
+                                        <div className="ml-3">Include Document Tokens</div>
                                     </div>
-                                </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Include Cluster Label
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeClusterLabel} onChange={() => handleDownloadOptionsCheckboxChange('includeClusterLabel')} />
+                                        <div className="ml-3">Include Cluster Label</div>
                                     </div>
-                                </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Include Topics
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeTopicsRelatedToDocument} onChange={() => handleDownloadOptionsCheckboxChange('includeTopicsRelatedToDocument')} />
+                                        <div className="ml-3">Include Topics</div>
                                     </div>
-                                </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Include Document Topic Distribution
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeDocumentTopicDistribution} onChange={() => handleDownloadOptionsCheckboxChange('includeDocumentTopicDistribution')} />
+                                        <div className="ml-3">Include Document Topic Distribution</div>
                                     </div>
-                                </div>
-                                <div class="flex flex-row">
-                                    <input type="checkbox" />
-                                    <div class="ml-3">
-                                        Include pre-processed text
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includePreProcessedText} onChange={() => handleDownloadOptionsCheckboxChange('includePreProcessedText')} />
+                                        <div className="ml-3">Include Pre-Processed Text</div>
                                     </div>
                                 </div>
                             </div>
