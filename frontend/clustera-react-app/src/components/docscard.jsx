@@ -409,14 +409,11 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsG
     }, []);
 
     function setClusterDocumentsCategoryLabel(clusterIndex, documentLabel) {
-        // Add your logic here to handle closing or saving data
         summarizedDocuments.map((document, index) => {
-            if (document.includeToClusterBool && clusterIndex === document.clusterId) {
+            if (clusterIndex === document.clusterId) {
                 document.clusterLabel = documentLabel;
             }
         })
-
-        console.log(summarizedDocuments)
     }
 
     function setClusterCategoryLabel(index, close) {

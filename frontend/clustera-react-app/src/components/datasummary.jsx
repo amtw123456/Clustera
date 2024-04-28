@@ -14,6 +14,14 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
     const [reRenderComponent, setReRenderComponent] = useState(false)
     const [newInputLabel, setNewInputLabel] = useState('');
 
+    function setClusterDocumentsCategoryLabel(clusterIndex, documentLabel) {
+        summarizedDocuments.map((document, index) => {
+            if (clusterIndex === document.clusterId) {
+                document.clusterLabel = documentLabel;
+            }
+        })
+    }
+
     function setClusterCategoryLabel(index, close) {
         // Add your logic here to handle closing or saving data
 
@@ -128,7 +136,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                                         placeholder=""
                                                                         class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
                                                                     />
-                                                                    <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+                                                                    <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close); setClusterDocumentsCategoryLabel(index + 1, newInputLabel) }}>Save</button>
 
                                                                 </div>
                                                             </div>
