@@ -66,7 +66,7 @@ def text_tokenization(request):
     # with open(json_file_path, 'r') as file:
     #     data = json.load(file)
 
-    texts = [item.get('postText', '') for item in responseData]
+    texts = [item.get('text', '') for item in responseData]
     # print(texts)
 
     filtered_documents = []

@@ -48,7 +48,7 @@ export function Upload() {
 
     var listOfDocuments = []
     data.map((item, index) => (
-      listOfDocuments.push(new Document(index, item.postText, null, null, null, null, null, null))
+      listOfDocuments.push(new Document(index, item.text, null, null, null, null, null, null))
     ))
 
     setDocumentsProvider(listOfDocuments);

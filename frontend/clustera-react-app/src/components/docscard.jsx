@@ -30,7 +30,7 @@ function UDocumentsCard({ uploadedData }) {
                 <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg" key={index}>
                     <div className="my-2 pb-2 pt-2 px-2">
                         <div>
-                            {index + 1 + ". " + item.postText.slice(0, 140) + ".......   "}
+                            {index + 1 + ". " + item.text.slice(0, 140) + ".......   "}
                             <AiFillEye className="inline-block text-purple-800 text-lg" />
                             {"      "}
                             <Popup
@@ -49,12 +49,12 @@ function UDocumentsCard({ uploadedData }) {
                                             <IoDocumentSharp className="text-3xl pb-1 text-gray-700" /><div className="text-3xl font-bold inline-block"> Document {index + 1} Text</div>
                                         </div>
                                         <div className="overflow-auto p-5 text-justify flex flex-col justify-center" style={{ maxHeight: "50vh" }}>
-                                            <div className="pb-5">{item.postText}</div>
+                                            <div className="pb-5">{item.text}</div>
                                         </div>
                                         <div className="border-t border-gray-300 my-4"></div>
                                         <div className="flex flex-row justify-between items-end b-5 pb-4 px-5">
                                             <button className="inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={close}>Close</button>
-                                            <div className="text-sm italic">Length of Document Characters: {item.postText.length} </div>
+                                            <div className="text-sm italic">Length of Document Characters: {item.text.length} </div>
                                         </div>
                                     </div>
                                 )}

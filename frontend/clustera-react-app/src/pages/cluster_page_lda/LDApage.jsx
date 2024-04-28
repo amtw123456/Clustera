@@ -170,11 +170,10 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].includeToClusterBool = true
     ))
-
-
     documentsProvider.map((item, index) => (
       documentsProvider[index].clusterLabel = "Unlabeled"
     ))
+    console.log(documentsProvider)
   };
 
   const handleInputNoOfClusters = (e) => {
@@ -342,7 +341,7 @@ function LDApage() {
                 <div class="font-bold text-sm mb-2">Number of Clusters:</div>
                 <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
               </div>
-              <div class="flex justify-center mt-12">
+              <div class="flex justify-center mt-8">
                 <button onClick={() => clusterUsingLda()}>
                   {
                     isLoading ? (
@@ -356,6 +355,9 @@ function LDApage() {
                       </div>
                   }
                 </button>
+              </div>
+              <div class="flex justify-center mt-4 px-6 text-center font-bold">
+                How to Use this Data Summary Section?
               </div>
             </>
           ) : isDocumentSummaryBool ? (
