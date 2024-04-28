@@ -4,38 +4,58 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [includeAllClusters, setIncludeAllClusters] = useState(true)
-    const [includeDocumentTokens, setIncludeDocumentTokens] = useState(true)
-    const [includeClusterLabel, setIncludeClusterLabel] = useState(true)
-    const [includeTopicsRelatedToDocument, setIncludeTopicsRelatedToDocument] = useState(true)
-    const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(true)
-    const [includePreProcessedText, setIncludePreProcessedText] = useState(true)
+    const [includeAllClusters, setIncludeAllClusters] = useState(false)
+    const [includeDocumentTokens, setIncludeDocumentTokens] = useState(false)
+    const [includeClusterLabel, setIncludeClusterLabel] = useState(false)
+    const [includeTopicsRelatedToDocument, setIncludeTopicsRelatedToDocument] = useState(false)
+    const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(false)
+    const [includePreProcessedText, setIncludePreProcessedText] = useState(false)
     const [checkboxes, setCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
+    const [selectedAttributes, setSelectedAttributes] = useState([]);
 
     const handleDownloadOptionsCheckboxChange = (checkboxName) => {
+        const updateSelectedAttributes = (attribute) => {
+            setSelectedAttributes(prevState => {
+                if (prevState.includes(attribute)) {
+                    return prevState.filter(attr => attr !== attribute);
+                } else {
+                    return [...prevState, attribute];
+                }
+            });
+        };
         switch (checkboxName) {
             case 'includeAllClusters':
-                setIncludeAllClusters(!includeAllClusters);
+                setIncludeAllClusters(prevState => !prevState);
+                updateSelectedAttributes('includeAllClusters');
                 break;
             case 'includeDocumentTokens':
-                setIncludeDocumentTokens(!includeDocumentTokens);
+                setIncludeDocumentTokens(prevState => !prevState);
+                updateSelectedAttributes('includeDocumentTokens');
                 break;
             case 'includeClusterLabel':
-                setIncludeClusterLabel(!includeClusterLabel);
+                setIncludeClusterLabel(prevState => !prevState);
+                updateSelectedAttributes('includeClusterLabel');
                 break;
             case 'includeTopicsRelatedToDocument':
-                setIncludeTopicsRelatedToDocument(!includeTopicsRelatedToDocument);
+                setIncludeTopicsRelatedToDocument(prevState => !prevState);
+                updateSelectedAttributes('includeTopicsRelatedToDocument');
                 break;
             case 'includeDocumentTopicDistribution':
-                setIncludeDocumentTopicDistribution(!includeDocumentTopicDistribution);
+                setIncludeDocumentTopicDistribution(prevState => !prevState);
+                updateSelectedAttributes('includeDocumentTopicDistribution');
                 break;
             case 'includePreProcessedText':
-                setIncludePreProcessedText(!includePreProcessedText);
+                setIncludePreProcessedText(prevState => !prevState);
+                updateSelectedAttributes('includePreProcessedText');
                 break;
             default:
                 break;
         }
     };
+
+    useEffect(() => {
+        console.log(selectedAttributes)
+    }, [selectedAttributes]);
 
     const handleIncludeClusterCheckboxChange = (index) => {
         const newCheckboxes = [...checkboxes];
@@ -62,18 +82,13 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
         }, 1000);
     };
 
-
-    useEffect(() => {
-        console.log(checkboxes)
-    }, [checkboxes]);
-
     return (
         <div class="flex-1 flex-col flex items-center">
             <div class="w-3/5 h-[500px] border border-gray-200 mt-36">
                 <div class="flex flex-col items-center px-6">
                     <div class="font-bold text-lg">Export Section</div>
-                    <div class="w-full px-3 mt-4 flex flex-row">
-                        <div class="w-2/5 h-[225px] overflow-auto">
+                    <div class="w-full px-3 mt-4 flex flex-row border-gray-300 border">
+                        <div class="w-2/5 h-[225px] overflow-auto border-gray-300 border-r p-1">
                             <div class="w-full flex flex-col">
                                 <div class="font-bold text-center">Pick Clusters to Download</div>
                                 {
@@ -94,12 +109,13 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                                 }
                             </div>
                         </div>
-                        <div class="ml-4 w-3/5 h-[225px] overflow-auto">
+                        <div class="ml-4 w-3/5 h-[225px] overflow-auto p-2">
                             <div class="flex flex-col">
                                 <div class="flex flex-row items-center">
                                     <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
-                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="ml-3 block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
+                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="ml-3 block px-3 py-2 w-24 h-8 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
                                 </div>
+
                                 <div>
                                     <div className="flex flex-row">
                                         <input type="checkbox" checked={includeAllClusters} onChange={() => handleDownloadOptionsCheckboxChange('includeAllClusters')} />
