@@ -10,6 +10,14 @@ export class Document {
         this.topics = topics;
         this.includeToClusterBool = includeToClusterBool
     }
+
+    exportData(selectedAttributes) {
+        const exportedData = {};
+        selectedAttributes.forEach(attribute => {
+            exportedData[attribute] = this[attribute];
+        });
+        return exportedData;
+    }
 }
 
 
