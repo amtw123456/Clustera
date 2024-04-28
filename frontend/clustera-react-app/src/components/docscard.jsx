@@ -398,7 +398,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
     );
 }
 
-function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsGeneratedLabel }) {
+function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsGeneratedLabel, summarizedDocuments }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
     const [reRenderComponent, setReRenderComponent] = useState(false)
     const [newInputLabel, setNewInputLabel] = useState('');
@@ -408,13 +408,22 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsG
 
     }, []);
 
+    function setClusterDocumentsCategoryLabel(clusterIndex, documentLabel) {
+        // Add your logic here to handle closing or saving data
+        summarizedDocuments.map((document, index) => {
+            if (document.includeToClusterBool && clusterIndex === document.clusterId) {
+                document.clusterLabel = documentLabel;
+            }
+        })
+
+        console.log(summarizedDocuments)
+    }
+
     function setClusterCategoryLabel(index, close) {
         // Add your logic here to handle closing or saving data
-
         topicsGeneratedLabel[index] = newInputLabel
         setNewInputLabel('')
         setReRenderComponent(true)
-
         close()
     }
 
@@ -478,7 +487,7 @@ function TopicsGeneratedCard({ topicsGenerated, topicCoheranceGenerated, topicsG
                                                 placeholder=""
                                                 class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
                                             />
-                                            <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+                                            <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close); setClusterDocumentsCategoryLabel(index + 1, newInputLabel); }}>Save</button>
 
                                         </div>
                                     </div>
