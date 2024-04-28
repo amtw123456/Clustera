@@ -11,7 +11,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
     const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(false)
     const [includePreProcessedText, setIncludePreProcessedText] = useState(false)
     const [checkboxes, setCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
-    const [selectedAttributes, setSelectedAttributes] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState(['uDocument', 'clusterId']);
 
     const handleDownloadOptionsCheckboxChange = (checkboxName) => {
         const updateSelectedAttributes = (attribute) => {
@@ -30,32 +30,28 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                 break;
             case 'includeDocumentTokens':
                 setIncludeDocumentTokens(prevState => !prevState);
-                updateSelectedAttributes('includeDocumentTokens');
+                updateSelectedAttributes('documentTokens');
                 break;
             case 'includeClusterLabel':
                 setIncludeClusterLabel(prevState => !prevState);
-                updateSelectedAttributes('includeClusterLabel');
+                updateSelectedAttributes('clusterLabel');
                 break;
             case 'includeTopicsRelatedToDocument':
                 setIncludeTopicsRelatedToDocument(prevState => !prevState);
-                updateSelectedAttributes('includeTopicsRelatedToDocument');
+                updateSelectedAttributes('topics');
                 break;
             case 'includeDocumentTopicDistribution':
                 setIncludeDocumentTopicDistribution(prevState => !prevState);
-                updateSelectedAttributes('includeDocumentTopicDistribution');
+                updateSelectedAttributes('documentTopicDistribution');
                 break;
             case 'includePreProcessedText':
                 setIncludePreProcessedText(prevState => !prevState);
-                updateSelectedAttributes('includePreProcessedText');
+                updateSelectedAttributes('pDocument');
                 break;
             default:
                 break;
         }
     };
-
-    useEffect(() => {
-        console.log(selectedAttributes)
-    }, [selectedAttributes]);
 
     const handleIncludeClusterCheckboxChange = (index) => {
         const newCheckboxes = [...checkboxes];
@@ -66,8 +62,16 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
     const handleExportClick = () => {
         setIsLoading(true);
 
+        const dataToExport = []
+
+        summarizedDocuments.map((document, index) => {
+            if (document.includeToClusterBool) {
+                dataToExport.push(document.exportData(selectedAttributes))
+            }
+        })
+
         setTimeout(() => {
-            const jsonBlob = new Blob([JSON.stringify(summarizedDocuments, null, 4)], { type: 'application/json' });
+            const jsonBlob = new Blob([JSON.stringify(dataToExport, null, 4)], { type: 'application/json' });
 
             const url = URL.createObjectURL(jsonBlob);
             const link = document.createElement('a');
