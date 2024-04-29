@@ -300,9 +300,9 @@ function LDApage() {
   }
 
   return (
-    <div class="">
+    <div>
       <NavigationBar />
-      <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
+      <div class="bg-gray-200 mt-16 ml-5 h-[calc(100vh-75px)] w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300 overflow-auto">
         <div class="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
         {
           isDataSummaryBool ? (
@@ -357,11 +357,19 @@ function LDApage() {
                 </button>
               </div>
               <div class="flex justify-start mt-6 px-4 font-bold">
+                What Does this Page do(Data Summary)?
+              </div>
+              <div class="px-4 mt-2">
+                <ul class="ml-6 list-disc text-sm">
+                  <li class="mt-4">After Pre-processing your documents you could press the cluster documents to cluster and find the topics possibly associated with the clusters.</li>
+                </ul>
+              </div>
+              <div class="flex justify-start mt-6 px-4 font-bold">
                 What details are provided in this Page(Data Summary)?
               </div>
               <div class="px-4 mt-2">
                 <ul class="ml-6 list-disc text-sm">
-                  <li>Top 5 topics found in each Cluster generated.</li>
+                  <li class="mt-4">Top 5 topics found in each Cluster generated.</li>
                   <li class="mt-1">Word frequency counts of the top topic words in the overall Corpora.</li>
                   <li class="mt-1">Number of Documents in each Cluster and number of unassigned documents.</li>
                   <li class="mt-1">A Donut chart which helps visually displays the document distribution within each cluster</li>
