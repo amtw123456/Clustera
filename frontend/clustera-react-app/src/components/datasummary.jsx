@@ -55,48 +55,48 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
     }, []);
 
     return (
-        <div class="flex-col px-2 py-1 flex h-[785px] w-full m-3 rounded-lg bg-gray-100 drop-shadow-lg max-w-[1580px]">
-            <div class="flex-row flex h-1/2">
-                {/* <div class="ml-3 font-bold italic">Document Topic Distribution:</div> */}
-                <div class="p-2 flex flex-col w-1/3 overflow-auto border-grey-300 border rounded-lg mt-3">
-                    <div class="font-bold w-full h-[15px] text-center mb-5">Topics Summary</div>
-                    <div class="w-full flex flex-col w-[480px]">
+        <div className="flex-col px-2 py-1 flex h-[785px] w-full m-3 rounded-lg bg-gray-100 drop-shadow-lg max-w-[1580px]">
+            <div className="flex-row flex h-1/2">
+                {/* <div className="ml-3 font-bold italic">Document Topic Distribution:</div> */}
+                <div className="p-2 flex flex-col w-1/3 overflow-auto border-grey-300 border rounded-lg mt-3">
+                    <div className="font-bold w-full h-[15px] text-center mb-5">Topics Summary</div>
+                    <div className="w-full flex flex-col w-[480px]">
                         {topicsGenerated.slice(1).map((topics, index) => (
-                            <div class="border-yellow flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-black-400 mb-1 rounded-md border-teal-400">
-                                <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
-                                    <div class="flex text-base flex ml-[3px] px-1 ">Topic {index + 1}:</div>
-                                    <div class="overflow-hidden flex flex-wrap">
+                            <div className="border-yellow flex flex-col w-full h-[68px] mb-1 overflow-hidden rounded-md text-black-400 mb-1 rounded-md border-teal-400" key={`${index}-${topics}`}>
+                                <div className="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
+                                    <div className="flex text-base flex ml-[3px] px-1">Topic {index + 1}:</div>
+                                    <div className="overflow-hidden flex flex-wrap">
                                         {
                                             topics.slice(0, 5).map((topic, topicIndex) => (
-                                                <div class="flex ml-[3px] px-1 border font-bold text-base text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400" key={`${index}-${topic}`}>{topic}</div>
                                             ))
                                         }
                                     </div>
                                 </div>
-                                <div class="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
-                                    <div class="flex text-base flex ml-[3px] px-1 ">Topic Coherence Score: :</div>
-                                    <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[index + 1]}</div>
+                                <div className="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
+                                    <div className="flex text-base flex ml-[3px] px-1 ">Topic Coherence Score: :</div>
+                                    <div className='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[index + 1]}</div>
                                 </div>
 
                             </div>
                         ))}
                     </div>
                 </div>
-                <div class="ml-2 p-2 flex flex-col w-2/3 border-grey-300 border rounded-lg mt-3">
-                    <div class="flex-row flex overflow-hidden">
-                        <div class="w-1/2 flex flex-col px-1 overflow-auto">
-                            <div class="font-bold h-[15px] text-center mb-5">Cluster Summary</div>
-                            <div class="flex flex-col">
+                <div className="ml-2 p-2 flex flex-col w-2/3 border-grey-300 border rounded-lg mt-3">
+                    <div className="flex-row flex overflow-hidden">
+                        <div className="w-1/2 flex flex-col px-1 overflow-auto">
+                            <div className="font-bold h-[15px] text-center mb-5">Cluster Summary</div>
+                            <div className="flex flex-col">
                                 {Array.from(Array(noOfClusters - 1), (item, index) => (
-                                    <div class="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-black-400 rounded-md border-teal-400">
-                                        <div class="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
-                                            <div class="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
-                                            <div class="flex flex-wrap">
-                                                <div class="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length} Documents</div>
+                                    <div className="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-black-400 rounded-md border-teal-400" key={index}>
+                                        <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
+                                            <div className="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
+                                            <div className="flex flex-wrap">
+                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length} Documents</div>
                                             </div>
                                         </div>
-                                        <div class="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
-                                            <div class="flex text-base flex ml-[3px] px-1 items-center">Cluster Label: </div>
+                                        <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
+                                            <div className="flex text-base flex ml-[3px] px-1 items-center">Cluster Label: </div>
                                             {
                                                 topicsGeneratedLabel[index] === null ? (<>
 
@@ -111,9 +111,9 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                         }}
                                                         trigger=
                                                         {
-                                                            < button class="inline-block border text-purple-600 p-0 flex flex-row items-center bg-yellow-100 border-yellow-400 text-yellow-400 rounded-md m-1 px-1 text-yellow-400">
-                                                                <div class="font-bold italic ml-1">Input Category name?</div>
-                                                                <div onClick={null} class="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
+                                                            < button className="inline-block border text-purple-600 p-0 flex flex-row items-center bg-yellow-100 border-yellow-400 text-yellow-400 rounded-md m-1 px-1 text-yellow-400">
+                                                                <div className="font-bold italic ml-1">Input Category name?</div>
+                                                                <div onClick={null} className="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
                                                                     <FaEdit />
                                                                 </div>
                                                             </button >
@@ -123,10 +123,10 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                     >
                                                         {close => (
                                                             <div style={{ maxHeight: "90vh" }}>
-                                                                <div class="px-5 pb-2 flex flex-col items-center">
-                                                                    <div class="flex flex-row items-end">
-                                                                        <div class="text-3xl ml-7 font-bold inline-block text">
-                                                                            <div class="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
+                                                                <div className="px-5 pb-2 flex flex-col items-center">
+                                                                    <div className="flex flex-row items-end">
+                                                                        <div className="text-3xl ml-7 font-bold inline-block text">
+                                                                            <div className="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
                                                                         </div>
                                                                     </div>
                                                                     <input
@@ -134,9 +134,9 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                                         value={newInputLabel}
                                                                         onChange={handleInputLabelChange}
                                                                         placeholder=""
-                                                                        class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
+                                                                        className="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
                                                                     />
-                                                                    <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close); setClusterDocumentsCategoryLabel(index + 1, newInputLabel) }}>Save</button>
+                                                                    <button className="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close); setClusterDocumentsCategoryLabel(index + 1, newInputLabel) }}>Save</button>
 
                                                                 </div>
                                                             </div>
@@ -146,7 +146,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
 
 
                                                 ) :
-                                                    <div class="font-bold italic ml-1 m-1 px-1 border rounded-md bg-yellow-100 border-yellow-400">
+                                                    <div className="font-bold italic ml-1 m-1 px-1 border rounded-md bg-yellow-100 border-yellow-400">
                                                         < Popup
                                                             contentStyle={{
                                                                 borderRadius: "10px",
@@ -158,9 +158,9 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                             }}
                                                             trigger=
                                                             {
-                                                                < button class="inline-block text-purple-600 p-0 flex flex-row items-center text-yellow-400 ">
-                                                                    <div class="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
-                                                                    <div onClick={null} class="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
+                                                                < button className="inline-block text-purple-600 p-0 flex flex-row items-center text-yellow-400 ">
+                                                                    <div className="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
+                                                                    <div onClick={null} className="ml-2 text-purple-400 hover:text-purple-600 hover:cursor-pointer flex">
                                                                         <FaEdit />
                                                                     </div>
                                                                 </button >
@@ -170,10 +170,10 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                         >
                                                             {close => (
                                                                 <div style={{ maxHeight: "90vh" }}>
-                                                                    <div class="px-5 pb-2 flex flex-col items-center">
-                                                                        <div class="flex flex-row items-end">
-                                                                            <div class="text-3xl ml-7 font-bold inline-block text">
-                                                                                <div class="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
+                                                                    <div className="px-5 pb-2 flex flex-col items-center">
+                                                                        <div className="flex flex-row items-end">
+                                                                            <div className="text-3xl ml-7 font-bold inline-block text">
+                                                                                <div className="text-xl font-bold inline-block"> Input a category label for Cluster {index + 1}</div>
                                                                             </div>
                                                                         </div>
                                                                         <input
@@ -181,9 +181,9 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                                             value={newInputLabel}
                                                                             onChange={handleInputLabelChange}
                                                                             placeholder=""
-                                                                            class="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
+                                                                            className="mt-4 block px-3 py-2 w-96 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300"
                                                                         />
-                                                                        <button class="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
+                                                                        <button className="mt-2 inline-block text-white py-2 bg-teal-300 border rounded-lg w-1/5 hover:bg-teal-400" onClick={() => { setClusterCategoryLabel(index, close) }}>Save</button>
 
                                                                     </div>
                                                                 </div>
@@ -191,15 +191,15 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                         </Popup >
                                                     </div>
                                             }
-                                            {/* <div class='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
+                                            {/* <div className='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[innerIndex]}</div> */}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div class="flex flex-col w-1/2 overflow-x-auto overflow-y-hidden">
-                            <div class="font-bold w-full h-[15px] text-center">Clustered Data Donut Chart</div>
-                            <div class="w-full flex flex-col">
+                        <div className="flex flex-col w-1/2 overflow-x-auto overflow-y-hidden">
+                            <div className="font-bold w-full h-[15px] text-center">Clustered Data Donut Chart</div>
+                            <div className="w-full flex flex-col">
                                 <PieChart clusterData={clustersGenerated} width={500} height={420} />
                             </div>
                         </div>
@@ -209,49 +209,49 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
 
             </div>
 
-            <div class="flex-row flex w-full h-full my-1">
+            <div className="flex-row flex w-full h-full my-1">
 
-                <div class="flex flex-row w-1/4 justify-start border rounded-lg mr-1">
-                    <div class="w-full">
-                        <div class="flex flex-col px-4 items-center">
-                            <div class="italic font-bold ">Data Summary</div>
+                <div className="flex flex-row w-1/4 justify-start border rounded-lg mr-1">
+                    <div className="w-full">
+                        <div className="flex flex-col px-4 items-center">
+                            <div className="italic font-bold ">Data Summary</div>
                         </div>
-                        <div class="flex flex-col px-8">
-                            <div class="mt-12 flex-row flex">
-                                <div class="font-bold">
+                        <div className="flex flex-col px-8">
+                            <div className="mt-12 flex-row flex">
+                                <div className="font-bold">
                                     Silhouette score:
                                 </div>
-                                <div class="ml-1 italic">
+                                <div className="ml-1 italic">
                                     {silhouetteScoreGenerated}
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <div class="flex-row flex">
-                                    <div class="font-bold">
+                            <div className="mt-4">
+                                <div className="flex-row flex">
+                                    <div className="font-bold">
                                         Coherance Score:
                                     </div>
-                                    <div class="ml-1 italic">
+                                    <div className="ml-1 italic">
                                         {averageCoheranceScore}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mt-4">
-                                <div class="flex-row flex">
-                                    <div class="font-bold">
+                            <div className="mt-4">
+                                <div className="flex-row flex">
+                                    <div className="font-bold">
                                         Number of Unclustered Documents:
                                     </div>
-                                    <div class="ml-1 italic">
+                                    <div className="ml-1 italic">
                                         {clustersGenerated[0].length}
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <div class="flex-row flex">
-                                    <div class="font-bold">
+                            <div className="mt-4">
+                                <div className="flex-row flex">
+                                    <div className="font-bold">
                                         Number of Clustered Documents:
                                     </div>
-                                    <div class="ml-1 italic">
+                                    <div className="ml-1 italic">
                                         {numberOfClusteredDocuments}
                                     </div>
                                 </div>
@@ -259,19 +259,19 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-row w-3/4 border rounded-lg ml-1">
-                    <div class="w-full">
-                        <div class="text-center mt-1 font-bold italic">Topics Word Frequency Counts</div>
-                        <div class="w-full h-[340px] mt-1 overflow-hidden flex-wrap flex flex-col ">
+                <div className="flex flex-row w-3/4 border rounded-lg ml-1">
+                    <div className="w-full">
+                        <div className="text-center mt-1 font-bold italic">Topics Word Frequency Counts</div>
+                        <div className="w-full h-[340px] mt-1 overflow-hidden flex-wrap flex flex-col ">
                             {
                                 topicsGenerated.slice(1).map((topics, index) => (
                                     topics.slice(0, 7).map((topic, topicIndex) => (
-                                        <div class="ml-[2px] w-[145px] px-1 mt-1 rounded-md">
-                                            <div class="flex flex-row items-center">
-                                                <div class="font-bold text-sm ">
+                                        <div className="ml-[2px] w-[145px] px-1 mt-1 rounded-md">
+                                            <div className="flex flex-row items-center">
+                                                <div className="font-bold text-sm ">
                                                     {topic}: &nbsp;
                                                 </div>
-                                                <div class="text-sm">
+                                                <div className="text-sm">
                                                     {wordCounts.find(item => item[0] === topic)[1]}
                                                 </div>
                                             </div>

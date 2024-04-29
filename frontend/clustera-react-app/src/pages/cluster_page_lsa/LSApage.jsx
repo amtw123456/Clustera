@@ -79,72 +79,72 @@ function LSApage() {
   };
 
   return (
-    <div class="">
+    <div className="">
       <NavigationBar />
 
-      <nav class="py-4 px-4 top-0 left-0 right-0 z-0">
-        <div class="flex">
-          <div class="ml-80 hidden md:flex flex-1">
+      <nav className="py-4 px-4 top-0 left-0 right-0 z-0">
+        <div className="flex">
+          <div className="ml-80 hidden md:flex flex-1">
             {isDocumentSummaryBool ? (
-              <button href="#" class="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
+              <button href="#" className="text-black text-base border-x border-t px-10 pt-1" disabled={true}>Documents Summary</button>
             ) : (
-              <button href="#" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
+              <button href="#" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentSummaryBool')}>Documents Summary</button>
             )}
             {isClusteredGeneratedBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Clusters Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClusteredGeneratedBool')}>Clusters Generated</button>
             )}
             {isDocumentTopicDistributionBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Document Topic Distribution</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isDocumentTopicDistributionBool')}>Document Topic Distribution</button>
             )}
             {isTopicsGeneratedBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Topics Generated</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isTopicsGeneratedBool')}>Topics Generated</button>
             )}
             {isClassifierBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Classifier</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isClassifierBool')}>Classifier</button>
             )}
             {isVisualizeBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Visualize</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isVisualizeBool')}>Visualize</button>
             )}
             {isExportBool ? (
-              <button href="/" class="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
+              <button href="/" className="text-black text-base border-x border-t pr-10 pl-10 pt-1" disabled={true}>Export</button>
             ) : (
-              <button href="/" class="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
+              <button href="/" className="text-blue-400 text-base border-b px-10 pt-1" onClick={() => toggleBoolUtilisBar('isExportBool')}>Export</button>
             )}
 
-            <a href="/" class="text-blue-400 text-base border-b pr-32 pt-1"></a>
+            <a href="/" className="text-blue-400 text-base border-b pr-32 pt-1"></a>
           </div>
         </div>
       </nav >
 
-      <div class="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
-        <div class="ml-4 pt-4 font-bold text-2xl">LSA Clustering</div>
-        <ul class="mt-12">
-          {/* <li><Link to="/" class="block py-2 px-6 text-black hover:bg-gray-300">Upload</Link></li> */}
-          <li onClick={() => clusterUsingLsa()}><Link to="/cluster_page_lsa" class="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LSA</Link></li>
-          <li><Link to="/cluster_page_lda" class="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LDA</Link></li>
+      <div className="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
+        <div className="ml-4 pt-4 font-bold text-2xl">LSA Clustering</div>
+        <ul className="mt-12">
+          {/* <li><Link to="/" className="block py-2 px-6 text-black hover:bg-gray-300">Upload</Link></li> */}
+          <li onClick={() => clusterUsingLsa()}><Link to="/cluster_page_lsa" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LSA</Link></li>
+          <li><Link to="/cluster_page_lda" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LDA</Link></li>
         </ul>
       </div>
 
-      <div class="ml-80 flex flex-wrap items-center">
+      <div className="ml-80 flex flex-wrap items-center">
         {/* {
           uploadedData.length > 0 ? (
             uploadedData.map((item, index) => (
               <UDocumentsCard key={index} index={index} item={item} />
             ))
           ) : (
-            <div class="flex-1">
+            <div className="flex-1">
               <div className="text-center mt-80 text-gray-600 text-sm, dark:text-gray-400">There are no Documents loaded yet to the page please Upload a JSON or CSV file.</div>
-              <Link to="/"><div class="text-center text-blue-600 text-xl underline-offset-4">Go to Upload Page</div></Link>
+              <Link to="/"><div className="text-center text-blue-600 text-xl underline-offset-4">Go to Upload Page</div></Link>
             </div>
           )
         } */}
