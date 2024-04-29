@@ -373,20 +373,20 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-3 px-4 font-bold">
-                What Does this Page do(Data Summary)?
+                What does this options do(Data Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
                     After preprocessing your documents, you may now cluster them and potentially identify the topics associated with each cluster generated.
                   </li>
-                  <li className="mt-4">
+                  <li className="mt-2">
                     The Cluster vectorizer dropdown form allows you to choose between two vectorizing option to vectorize your documents.
                   </li>
-                  <li className="mt-4">
+                  <li className="mt-2">
                     The "Minimum Document Frequency" (Min DF) and "Maximum Document Frequency" (Max DF) are parameters used in text mining and natural language processing (NLP) to filter out terms based on their occurrence frequency across a collection of documents (corpus).
                   </li>
-                  <li className="mt-4">
+                  <li className="mt-2">
                     The input for the number of clusters determines how many clusters the set of documents would generate.
                   </li>
                 </ul>
@@ -399,19 +399,19 @@ function LDApage() {
                   <li className="mt-4">
                     Top 5 topics found in each Cluster generated.
                   </li>
-                  <li className="mt-1">
+                  <li className="mt-2">
                     Word frequency counts of the top topic words in the overall Corpora.
                   </li>
-                  <li className="mt-1">
+                  <li className="mt-2">
                     Number of Documents in each Cluster and number of unassigned documents.
                   </li>
-                  <li className="mt-1">
+                  <li className="mt-2">
                     A Donut chart which helps visually displays the document distribution within each cluster
                   </li>
-                  <li className="mt-1">
+                  <li className="mt-2">
                     Topic Coherence Score which gauges the interpretability of the generated topics, with lower scores indicating higher interpretability.
                   </li>
-                  <li className="mt-1">
+                  <li className="mt-2">
                     Silhouette Score which serves as an indicator of the overall quality of clusters. A value closer to 1 suggests better clustering quality.
                   </li>
                 </ul>
@@ -438,11 +438,29 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
+                What does this options do(Data Summary)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
                 What details are provided in this Page(Document Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                  </li>
+                  <li className="mt-2">
+                    When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
+                  </li>
                 </ul>
               </div>
             </>
