@@ -22,6 +22,7 @@ function LDApage() {
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
   const { classifierModel, setClassifierModel } = useContext(AppContext);
 
+  const [numberOfDocumentsNotIncludedPerCluster, setNumberOfDocumentsNotIncludedPerCluster] = useState([])
   const [silhouettescore, setSilhouettescore] = useState(0);
   const [topicsGenerated, setTopicsGenerated] = useState([]);
   const [topicsGeneratedLabel, setTopicsGeneratedLabel] = useState([]);
@@ -90,6 +91,7 @@ function LDApage() {
       if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
         classifierTopicDistribution.push(documentsProvider[i].documentTopicDistribution)
+
       }
     }
     try {
@@ -140,12 +142,12 @@ function LDApage() {
     } finally {
       setIsCorporaNotClustered(false);
       buildLDAClusterSummary(responseData)
+      setTopicCoheranceScores(responseData['topic_coherance_score'])
       setClustersProvider(responseData['clusters'])
       setTopicsGenerated(responseData['topics'])
+      setNumberOfDocumentsNotIncludedPerCluster(Object.values(responseData['clusters']).map(cluster => 0))
       setTopicsGeneratedLabel(Array.from({ length: noOfClustersInput }, () => (null)))
-      setTopicCoheranceScores(responseData['topic_coherance_score'])
       computeClusterSilhoutteScore()
-
     }
   };
 
@@ -166,14 +168,12 @@ function LDApage() {
         documentsProvider[index].topics = ldaResults['topics'][documentsProvider[index].clusterId]
       }
     })
-
     documentsProvider.map((item, index) => (
       documentsProvider[index].includeToClusterBool = true
     ))
     documentsProvider.map((item, index) => (
       documentsProvider[index].clusterLabel = "Unlabeled"
     ))
-    console.log(documentsProvider)
   };
 
   const handleInputNoOfClusters = (e) => {
@@ -191,6 +191,8 @@ function LDApage() {
   const handleVectorizerChange = (e) => {
     setVectorizerType(e.target.value);
   };
+
+  const [reRenderComponent, setReRenderComponent] = useState(false)
 
   const [documentTopicDistributionThresholdState, setDocumentTopicDistributionThresholdState] = useState(0.00)
   const [documentTopicDistributionThreshold, setDocumentTopicDistributionThreshold] = useState(0.00)
@@ -254,15 +256,26 @@ function LDApage() {
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].documentTopicDistribution != null) {
         if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold || documentsProvider[i].documentTokens.length < documentNumberOfTokensThreshold) {
-          documentsProvider[i].includeToClusterBool = false;
+          if (documentsProvider[i].includeToClusterBool) {
+            documentsProvider[i].includeToClusterBool = false;
+            numberOfDocumentsNotIncludedPerCluster[documentsProvider[i].clusterId] += 1;
+          }
         }
         else {
-          documentsProvider[i].includeToClusterBool = true;
+          if (!documentsProvider[i].includeToClusterBool) {
+            numberOfDocumentsNotIncludedPerCluster[documentsProvider[i].clusterId] -= 1;
+            documentsProvider[i].includeToClusterBool = true;
+          }
         }
       }
-
     }
+
+    // setReRenderComponent(true)
   };
+
+  // useEffect(() => {
+  //   setReRenderComponent(false)
+  // }, [reRenderComponent]);
 
   const buildClassifierParamters = () => {
     filterOutDocuments()
@@ -713,7 +726,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} topicsGeneratedLabel={topicsGeneratedLabel} />
+            <DataSummarySection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} topicsGeneratedLabel={topicsGeneratedLabel} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div class="ml-80 flex flex-wrap items-center">
@@ -721,7 +734,7 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} topicsGeneratedLabel={topicsGeneratedLabel} />
+            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} topicsGeneratedLabel={topicsGeneratedLabel} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) : isTopicsGeneratedBool ? (
           <div class="ml-80 flex flex-row flex-wrap">

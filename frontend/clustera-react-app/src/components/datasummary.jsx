@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import Popup from 'reactjs-popup';
 import { AppContext } from '../providers/AppState.jsx';
 
-function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel }) {
+function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel, documentCountPerCluster }) {
     const { wordCounts, setWordCounts } = useContext(AppContext);
 
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);

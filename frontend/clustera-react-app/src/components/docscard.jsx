@@ -262,11 +262,18 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
 }
 
 
-function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold, topicsGeneratedLabel }) {
+function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold, topicsGeneratedLabel, documentCountPerCluster }) {
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
         setIsComponentLoading(false);
+        // Array.from(Array(noOfClusters - 1), (item, index) => (
+        //     clustersGenerated[index + 1].map((value, innerIndex) => {
+        //         if (summarizedDocuments[value].includeToClusterBool) {
+        //         }
+        //     })
+        // ))
+        console.log(documentCountPerCluster)
     }, []);
 
     return (
@@ -282,7 +289,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
             </div>
         ) : (
             Array.from(Array(noOfClusters - 1), (item, index) => (
-                <div class="w-[475px] h-60 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
+                <div class="w-[475px] h-72 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
                     <div class="w-auto rounded-r-lg mt-2">
                         <div class="px-2 text-lg ml-1 flex justify-left font-bold">
                             {
@@ -297,7 +304,10 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                             {"Cluster No: " + (index + 1)}
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
-                            {"No. of Documents in Cluster: " + clustersGenerated[index + 1].length}
+                            No. of Documents in Cluster: {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]}
+                        </div>
+                        <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
+                            No. of Documents filtered: {documentCountPerCluster[index + 1]}
                         </div>
                         <div className="border-t my-2 border-gray-300"></div>
                         <div class="flex px-2 text-base text-gray-800 ml-1 mb-1 flex justify-left font-bold">
@@ -346,7 +356,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                                             summarizedDocuments[value].includeToClusterBool ? (
                                                 <div class="overflow-hidden mx-2 px-2 py-2 mb-5 flex flex-row rounded-lg flex-wrap h-48 border-2 w-[410px] h-12">
                                                     <div key={innerIndex}>
-                                                        <div class="font-bold">Document Number: {value} </div>
+                                                        <div class="font-bold">Document Number: {value + 1} </div>
                                                         {/* <div class="italic">Included to Cluster: {summarizedDocuments[value].includeToClusterBool.toString()} </div> */}
                                                         <div class="italic mb-3">
                                                             {"Cluster Topic Distribution: " + (Math.max(...summarizedDocuments[value].documentTopicDistribution))}
