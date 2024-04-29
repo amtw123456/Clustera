@@ -194,6 +194,10 @@ function LDApage() {
 
   const [documentTopicDistributionThresholdState, setDocumentTopicDistributionThresholdState] = useState(0.00)
   const [documentTopicDistributionThreshold, setDocumentTopicDistributionThreshold] = useState(0.00)
+
+  const [documentNumberOfTokensThresholdState, setDocumentNumberOfTokensThresholdState] = useState(0)
+  const [documentNumberOfTokensThreshold, setDocumentNumberOfTokensThreshold] = useState(0)
+
   const [perplexity, setPerplexity] = useState(100)
   const [angle, setAngle] = useState(0.5);
   const [noOfIterations, setNoOfIterations] = useState(500);
@@ -240,11 +244,16 @@ function LDApage() {
     setDocumentTopicDistributionThreshold(parseFloat(e.target.value));
   };
 
+  const handleInputDocumentTokenThreshold = (e) => {
+    setDocumentNumberOfTokensThreshold(parseFloat(e.target.value));
+  };
+
   const filterOutDocuments = () => {
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
+    setDocumentNumberOfTokensThresholdState(documentNumberOfTokensThreshold)
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].documentTopicDistribution != null) {
-        if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold) {
+        if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold || documentsProvider[i].documentTokens.length < documentNumberOfTokensThreshold) {
           documentsProvider[i].includeToClusterBool = false;
         }
         else {
@@ -341,7 +350,7 @@ function LDApage() {
                 <div class="font-bold text-sm mb-2">Number of Clusters:</div>
                 <input type="number" placeholder="" class="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
               </div>
-              <div class="flex justify-center mt-6">
+              <div class="flex justify-center mt-4">
                 <button onClick={() => clusterUsingLda()}>
                   {
                     isLoading ? (
@@ -356,25 +365,48 @@ function LDApage() {
                   }
                 </button>
               </div>
-              <div class="flex justify-start mt-6 px-4 font-bold">
+              <div class="flex justify-start mt-3 px-4 font-bold">
                 What Does this Page do(Data Summary)?
               </div>
               <div class="px-4 mt-2">
                 <ul class="ml-6 list-disc text-sm">
-                  <li class="mt-4">After Pre-processing your documents you could press the cluster documents to cluster and find the topics possibly associated with the clusters.</li>
+                  <li class="mt-4">
+                    After preprocessing your documents, you may now cluster them and potentially identify the topics associated with each cluster generated.
+                  </li>
+                  <li class="mt-4">
+                    The Cluster vectorizer dropdown form allows you to choose between two vectorizing option to vectorize your documents.
+                  </li>
+                  <li class="mt-4">
+                    The "Minimum Document Frequency" (Min DF) and "Maximum Document Frequency" (Max DF) are parameters used in text mining and natural language processing (NLP) to filter out terms based on their occurrence frequency across a collection of documents (corpus).
+                  </li>
+                  <li class="mt-4">
+                    The input for the number of clusters determines how many clusters the set of documents would generate.
+                  </li>
                 </ul>
               </div>
-              <div class="flex justify-start mt-6 px-4 font-bold">
+              <div class="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Data Summary)?
               </div>
               <div class="px-4 mt-2">
                 <ul class="ml-6 list-disc text-sm">
-                  <li class="mt-4">Top 5 topics found in each Cluster generated.</li>
-                  <li class="mt-1">Word frequency counts of the top topic words in the overall Corpora.</li>
-                  <li class="mt-1">Number of Documents in each Cluster and number of unassigned documents.</li>
-                  <li class="mt-1">A Donut chart which helps visually displays the document distribution within each cluster</li>
-                  <li class="mt-1">Topic Coherence Score which gauges the interpretability of the generated topics, with lower scores indicating higher interpretability.</li>
-                  <li class="mt-1">Silhouette Score which serves as an indicator of the overall quality of clusters. A value closer to 1 suggests better clustering quality.</li>
+                  <li class="mt-4">
+                    Top 5 topics found in each Cluster generated.
+                  </li>
+                  <li class="mt-1">
+                    Word frequency counts of the top topic words in the overall Corpora.
+                  </li>
+                  <li class="mt-1">
+                    Number of Documents in each Cluster and number of unassigned documents.
+                  </li>
+                  <li class="mt-1">
+                    A Donut chart which helps visually displays the document distribution within each cluster
+                  </li>
+                  <li class="mt-1">
+                    Topic Coherence Score which gauges the interpretability of the generated topics, with lower scores indicating higher interpretability.
+                  </li>
+                  <li class="mt-1">
+                    Silhouette Score which serves as an indicator of the overall quality of clusters. A value closer to 1 suggests better clustering quality.
+                  </li>
                 </ul>
               </div>
             </>
@@ -384,6 +416,10 @@ function LDApage() {
               <div class="mx-4 my-3">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
+              <div class="mx-4 my-3">
+                <div class="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div class="flex justify-center mt-6">
                 <button onClick={() => filterOutDocuments()}>{ }
@@ -410,6 +446,10 @@ function LDApage() {
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
+              <div class="mx-4 my-3">
+                <div class="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+              </div>
               <div class="flex justify-center mt-6">
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
@@ -434,6 +474,10 @@ function LDApage() {
               <div class="mx-4 my-5">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
+              <div class="mx-4 my-3">
+                <div class="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div class="flex justify-center mt-12">
                 <button onClick={() => filterOutDocuments()}>{ }
@@ -474,6 +518,10 @@ function LDApage() {
               <div class="mx-3 my-5">
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
+              <div class="mx-4 my-3">
+                <div class="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div class="flex justify-center mt-6">
                 <button onClick={() => trainClassifier()}>{ }
