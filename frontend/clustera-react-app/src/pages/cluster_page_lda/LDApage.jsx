@@ -584,6 +584,10 @@ function LDApage() {
                 <div class="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
+              <div class="mx-4 my-3">
+                <div class="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" class="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+              </div>
               <div class="flex justify-center mt-6">
                 <button onClick={() => recomputeTsneValue()}>
                   {
