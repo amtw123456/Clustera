@@ -181,7 +181,7 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
         ) : (
             summarizedDocuments.map((item, index) => (
                 summarizedDocuments[index].includeToClusterBool ? (
-                    <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden">
+                    <div className="w-[750px] h-28 my-3 mx-4 h-20 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden" key={`${index}-SDocumentsCard`}>
                         <div className="my-2 pb-2 pt-2 px-2">
                             <div>
                                 {index + 1 + ". " + item.uDocument.replace(/\s+/g, ', ').slice(0, 140) + ".......   "}

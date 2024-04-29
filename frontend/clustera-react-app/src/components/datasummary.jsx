@@ -77,18 +77,25 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     <div className="flex text-base flex ml-[3px] px-1 ">Topic Coherence Score: :</div>
                                     <div className='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[index + 1]}</div>
                                 </div>
-
                             </div>
                         ))}
                     </div>
                 </div>
+
+
+
+
+
+
+
+
                 <div className="ml-2 p-2 flex flex-col w-2/3 border-grey-300 border rounded-lg mt-3">
                     <div className="flex-row flex overflow-hidden">
                         <div className="w-1/2 flex flex-col px-1 overflow-auto">
                             <div className="font-bold h-[15px] text-center mb-5">Cluster Summary</div>
                             <div className="flex flex-col">
                                 {Array.from(Array(noOfClusters - 1), (item, index) => (
-                                    <div className="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-black-400 rounded-md border-teal-400" key={index}>
+                                    <div className="border-yellow flex flex-col w-[480px] h-[68px] mb-1 rounded-md text-black-400 rounded-md border-teal-400" key={`${index}-datasummaryuid`}>
                                         <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
                                             <div className="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
                                             <div className="flex flex-wrap">
@@ -205,8 +212,6 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
             <div className="flex-row flex w-full h-full my-1">
@@ -266,7 +271,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                             {
                                 topicsGenerated.slice(1).map((topics, index) => (
                                     topics.slice(0, 7).map((topic, topicIndex) => (
-                                        <div className="ml-[2px] w-[145px] px-1 mt-1 rounded-md">
+                                        <div className="ml-[2px] w-[145px] px-1 mt-1 rounded-md" key={`${index}-${topicIndex}-topicwordfreqcount`}>
                                             <div className="flex flex-row items-center">
                                                 <div className="font-bold text-sm ">
                                                     {topic}: &nbsp;
