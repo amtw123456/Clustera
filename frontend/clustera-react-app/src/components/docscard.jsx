@@ -304,23 +304,23 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                             {"Cluster No: " + (index + 1)}
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
-                            No. of Documents in Cluster: {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]}
+                            No. of Documents in Cluster: {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length}
                         </div>
                         <div class="px-2 text-gray-700 text-sm ml-1 flex justify-left italic">
-                            No. of Documents filtered: {documentCountPerCluster[index + 1]}
+                            No. of Documents filtered: {documentCountPerCluster[index + 1]}  / {clustersGenerated[index + 1].length}
                         </div>
                         <div className="border-t my-2 border-gray-300"></div>
                         <div class="flex px-2 text-base text-gray-800 ml-1 mb-1 flex justify-left font-bold">
                             {"Top 7 Terms:"}
                         </div>
                         <div class="px-2 flex flex-row flex-wrap text-justify justify-start items-center">
-                            {topicsGenerated[index + 1].slice(0, 8).map((topic, index) => (
+                            {topicsGenerated[index + 1].slice(0, 12).map((topic, index) => (
                                 <div class="flex border text-base font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                     <div class="px-3 py-[0.5px]">{topic}</div>
                                 </div>
                             ))}
                             <div class="flex border font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
-                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index + 1].length - 8}</div>
+                                <div class="px-3 py-[0.5px]">+ {topicsGenerated[index + 1].length - 12}</div>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@ import { AppContext } from '../providers/AppState.jsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
 
 
-function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) {
+function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
     const [classifierResult, setClassifierResult] = useState();
@@ -60,25 +60,24 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel }) 
                 <div class="w-full overflow-hidden">
                     <div class="flex-row flex-wrap flex mt-1">
                         {topicsGenerated.slice(1).map((topics, index) => (
-                            <div class="border flex flex-col w-80 mx-3 my-1 h-[100px] overflow-auto rounded-md text-teal-400 mb-1 rounded-md bg-teal-100 border-teal-400 justify-center px-2">
+                            <div class="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-teal-400 mb-2 rounded-md bg-teal-100 border-teal-400 px-1">
+                                <div class="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
                                 <div class="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
 
                                     {
                                         topicsGeneratedLabel[index] === null ? (
-                                            <>Unlabeled Cluster [Cluster {index + 1}]</>
+                                            <>Unlabeled Cluster</>
                                         ) :
-                                            <>{topicsGeneratedLabel[index]} [Cluster {index + 1}]</>
+                                            <>{topicsGeneratedLabel[index]}</>
                                     }
-
-
-                                    <div class="flex text-sm flex px-1"></div>
-                                    <div class="overflow-auto flex flex-wrap items-center">
-                                        {
-                                            topics.slice(0, 7).map((topic, topicIndex) => (
-                                                <div class="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
-                                            ))
-                                        }
-                                    </div>
+                                </div>
+                                <div class="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
+                                <div class="overflow-auto flex flex-wrap items-center justify-center">
+                                    {
+                                        topics.slice(0, 7).map((topic, topicIndex) => (
+                                            <div class="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                        ))
+                                    }
                                 </div>
                             </div>
                         ))}

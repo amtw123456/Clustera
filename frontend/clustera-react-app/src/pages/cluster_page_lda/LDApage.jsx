@@ -269,13 +269,7 @@ function LDApage() {
         }
       }
     }
-
-    // setReRenderComponent(true)
-  };
-
-  // useEffect(() => {
-  //   setReRenderComponent(false)
-  // }, [reRenderComponent]);
+  }
 
   const buildClassifierParamters = () => {
     filterOutDocuments()
@@ -751,7 +745,7 @@ function LDApage() {
           </div >
         ) : isClassifierBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
-            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} />
+            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) : isExportBool ? (
           <div class="ml-80 flex flex-row flex-wrap">
