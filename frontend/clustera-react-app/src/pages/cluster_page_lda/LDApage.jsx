@@ -438,25 +438,25 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do(Data Summary)?
+                What does this options do (Data Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                    Filter which documents to show, depending on a documents topic distribution.
                   </li>
                   <li className="mt-2">
-                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                    Filter which documents to show, depending on the number of tokens a document has.
                   </li>
                 </ul>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What details are provided in this Page(Document Summary)?
+                What details are provided in this Page (Document Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                    View the documents that are in the set of documents assuming that the filter options haven't been tampered with.
                   </li>
                   <li className="mt-2">
                     When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
@@ -485,11 +485,32 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What details are provided in this Page(Clusters Generated)?
+                What does this options do (Clusters Generated)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    Filter which documents to show, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Filter which documents to show, depending on the number of tokens a document has.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this page (Clusters Generated)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    All of the clusters that have been generated with the top 7 terms associated with it, number of documents in the clusters both filtered and unfiltered, cluster label, cluster Number.
+                  </li>
+                  <li className="mt-2">
+                    When View cluster information is clicked, an information regarding the clusters will be shown which are all the topics associated with the cluster and view the documents associated with the cluster.
+                  </li>
+                  <li className="mt-2">
+                    The documents found inside the clusters will show its top topic distribution with it.
+                  </li>
                 </ul>
               </div>
             </>
@@ -504,7 +525,7 @@ function LDApage() {
                 <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
-              <div className="flex justify-center mt-12">
+              <div className="flex justify-center mt-6">
                 <button onClick={() => filterOutDocuments()}>{ }
                   {
                     < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
@@ -514,26 +535,56 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What details are provided in this Page(Docoument Topic Distribution)?
+                What does this options do (Document Topic Distribution)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    Filter which documents to show, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Filter which documents to show, depending on the number of tokens a document has.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page (Document Topic Distribution)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    All of the documents topic distribution with the top topic distribution being highlighted with the color teal.
+                  </li>
                 </ul>
               </div>
             </>
           ) : isTopicsGeneratedBool ? (
             <>
               <div className="ml-4 italic text-base">Topics Generated</div>
-              <div className="mx-4 mt-6 my-5 flex-row flex">
+              {/* <div className="mx-4 mt-6 my-5 flex-row flex">
                 <div className="italic">No Options for this section</div>
+              </div> */}
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What does this options do (Topics Generated)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    Edit a clusters category label by clicking on the edit icon beside the "Input Category name".
+                  </li>
+                </ul>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
                 What details are provided in this Page(Topics Generated)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    The umass coherance score of the topics generated for each cluster when a umass score is closer to 0 it means it is more interpretable.
+                  </li>
+                  <li className="mt-2">
+                    All topics associated with a cluster the maximum number of topics you can view is around 47 topics.
+                  </li>
                 </ul>
               </div>
             </>
@@ -564,11 +615,45 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What details are provided in this Page(Classifier)?
+                What does this options do (Classifier)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    Filter which documents will be used to train the classifier, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Filter which documents will be used to train the classifier, depending on the number of tokens a document has.
+                  </li>
+                  <li className="mt-2">
+                    When you have filtered documents that you want to exclude and are satisfied with what you have filtered, you can press the "Train Classifier" to retrain the classifier.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What does this page do (Classifier)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    A user can input a text to the textbox which will be the container when the user will classify which the document belongs to.
+                  </li>
+                  <li className="mt-2">
+                    It can classify a document to which cluster it might belong to.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Document Summary)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    See each cluster with the top 7 of the topics associated and number of documents which were used to train a sub classifier.
+                  </li>
+                  <li className="mt-2">
+                    When a document is classified a probability prediciton with all the possible clusters will be filled which can be considered as a document topic distribution.
+                  </li>
                 </ul>
               </div>
             </>
@@ -629,11 +714,29 @@ function LDApage() {
                 </button>
               </div>
               <div className="flex justify-start mt-6 px-4 font-bold">
-                What details are provided in this Page(Visualize)?
+                What does this options do(Data Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-
+                  <li className="mt-4">
+                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Document Summary)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                  </li>
+                  <li className="mt-2">
+                    When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
+                  </li>
                 </ul>
               </div>
             </>
@@ -643,6 +746,32 @@ function LDApage() {
               <div className="ml-4 italic text-base">Export</div>
               <div className="mx-4 mt-12 my-5 flex-row flex">
                 <div className="italic">No Options for this section</div>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What does this options do(Data Summary)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                  </li>
+                </ul>
+              </div>
+              <div className="flex justify-start mt-6 px-4 font-bold">
+                What details are provided in this Page(Document Summary)?
+              </div>
+              <div className="px-4 mt-2">
+                <ul className="ml-6 list-disc text-sm">
+                  <li className="mt-4">
+                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                  </li>
+                  <li className="mt-2">
+                    When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
+                  </li>
+                </ul>
               </div>
             </>
           ) : <></>
