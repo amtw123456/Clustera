@@ -22,18 +22,15 @@ function NavigationBar() {
         <nav className="bg-blue-600 py-2 px-4 top-0 left-0 right-0 z-50">
             <div className="flex justify-between items-center">
                 <div className="flex-1 justify-start grow">
-                    <Link to="/"><a href="#" className="text-white text-2xl font-bold">Clustera</a></Link>
+                    <Link to="/" className="text-white text-2xl font-bold">Clustera</Link>
                 </div>
-                {/* <div className="hidden md:flex space-x-4 justify-center flex-1">
-                    <a href="#" className="text-white text-2xl">{middleText}</a>
-                </div> */}
                 <div className="hidden md:flex space-x-9 flex-1 justify-end">
                     <Link to="/" className="text-white text-base hover:bg-gray-300">Upload</Link>
                     <Link to="/aboutPage" className="text-white text-base hover:bg-gray-300">About</Link>
                     <Link to="/documentationPage" className="text-white text-base hover:bg-gray-300">Documentation</Link>
                 </div>
             </div>
-        </nav>
+        </nav >
     );
 };
 
