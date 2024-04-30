@@ -10,6 +10,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
 
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
+    const [numberOfFilteredDocuments, setNumberOfFilteredDocuments] = useState(0)
 
     const [reRenderComponent, setReRenderComponent] = useState(false)
     const [newInputLabel, setNewInputLabel] = useState('');
@@ -52,6 +53,11 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
             temp += clustersGenerated[index + 1].length;
         });
         setNumberOfClusteredDocuments(temp)
+        temp = 0
+        documentCountPerCluster.slice(1).map((count, index) => {
+            temp += count;
+        });
+        setNumberOfFilteredDocuments(temp)
     }, []);
 
     return (
@@ -82,13 +88,6 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                     </div>
                 </div>
 
-
-
-
-
-
-
-
                 <div className="ml-2 p-2 flex flex-col w-2/3 border-grey-300 border rounded-lg mt-3">
                     <div className="flex-row flex overflow-hidden">
                         <div className="w-1/2 flex flex-col px-1 overflow-auto">
@@ -99,7 +98,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                         <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
                                             <div className="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
                                             <div className="flex flex-wrap">
-                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length} Documents</div>
+                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length} / {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} Documents</div>
                                             </div>
                                         </div>
                                         <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
@@ -240,7 +239,16 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="mt-4">
+                                <div className="flex-row flex">
+                                    <div className="font-bold">
+                                        Number of Unfiltered Documents:
+                                    </div>
+                                    <div className="ml-1 italic">
+                                        {numberOfFilteredDocuments}
+                                    </div>
+                                </div>
+                            </div>
                             <div className="mt-4">
                                 <div className="flex-row flex">
                                     <div className="font-bold">

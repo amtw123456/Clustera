@@ -92,7 +92,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                 <div className="flex flex-col items-center px-6">
                     <div className="font-bold text-lg">Export Section</div>
                     <div className="w-full px-3 mt-4 flex flex-row border-gray-300 border">
-                        <div className="w-2/5 h-[225px] overflow-auto border-gray-300 border-r p-1">
+                        <div className="w-2/5 h-[235px] overflow-auto border-gray-300 border-r p-1">
                             <div className="w-full flex flex-col">
                                 <div className="font-bold text-center">Pick Clusters to Download</div>
                                 {
@@ -113,12 +113,17 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                                 }
                             </div>
                         </div>
-                        <div className="ml-4 w-3/5 h-[225px] overflow-auto p-2">
+                        <div className="ml-4 w-3/5 h-[235px] overflow-auto p-2">
                             <div className="flex flex-col">
                                 <div className="flex flex-row items-center">
-                                    <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                                    <div className="font-bold text-sm mb-2 pt-2">Document Topic Distribution Threshold:</div>
                                     <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="ml-3 block px-3 py-2 w-24 h-8 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
                                 </div>
+                                <div className="flex flex-row items-center">
+                                    <div className="font-bold text-sm mb-2 pt-2">Document Tokens Threshold:</div>
+                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="ml-3 block px-3 py-2 w-24 h-8 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
+                                </div>
+
 
                                 <div>
                                     <div className="flex flex-row">

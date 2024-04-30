@@ -639,7 +639,7 @@ function LDApage() {
                     A user can input a text to the textbox which will be the container when the user will classify which the document belongs to.
                   </li>
                   <li className="mt-2">
-                    It can classify a document to which cluster it might belong to.
+                    The Classify Documents button will classify a document to which cluster it might belong to.
                   </li>
                 </ul>
               </div>
