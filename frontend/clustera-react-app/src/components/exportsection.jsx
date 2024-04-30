@@ -4,13 +4,13 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [includeAllClusters, setIncludeAllClusters] = useState(false)
+    const [includeAllClusters, setIncludeAllClusters] = useState(true)
     const [includeDocumentTokens, setIncludeDocumentTokens] = useState(false)
     const [includeClusterLabel, setIncludeClusterLabel] = useState(false)
     const [includeTopicsRelatedToDocument, setIncludeTopicsRelatedToDocument] = useState(false)
     const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(false)
     const [includePreProcessedText, setIncludePreProcessedText] = useState(false)
-    const [clusterCheckboxes, setClusterCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
+    const [clusterCheckboxes, setClusterCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => true));
     const [selectedAttributes, setSelectedAttributes] = useState(['uDocument', 'clusterId']);
 
     const handleDownloadOptionsCheckboxChange = (checkboxName) => {

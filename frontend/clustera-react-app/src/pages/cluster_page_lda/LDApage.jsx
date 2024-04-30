@@ -450,7 +450,7 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page (Document Summary)?
               </div>
               <div className="px-4 mt-2">
@@ -497,7 +497,7 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this page (Clusters Generated)?
               </div>
               <div className="px-4 mt-2">
@@ -547,7 +547,7 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page (Document Topic Distribution)?
               </div>
               <div className="px-4 mt-2">
@@ -564,7 +564,7 @@ function LDApage() {
               {/* <div className="mx-4 mt-6 my-5 flex-row flex">
                 <div className="italic">No Options for this section</div>
               </div> */}
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What does this options do (Topics Generated)?
               </div>
               <div className="px-4 mt-2">
@@ -643,7 +643,7 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Document Summary)?
               </div>
               <div className="px-4 mt-2">
@@ -726,7 +726,7 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Document Summary)?
               </div>
               <div className="px-4 mt-2">
@@ -767,24 +767,30 @@ function LDApage() {
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                    Allows you to filter which documents to download, depending on a documents topic distribution.
                   </li>
                   <li className="mt-2">
-                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                    Allows you to filter which documents to download, depending on the number of tokens a document has.
+                  </li>
+                  <li className="mt-2">
+                    The checkboxes allow you to pick which other information the user wants to download along with the documents.
+                  </li>
+                  <li className="mt-2">
+                    The export button lets the user download the Documents of the Clusters generated.
                   </li>
                 </ul>
               </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
+              <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Document Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                    The number of documents per cluster will be included in the download.
                   </li>
-                  <li className="mt-2">
+                  {/* <li className="mt-2">
                     When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </>
