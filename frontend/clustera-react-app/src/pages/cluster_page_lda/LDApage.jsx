@@ -719,10 +719,22 @@ function LDApage() {
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you to filter which documents to show, depending on a documents topic distribution.
+                    Allows you to set the perplexity of the scatterplot graph.
                   </li>
                   <li className="mt-2">
-                    Allows you to filter which documents to show, depending on the number of tokens a document has.
+                    Allows you to set the angle of the scatterplot graph.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to set the number of iterations when generating the scatterplot graph.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to set the learning rate when generating the scatterplot graph.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to filter which documents to show in the scatterplot graph, depending on a documents topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Allows you to filter which documents to show in the scatterplot graph, depending on the number of tokens a document has.
                   </li>
                 </ul>
               </div>
@@ -732,10 +744,16 @@ function LDApage() {
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
                   <li className="mt-4">
-                    Allows you see all the documents that are in the set of documents assuming that the filter options haven't been tampered with.
+                    The following graph is a t-SNE graph where the points in the graph are document topic distributions of the documents which were reduced to a 2-dimensional form using t-SNE(t-distributed stochastic neighbor embedding).
                   </li>
                   <li className="mt-2">
-                    When Read full is clicked on a specific document an overall summary the documents information regardings its text, cluster its associted with, topics associted, document topic distribution, number of tokens, tokens, and length of tokens can be viewed.
+                    Allows the user to see the overall quality of the genererated clusters by seeing.
+                  </li>
+                  <li className="mt-2">
+                    Allows the user to see which documents might be closely related to other clusters due to its document topic distribution.
+                  </li>
+                  <li className="mt-2">
+                    Allows the user to see the word graph and how much weight each word is for each topic generated.
                   </li>
                 </ul>
               </div>
