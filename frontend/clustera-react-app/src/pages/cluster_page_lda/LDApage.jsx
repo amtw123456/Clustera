@@ -896,7 +896,7 @@ function LDApage() {
           </div >
         ) : isExportBool ? (
           <div className="ml-80 flex flex-row flex-wrap">
-            <ExportSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} noOfClusters={noOfClustersInputParams + 1} />
+            <ExportSection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} noOfClusters={noOfClustersInputParams + 1} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) :
           < div className="ml-80 flex flex-wrap items-center">

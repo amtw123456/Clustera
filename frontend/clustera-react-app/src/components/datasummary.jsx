@@ -98,7 +98,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                         <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
                                             <div className="flex text-base flex ml-[3px] px-1 ">Cluster {index + 1} Number of documents:</div>
                                             <div className="flex flex-wrap">
-                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length} / {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} Documents</div>
+                                                <div className="flex ml-[3px] px-1 border font-bold text-base text-purple-400 mt-1 rounded-md bg-purple-100 border-purple-400" >{clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} Documents</div>
                                             </div>
                                         </div>
                                         <div className="ml-5 flex flex-row flex-wrap italic font-bold text-base items-center">
