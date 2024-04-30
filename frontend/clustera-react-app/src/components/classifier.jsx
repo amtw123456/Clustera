@@ -6,9 +6,10 @@ import Scatterplot from "./scatterplot_folder/Scatterplot";
 function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
-    const [classifierResult, setClassifierResult] = useState();
+    const [classifierResult, setClassifierResult] = useState([0]);
     const [classifierResultDistribution, setClassifierResultDistribution] = useState();
     const [classifierCosineSimilarityResult, setClassifierCosineSimilarityResult] = useState(Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([0])))
+    const [topClassifierCosineSimilarityResult, setTopClassifierCosineSimilarityResult] = useState(0)
     const [isClassifierLoading, setIsClassifierLoading] = useState();
 
 
@@ -48,9 +49,6 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
         const classifierDocumentClusterId = []
         const classifierTopicDistribution = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
         const classifierDocumentsText = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
-        console.log(Object.keys(clustersGenerated).length)
-        console.log()
-        console.log(classifierDocumentsText)
         var responseData
         var classifierTextInput = document.getElementById("classifierTextInput");
         // summarizedDocuments
@@ -61,7 +59,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                 classifierTopicDistribution[document.clusterId - 1].push(document.documentTopicDistribution)
             }
         })
-        console.log(classifierDocumentsText)
+        // console.log(classifierDocumentsText)
 
         try {
             const response = await fetch(REACT_APP_BACKEND_API_URL + 'cosinesimilarity', {
@@ -80,22 +78,25 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
             console.error('Error during text preprocessing:', error);
         } finally {
             setClassifierCosineSimilarityResult(responseData['document_cosine_similarity'])
+            setTopClassifierCosineSimilarityResult(responseData['document_cosine_similarity'].indexOf(Math.max(...responseData['document_cosine_similarity'])))
         }
 
     }
-
-    const Rectangle = ({ percentage }) => {
-        // Calculate the width of the filled portion based on the percentage
+    const Rectangle = ({ percentage, index }) => {
         const filledWidth = `${percentage}%`;
-
         return (
             <div className="w-[1100px] h-8 bg-gray-300 rounded">
-                {/* Render the filled portion */}
-                <div className="h-full bg-blue-800 rounded" style={{ width: filledWidth }}>
-                    <div className="ml-1 text-white text-sm p-1">{percentage}%</div>
-
-                </div>
-            </div>
+                {
+                    classifierResult[0] === index ? (
+                        < div className="h-full bg-green-400 rounded" style={{ width: filledWidth }}>
+                            <div className="ml-1 text-white text-sm p-1">{percentage}%</div>
+                        </div>
+                    ) :
+                        < div className="h-full bg-blue-600 rounded" style={{ width: filledWidth }}>
+                            <div className="ml-1 text-white text-sm p-1">{percentage}%</div>
+                        </div>
+                }
+            </div >
         );
     };
 
@@ -166,16 +167,23 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                         <div className="flex flex-col h-1/2">
                             {
                                 classifierResultDistribution !== undefined ? (
-                                    classifierResultDistribution.map((topicDistributionList, index) => (
+                                    classifierResultDistribution.map((topicDistributionList, outerIndex) => (
                                         topicDistributionList.map((topicDistribution, index) => (
                                             <>
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
-                                                        <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        topClassifierCosineSimilarityResult === index ? (
+                                                            <div className="font-bold italic ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        ) :
+                                                            <div className="ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        // <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                     ) :
-                                                        <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        topClassifierCosineSimilarityResult === index ? (
+                                                            <div className="font-bold italic ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        ) :
+                                                            <div className="ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                 }
-                                                <Rectangle percentage={(topicDistribution * 100).toFixed(2)} />
+                                                <Rectangle percentage={(topicDistribution * 100).toFixed(2)} index={index + 1} />
                                             </>
                                             // <div className="px-2 py-1 flex border font-bold text-yellow-400 m-1 rounded-md bg-yellow-100 border-yellow-400">{index + 1}: {(topicDistribution * 100).toFixed(2)}%</div>
                                             // <div><Rectangle percentage={50} /></div>

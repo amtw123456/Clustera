@@ -66,6 +66,10 @@ function LDApage() {
       for (const key in stateSetterMap) {
         if (stateName == key) {
           stateSetterMap[key](true);
+          // if(key == "")
+          if ("isDataSummaryBool" === stateName) {
+            computeClusterSilhoutteScore()
+          }
 
         }
         else {
