@@ -10,7 +10,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
     const [includeTopicsRelatedToDocument, setIncludeTopicsRelatedToDocument] = useState(false)
     const [includeDocumentTopicDistribution, setIncludeDocumentTopicDistribution] = useState(false)
     const [includePreProcessedText, setIncludePreProcessedText] = useState(false)
-    const [checkboxes, setCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
+    const [clusterCheckboxes, setClusterCheckboxes] = useState(Array.from({ length: noOfClusters - 1 }, () => false));
     const [selectedAttributes, setSelectedAttributes] = useState(['uDocument', 'clusterId']);
 
     const handleDownloadOptionsCheckboxChange = (checkboxName) => {
@@ -27,7 +27,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
             case 'includeAllClusters':
                 setIncludeAllClusters(prevState => !prevState);
                 updateSelectedAttributes('includeAllClusters');
-                setCheckboxes(Array.from({ length: noOfClusters - 1 }, () => !includeAllClusters));
+                setClusterCheckboxes(Array.from({ length: noOfClusters - 1 }, () => !includeAllClusters));
                 break;
             case 'includeDocumentTokens':
                 setIncludeDocumentTokens(prevState => !prevState);
@@ -55,9 +55,9 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
     };
 
     const handleIncludeClusterCheckboxChange = (index) => {
-        const newCheckboxes = [...checkboxes];
+        const newCheckboxes = [...clusterCheckboxes];
         newCheckboxes[index] = !newCheckboxes[index];
-        setCheckboxes(newCheckboxes);
+        setClusterCheckboxes(newCheckboxes);
 
         if (includeAllClusters && !newCheckboxes[index]) {
             setIncludeAllClusters(prevState => !prevState)
@@ -71,12 +71,14 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
         summarizedDocuments.map((document, index) => {
             if (document.includeToClusterBool) {
-                dataToExport.push(document.exportData(selectedAttributes))
+                if (clusterCheckboxes[document.clusterId - 1]) {
+                    dataToExport.push(document.exportData(selectedAttributes))
+                }
             }
         })
 
         setTimeout(() => {
-            const jsonBlob = new Blob([JSON.stringify(dataToExport, null, 4)], { type: 'application/json' });
+            const jsonBlob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
 
             const url = URL.createObjectURL(jsonBlob);
             const link = document.createElement('a');
@@ -93,19 +95,19 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
 
     return (
         <div className="flex-1 flex-col flex items-center">
-            <div className="w-3/5 h-[500px] border border-gray-200 mt-36">
+            <div className="w-3/5 h-[500px] border-gray-200 mt-36">
                 <div className="flex flex-col items-center px-6">
-                    <div className="font-bold text-lg">Export Section</div>
+                    <div className="font-bold text-xl mt-2">Export Section</div>
                     <div className="w-full px-3 mt-4 flex flex-row border-gray-300 border">
-                        <div className="w-1/2 h-[23 5px] overflow-auto border-gray-300 border-r p-1">
+                        <div className="w-1/2 h-[235px] overflow-auto border-gray-300 border-r p-2">
                             <div className="w-full flex flex-col">
                                 <div className="font-bold text-center">Pick Clusters to Download</div>
-                                <div className="flex flex-row">
+                                <div className="flex flex-row mt-6">
                                     <input type="checkbox" checked={includeAllClusters} onChange={() => handleDownloadOptionsCheckboxChange('includeAllClusters')} />
                                     <div className="ml-3">Include All Clusters</div>
                                 </div>
                                 {
-                                    checkboxes.map((isChecked, index) => (
+                                    clusterCheckboxes.map((isChecked, index) => (
                                         <div className="flex flex-row">
                                             <input type="checkbox" checked={isChecked} onChange={() => handleIncludeClusterCheckboxChange(index)} />
                                             <div className="ml-3 flex-grow">
@@ -124,18 +126,16 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                         </div>
                         <div className="ml-4 w-1/2 h-[235px] overflow-auto p-2">
                             <div className="flex flex-col">
-                                <div className="flex flex-row items-center">
-                                    <div className="font-bold text-sm mb-2 pt-2">Document Topic Distribution Threshold:</div>
-                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="ml-3 block px-3 py-2 w-24 h-8 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
-                                </div>
-                                <div className="flex flex-row items-center">
-                                    <div className="font-bold text-sm mb-2 pt-2">Document Tokens Threshold:</div>
-                                    <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="ml-3 block px-3 py-2 w-24 h-8 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" />
-                                </div>
-
-
-                                <div>
-
+                                <div className="font-bold text-center">Pick Clusters to Download</div>
+                                <div className="mt-6">
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includeDocumentTopicDistribution} onChange={() => handleDownloadOptionsCheckboxChange('includeDocumentTopicDistribution')} />
+                                        <div className="ml-3">Include Document Topic Distribution</div>
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <input type="checkbox" checked={includePreProcessedText} onChange={() => handleDownloadOptionsCheckboxChange('includePreProcessedText')} />
+                                        <div className="ml-3">Include Pre-Processed Text</div>
+                                    </div>
                                     <div className="flex flex-row">
                                         <input type="checkbox" checked={includeDocumentTokens} onChange={() => handleDownloadOptionsCheckboxChange('includeDocumentTokens')} />
                                         <div className="ml-3">Include Document Tokens</div>
@@ -147,14 +147,6 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                                     <div className="flex flex-row">
                                         <input type="checkbox" checked={includeTopicsRelatedToDocument} onChange={() => handleDownloadOptionsCheckboxChange('includeTopicsRelatedToDocument')} />
                                         <div className="ml-3">Include Topics</div>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <input type="checkbox" checked={includeDocumentTopicDistribution} onChange={() => handleDownloadOptionsCheckboxChange('includeDocumentTopicDistribution')} />
-                                        <div className="ml-3">Include Document Topic Distribution</div>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <input type="checkbox" checked={includePreProcessedText} onChange={() => handleDownloadOptionsCheckboxChange('includePreProcessedText')} />
-                                        <div className="ml-3">Include Pre-Processed Text</div>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +161,7 @@ function ExportSection({ summarizedDocuments, noOfClusters, topicsGenerated, clu
                                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
                                     </svg>
                                 ) :
-                                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700 mt-6">
                                         Export Clusters
                                     </div>
                             }
