@@ -279,7 +279,6 @@ function LDApage() {
     const classifierDocumentsText = []
     const classifierDocumentId = []
 
-
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
@@ -930,7 +929,7 @@ function LDApage() {
           </div >
         ) : isClassifierBool ? (
           <div className="ml-80 flex flex-row flex-wrap">
-            <Classifier classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
+            <Classifier summarizedDocuments={documentsProvider} classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) : isExportBool ? (
           <div className="ml-80 flex flex-row flex-wrap">

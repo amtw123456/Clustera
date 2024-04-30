@@ -3,12 +3,18 @@ import { AppContext } from '../providers/AppState.jsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
 
 
-function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated }) {
+function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
     const [classifierResult, setClassifierResult] = useState();
     const [classifierResultDistribution, setClassifierResultDistribution] = useState();
+    const [classifierCosineSimilarityResult, setClassifierCosineSimilarityResult] = useState()
     const [isClassifierLoading, setIsClassifierLoading] = useState();
+
+
+    useEffect(() => {
+        console.log(classifierCosineSimilarityResult)
+    }, [classifierCosineSimilarityResult]);
 
     const ldaClassifyDocument = async () => {
         var responseData
@@ -37,6 +43,46 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
             setIsClassifierLoading(false)
         }
     };
+
+    const determineCosineSimilarityToClusters = async () => {
+        const classifierDocumentClusterId = []
+        const classifierTopicDistribution = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
+        const classifierDocumentsText = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
+        console.log(Object.keys(clustersGenerated).length)
+        console.log()
+        console.log(classifierDocumentsText)
+        var responseData
+        var classifierTextInput = document.getElementById("classifierTextInput");
+        // summarizedDocuments
+
+        summarizedDocuments.map((document, index) => {
+            if (document.includeToClusterBool && document.clusterId !== 0) {
+                classifierDocumentsText[document.clusterId - 1].push(document.pDocument)
+                classifierTopicDistribution[document.clusterId - 1].push(document.documentTopicDistribution)
+            }
+        })
+        console.log(classifierDocumentsText)
+
+        try {
+            const response = await fetch(REACT_APP_BACKEND_API_URL + 'cosinesimilarity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "clusters_documents": classifierDocumentsText,
+                    "documents": [classifierTextInput.value]
+                }),
+            });
+
+            responseData = await response.json();
+        } catch (error) {
+            console.error('Error during text preprocessing:', error);
+        } finally {
+            setClassifierCosineSimilarityResult(responseData['document_cosine_similarity'])
+        }
+
+    }
 
     const Rectangle = ({ percentage }) => {
         // Calculate the width of the filled portion based on the percentage
@@ -88,7 +134,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                 </div>
 
                 <div className="flex ml-3 mt-6">
-                    <button onClick={() => ldaClassifyDocument()}>
+                    <button onClick={() => { ldaClassifyDocument(); determineCosineSimilarityToClusters() }}>
                         {
                             isClassifierLoading ? (
                                 <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,16 +152,17 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
 
                 <div className="flex ml-3 mt-6">
                     <div className="flex-col flex items-center">
-                        {/* {
+                        {
                             classifierResult !== undefined ? (
-
                                 <div className="justify-center flex border w-[150px] font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
                                     {classifierResult}
                                 </div>
 
                             ) :
-                                <></>
-                        } */}
+                                <div className="justify-center flex border w-[150px] font-bold text-purple-400 m-1 rounded-md bg-purple-100 border-purple-400">
+                                    {0}
+                                </div>
+                        }
                         <div className="flex flex-col h-1/2">
                             {
                                 classifierResultDistribution !== undefined ? (
@@ -124,9 +171,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                             <>
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
-                                                        <div className="font-bold   ml-1">Cluster {index + 1}</div>
+                                                        <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                     ) :
-                                                        <div className="font-bold ml-1">{topicsGeneratedLabel[index]}</div>
+                                                        <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | {classifierCosineSimilarityResult[index]}</div>
                                                 }
                                                 <Rectangle percentage={(topicDistribution * 100).toFixed(2)} />
                                             </>
@@ -139,9 +186,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                         <>
                                             {
                                                 topicsGeneratedLabel[index] === null ? (
-                                                    <div className="font-bold ml-1">Cluster {index + 1}</div>
+                                                    <div className="font-bold ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                 ) :
-                                                    <div className="font-bold ml-1">{topicsGeneratedLabel[index]}</div>
+                                                    <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                             }
                                             <Rectangle percentage={0} />
                                         </>

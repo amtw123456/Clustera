@@ -146,9 +146,22 @@ def reduce_dtd_to_tsne(request):
 # Create your views here.
 @api_view(['POST'])
 def compute_documents_cosine_similarity(request):
+    payload = json.loads(request.body)
+    vectortizer = CountVectorizer()
+    
+    cosine_similarity_of_clusters = []
+
+    numberOfDocuments = sum([len(inner_list) for inner_list in payload['clusters_documents']])
+
+    for clusters in payload['clusters_documents']:
+        temp = 0
+        for document in clusters: 
+            temp += cosine_similarity(vectortizer.fit_transform([payload['documents'][0], document]))[1][0]
+        cosine_similarity_of_clusters.append(temp / numberOfDocuments)
+
     return Response(
         data={
-            "document_cosine_similarity": cosine_similarity('red', 'green'),
+            "document_cosine_similarity": cosine_similarity_of_clusters,
         }
     )
 
