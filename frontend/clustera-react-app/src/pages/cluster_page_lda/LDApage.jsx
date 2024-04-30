@@ -194,6 +194,8 @@ function LDApage() {
 
   const [reRenderComponent, setReRenderComponent] = useState(false)
 
+  const [numberOfFilteredDocuments, setNumberOfFilteredDocuments] = useState(0)
+
   const [documentTopicDistributionThresholdState, setDocumentTopicDistributionThresholdState] = useState(0.00)
   const [documentTopicDistributionThreshold, setDocumentTopicDistributionThreshold] = useState(0.00)
 
@@ -251,6 +253,7 @@ function LDApage() {
   };
 
   const filterOutDocuments = () => {
+
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
     setDocumentNumberOfTokensThresholdState(documentNumberOfTokensThreshold)
     for (let i = 0; i < documentsProvider.length; i++) {
@@ -269,6 +272,13 @@ function LDApage() {
         }
       }
     }
+    var temp = 0
+    numberOfDocumentsNotIncludedPerCluster.slice(1).map((count, index) => {
+      temp += count;
+    });
+    setNumberOfFilteredDocuments(temp)
+    console.log(numberOfDocumentsNotIncludedPerCluster)
+
   }
 
   const buildClassifierParamters = () => {
@@ -368,6 +378,23 @@ function LDApage() {
                       < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
                         Cluster Documents
                       </div>
+                  }
+                </button>
+              </div>
+              <div className="mx-4 my-3">
+                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+              </div>
+              <div className="mx-4 my-3">
+                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+              </div>
+              <div className="flex justify-center mt-6">
+                <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }}>
+                  {
+                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                      Filter Documents
+                    </div>
                   }
                 </button>
               </div>
@@ -904,7 +931,7 @@ function LDApage() {
           </div >
         ) : isDataSummaryBool ? (
           <div className="ml-80 flex flex-wrap items-center mx-5">
-            <DataSummarySection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} topicsGeneratedLabel={topicsGeneratedLabel} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
+            <DataSummarySection summarizedDocuments={documentsProvider} topicsGenerated={topicsGenerated} silhouetteScoreGenerated={silhouettescore} noOfClusters={noOfClustersInputParams + 1} topicCoheranceGenerated={topicCoheranceScores} clustersGenerated={clustersProvider} topicsGeneratedLabel={topicsGeneratedLabel} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} filteredDocumentCount={numberOfFilteredDocuments} />
           </div >
         ) : isDocumentSummaryBool ? (
           <div className="ml-80 flex flex-wrap items-center">

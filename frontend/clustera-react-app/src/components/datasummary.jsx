@@ -5,12 +5,11 @@ import { FaEdit } from "react-icons/fa";
 import Popup from 'reactjs-popup';
 import { AppContext } from '../providers/AppState.jsx';
 
-function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel, documentCountPerCluster }) {
+function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel, documentCountPerCluster, filteredDocumentCount }) {
     const { wordCounts, setWordCounts } = useContext(AppContext);
 
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
-    const [numberOfFilteredDocuments, setNumberOfFilteredDocuments] = useState(0)
 
     const [reRenderComponent, setReRenderComponent] = useState(false)
     const [newInputLabel, setNewInputLabel] = useState('');
@@ -53,11 +52,6 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
             temp += clustersGenerated[index + 1].length;
         });
         setNumberOfClusteredDocuments(temp)
-        temp = 0
-        documentCountPerCluster.slice(1).map((count, index) => {
-            temp += count;
-        });
-        setNumberOfFilteredDocuments(temp)
     }, []);
 
     return (
@@ -206,7 +200,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                         <div className="flex flex-col w-1/2 overflow-x-auto overflow-y-hidden">
                             <div className="font-bold w-full h-[15px] text-center">Clustered Data Donut Chart</div>
                             <div className="w-full flex flex-col">
-                                <PieChart clusterData={clustersGenerated} width={500} height={420} />
+                                <PieChart clusterData={clustersGenerated} documentCountPerCluster={documentCountPerCluster} width={500} height={420} />
                             </div>
                         </div>
                     </div>
@@ -242,10 +236,10 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                             <div className="mt-4">
                                 <div className="flex-row flex">
                                     <div className="font-bold">
-                                        Number of Unfiltered Documents:
+                                        Number of Filtered Documents:
                                     </div>
                                     <div className="ml-1 italic">
-                                        {numberOfFilteredDocuments}
+                                        {filteredDocumentCount}
                                     </div>
                                 </div>
                             </div>

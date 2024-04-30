@@ -85,18 +85,21 @@ def text_tokenization(request):
         #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
         #     temp.append(lemmatized_word)
         
+        # filtered_documents.append(" ".join(temp))
         filtered_documents.append(document)
     
-    total_word_counts = count_words_in_documents(filtered_documents)
+    # total_word_counts = count_words_in_documents(filtered_documents)
     # print(total_word_counts.items())
-    filtered_words = [word for word, count in total_word_counts.items() if count < 0]
+    # filtered_words = [word for word, count in total_word_counts.items() if count < 0]
 
     PreProcessedInfo = []
+    listOfDocuments = []
     for document in filtered_documents:
         temp = []
 
         for word in document.split():
-            if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+            # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+            if word not in stop_words and not word.isdigit() and len(word) < 50:
                 # lemmatized_word = WordNetLemmatizer().lemmatize(word)
                 temp.append(word)
 
@@ -109,11 +112,13 @@ def text_tokenization(request):
         document = " ".join(temp)    
         # documents_tokens.append(temp)
         # preprocessed_text.append(document)
+        listOfDocuments.append(document)
         PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
 
     end_time = time.time()  # Record the end time
 
     elapsed_time = end_time - start_time  # Calculate the elapsed time
+    total_word_counts = count_words_in_documents(listOfDocuments)
     sorted_word_counts = dict(sorted(total_word_counts.items(), key=lambda item: item[1], reverse=True))
     
     return Response(data={

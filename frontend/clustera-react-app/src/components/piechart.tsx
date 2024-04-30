@@ -13,6 +13,7 @@ const MARGIN_Y = 50;
 const INFLEXION_PADDING = 1; // space between donut and label inflexion point
 
 const colors = [
+    "#f3f5f7",
     "#ffffff",
     "#e0ac2b", // Orange
     "#e85252", // Red
@@ -65,18 +66,48 @@ const colors = [
     "#ffccbc", // Light pink
 ];
 
-const PieChart = ({ width, height, clusterData }) => {
+const PieChart = ({ width, height, clusterData, documentCountPerCluster, filteredDocumentCount }) => {
     const ref = useRef(null);
 
     let data: DataItem[] = [];
+    // console.log(clusterDataTwo)
+    // for (const cluster in clusterDataTwo) {
+
+    //     console.log(clusterDataTwo[cluster])
+    // }
 
     for (const cluster in clusterData) {
         const value = clusterData[cluster];
-        data.push({
-            clusterLabel: "Cluster: " + cluster,
-            value: value.length,
-        });
+        if (parseInt(cluster) === 0) {
+            data.push({
+                clusterLabel: "Unassigned",
+                // value: value.length - clusterDataTwo[cluster],
+                value: value.length
+            });
+            let temp: number = 0;
+            documentCountPerCluster.slice(1).map((count, index) => {
+                temp += count;
+            });
+            // setNumberOfFilteredDocuments(temp)
+            data.push({
+                clusterLabel: "Filtered",
+                value: temp,
+            })
+        }
+        else {
+            data.push({
+                clusterLabel: "Cluster: " + cluster,
+                // value: value.length - clusterDataTwo[cluster],
+                value: value.length - documentCountPerCluster[cluster],
+            });
+        }
     }
+
+
+    // data.push({
+    //     clusterLabel: "Filtered Documents",
+    //     value: filteredDocumentCount,
+    // })
 
     const radius = Math.min(width - 2 * MARGIN_X, height - 2 * MARGIN_Y) / 2;
 
@@ -112,52 +143,157 @@ const PieChart = ({ width, height, clusterData }) => {
         const textAnchor = isRightLabel ? "start" : "end";
         const label = grp.data.clusterLabel + " (" + grp.value + ")";
 
-        return (
-            <g
-                key={i}
-                className={styles.slice}
-                onMouseEnter={() => {
-                    if (ref.current) {
-                        (ref.current as HTMLElement).classList.add(styles.hasHighlight);
-                    }
-                }}
-                onMouseLeave={() => {
-                    if (ref.current) {
-                        (ref.current as HTMLElement).classList.remove(styles.hasHighlight);
-                    }
-                }}
-            >
-                <path d={slicePath!} fill={colors[i]} />
-                <circle cx={centroid[0]} cy={centroid[1]} r={2} />
-                <line
-                    x1={centroid[0]}
-                    y1={centroid[1]}
-                    x2={inflexionPoint[0]}
-                    y2={inflexionPoint[1]}
-                    stroke={"black"}
-                    fill={"black"}
-                />
-                <line
-                    x1={inflexionPoint[0]}
-                    y1={inflexionPoint[1]}
-                    x2={labelPosX}
-                    y2={inflexionPoint[1]}
-                    stroke={"black"}
-                    fill={"black"}
-                />
+        if (i === 1) {
+            return (
+                data[1].value !== 0 ? (
+                    < g
+                        key={i}
+                        className={styles.slice}
+                        onMouseEnter={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.add(styles.hasHighlight);
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.remove(styles.hasHighlight);
+                            }
+                        }}
+                    >
+                        <path d={slicePath!} fill={colors[i]} />
+                        <circle cx={centroid[0]} cy={centroid[1]} r={2} />
+                        <line
+                            x1={centroid[0]}
+                            y1={centroid[1]}
+                            x2={inflexionPoint[0]}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
+                        <line
+                            x1={inflexionPoint[0]}
+                            y1={inflexionPoint[1]}
+                            x2={labelPosX}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
 
-                <text
-                    x={labelPosX + (isRightLabel ? 2 : -2)}
-                    y={inflexionPoint[1]}
-                    textAnchor={textAnchor}
-                    dominantBaseline="middle"
-                    fontSize={13}
-                    className="font-bold italic text-blue-600"
-                >
-                    {label}
-                </text>
-            </g>
-        );
+                        <text
+                            x={labelPosX + (isRightLabel ? 2 : -2)}
+                            y={inflexionPoint[1]}
+                            textAnchor={textAnchor}
+                            dominantBaseline="middle"
+                            fontSize={13}
+                            className="font-bold italic text-blue-600"
+                        >
+                            {label}
+                        </text>
+                    </g >
+                ) : <></>
+            );
+        }
+        else if (i === 0) {
+            return (
+                data[0].value !== 0 ? (
+                    < g
+                        key={i}
+                        className={styles.slice}
+                        onMouseEnter={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.add(styles.hasHighlight);
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.remove(styles.hasHighlight);
+                            }
+                        }}
+                    >
+                        <path d={slicePath!} fill={colors[i]} />
+                        <circle cx={centroid[0]} cy={centroid[1]} r={2} />
+                        <line
+                            x1={centroid[0]}
+                            y1={centroid[1]}
+                            x2={inflexionPoint[0]}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
+                        <line
+                            x1={inflexionPoint[0]}
+                            y1={inflexionPoint[1]}
+                            x2={labelPosX}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
+
+                        <text
+                            x={labelPosX + (isRightLabel ? 2 : -2)}
+                            y={inflexionPoint[1]}
+                            textAnchor={textAnchor}
+                            dominantBaseline="middle"
+                            fontSize={13}
+                            className="font-bold italic text-blue-600"
+                        >
+                            {label}
+                        </text>
+                    </g >
+                ) : <></>
+            )
+        }
+        else {
+            return (
+                ((data[i].value) !== 0) ? (
+                    < g
+                        key={i}
+                        className={styles.slice}
+                        onMouseEnter={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.add(styles.hasHighlight);
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (ref.current) {
+                                (ref.current as HTMLElement).classList.remove(styles.hasHighlight);
+                            }
+                        }}
+                    >
+                        <path d={slicePath!} fill={colors[i]} />
+                        <circle cx={centroid[0]} cy={centroid[1]} r={2} />
+                        <line
+                            x1={centroid[0]}
+                            y1={centroid[1]}
+                            x2={inflexionPoint[0]}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
+                        <line
+                            x1={inflexionPoint[0]}
+                            y1={inflexionPoint[1]}
+                            x2={labelPosX}
+                            y2={inflexionPoint[1]}
+                            stroke={"black"}
+                            fill={"black"}
+                        />
+
+                        <text
+                            x={labelPosX + (isRightLabel ? 2 : -2)}
+                            y={inflexionPoint[1]}
+                            textAnchor={textAnchor}
+                            dominantBaseline="middle"
+                            fontSize={13}
+                            className="font-bold italic text-blue-600"
+                        >
+                            {label}
+                        </text>
+                    </g >
+                ) : <></>
+            );
+        }
+
     });
 
     return (

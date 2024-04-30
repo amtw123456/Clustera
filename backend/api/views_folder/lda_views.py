@@ -104,6 +104,9 @@ def text_clustering_lda(request):
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
 
+    # for i in topics:
+    #    print(" ".join(i[:7]))
+
     # pickled_vectorizer = codecs.encode(pickle.dumps(vectorizer), "base64").decode()
     # pickled_lda_model = codecs.encode(pickle.dumps(lda), "base64").decode()
     
