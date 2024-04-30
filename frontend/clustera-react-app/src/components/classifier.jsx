@@ -8,7 +8,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
 
     const [classifierResult, setClassifierResult] = useState();
     const [classifierResultDistribution, setClassifierResultDistribution] = useState();
-    const [classifierCosineSimilarityResult, setClassifierCosineSimilarityResult] = useState()
+    const [classifierCosineSimilarityResult, setClassifierCosineSimilarityResult] = useState(Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([0])))
     const [isClassifierLoading, setIsClassifierLoading] = useState();
 
 
@@ -173,7 +173,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                                     topicsGeneratedLabel[index] === null ? (
                                                         <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                     ) :
-                                                        <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | {classifierCosineSimilarityResult[index]}</div>
+                                                        <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                 }
                                                 <Rectangle percentage={(topicDistribution * 100).toFixed(2)} />
                                             </>
