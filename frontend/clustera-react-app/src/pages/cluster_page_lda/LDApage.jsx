@@ -49,6 +49,9 @@ function LDApage() {
   const [minimumDf, setMinimumDf] = useState(1);
   const [maximumDf, setMaximumDf] = useState(2);
 
+  const [alphaInput, setAlphaInput] = useState(0.05);
+  const [betaInput, setBetaInput] = useState(0.05);
+
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
     const stateSetterMap = {
@@ -136,6 +139,8 @@ function LDApage() {
           "num_topics": noOfClustersInput,
           "minimum_df_value": minimumDf,
           "maximum_df_value": maximumDf,
+          "alpha_value": alphaInput,
+          "beta_value": betaInput
         }),
       });
 
@@ -178,6 +183,14 @@ function LDApage() {
     documentsProvider.map((item, index) => (
       documentsProvider[index].clusterLabel = "Unlabeled"
     ))
+  };
+
+  const handleAlphaInput = (e) => {
+    setAlphaInput(parseFloat(e.target.value));
+  };
+
+  const handleBetaInput = (e) => {
+    setBetaInput(parseFloat(e.target.value));
   };
 
   const handleInputNoOfClusters = (e) => {
@@ -281,7 +294,6 @@ function LDApage() {
       temp += count;
     });
     setNumberOfFilteredDocuments(temp)
-    console.log(numberOfDocumentsNotIncludedPerCluster)
 
   }
 
@@ -332,6 +344,7 @@ function LDApage() {
     <div>
       <NavigationBar />
       <div className="bg-gray-200 mt-16 ml-5 h-[calc(100vh-75px)] w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300 overflow-auto">
+
         <div className="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
         {
           isDataSummaryBool ? (
@@ -344,32 +357,75 @@ function LDApage() {
                   <option value="count-vectorizer">Count Vectorizer</option>
                 </select>
               </div>
-              <div className="mx-4 my-3 flex-row flex">
+              <div className="mx-4 my-3 flex-row flex static">
                 <div>
                   <div className="flex flex-row justify-center">
                     <a className="min-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
                     <div className="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
                   </div>
                   <input type="number" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
-                  <Tooltip anchorSelect=".min-df-tooltip" place="right">
-                    <div className='text-xs'>min_df = 5 means "ignore terms that appear in less than 5 documents".</div>
-                  </Tooltip>
+                  <Tooltip
+                    anchorSelect=".min-df-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="min_df = 5 means  ignore terms that appear in less than 5 documents"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
                 </div>
+
                 <div className="ml-12">
                   <div className="flex flex-row justify-center">
                     <a className="max-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
                     <div className="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
-                    <Tooltip anchorSelect=".max-df-tooltip" place="right">
-                      <div className='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
-                    </Tooltip>
+                    <Tooltip
+                      anchorSelect=".max-df-tooltip"
+                      place="right"
+                      positionStrategy="fixed"
+                      content="max_df = 25 means ignore terms that appear in more than 25 documents"
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                    />
                   </div>
-                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
+                  <input type="number" step="1" min="2" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
+                </div>
+              </div>
+
+              <div className="mt-3 mx-4">
+                <div className="font-bold text-sm ml-1 mb-2">Latent Dirichlet Allocation Parameters:</div>
+              </div>
+              <div className="mx-4 my-3 flex-row flex">
+                <div>
+                  <div className="flex flex-row justify-center">
+                    <a className="lda-param-alpha-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                    <div className="flex ml-1 font-bold text-sm mb-2">α (Alpha)</div>
+                  </div>
+                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={alphaInput} onInput={(e) => handleAlphaInput(e)} />
+                  <Tooltip anchorSelect=".lda-param-alpha-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="alpha"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+
+                </div>
+                <div className="ml-12">
+                  <div className="flex flex-row justify-center">
+                    <a className="lda-param-beta-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                    <div className="flex ml-1 font-bold text-sm mb-2">β (Beta)</div>
+                    <Tooltip anchorSelect=".lda-param-beta-tooltip"
+                      place="right"
+                      positionStrategy="fixed"
+                      content="betabetabetabetabetabetabetabetabetabeta"
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                    />
+                  </div>
+                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={betaInput} onInput={(e) => handleBetaInput(e)} />
                 </div>
               </div>
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Number of Clusters:</div>
                 <input type="number" placeholder="" className="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
               </div>
+
               <div className="flex justify-center mt-4">
                 <button onClick={() => clusterUsingLda()}>
                   {
@@ -385,6 +441,7 @@ function LDApage() {
                   }
                 </button>
               </div>
+
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
@@ -402,6 +459,7 @@ function LDApage() {
                   }
                 </button>
               </div>
+
               <div className="flex justify-start mt-3 px-4 font-bold">
                 What does this options do(Data Summary)?
               </div>

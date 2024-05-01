@@ -70,7 +70,7 @@ def text_clustering_lda(request):
 
     dictionary = corpora.Dictionary(tokens)
     n_topics = (responseData['num_topics'])  # Number of topics/clusters
-    lda = LatentDirichletAllocation(n_components=n_topics, random_state=43)
+    lda = LatentDirichletAllocation(n_components=n_topics, random_state=43, topic_word_prior=responseData['alpha_value'], doc_topic_prior=responseData['beta_value'], learning_method='batch', max_iter=50)
 
     document_topic_distribution = lda.fit_transform(X)
     # print(document_topic_distribution)
@@ -104,8 +104,8 @@ def text_clustering_lda(request):
     for index, value in enumerate(predicted_clusters):
       clusters[value].append(index)
 
-    # for i in topics:
-    #    print(" ".join(i[:7]))
+   #  for index, topicsPerCluster in enumerate(topics):
+   #     print(str(index) + ". " + " ".join(topicsPerCluster[:10]))
 
     # pickled_vectorizer = codecs.encode(pickle.dumps(vectorizer), "base64").decode()
     # pickled_lda_model = codecs.encode(pickle.dumps(lda), "base64").decode()
