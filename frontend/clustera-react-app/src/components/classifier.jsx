@@ -141,7 +141,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                         <div className="overflow-auto flex flex-wrap items-center justify-center">
                                             {
                                                 topics.slice(0, 7).map((topic, topicIndex) => (
-                                                    <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                    <div className="flex ml-[3px] px-1 border font-bold text-sm text-teal-400 m-1 rounded-md bg-teal-100 border-teal-400">{topic}</div>
                                                 ))
                                             }
                                         </div>
@@ -163,7 +163,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                             <div className="overflow-auto flex flex-wrap items-center justify-center">
                                                 {
                                                     topics.slice(0, 7).map((topic, topicIndex) => (
-                                                        <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                        <div className="flex ml-[3px] px-1 border font-bold text-sm text-red-400 m-1 rounded-md bg-red-100 border-red-400">{topic}</div>
                                                     ))
                                                 }
                                             </div>
