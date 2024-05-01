@@ -148,7 +148,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                     </div>
                                 ) :
                                     clustersGenerated[index + 1].length - documentCountPerCluster[index + 1] ? (
-                                        <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-red-400 mb-2 rounded-md bg-red-100 border-red-400 px-1">
+                                        <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-gray-400 mb-2 rounded-md bg-gray-100 border-gray-400 px-1">
                                             <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
                                             <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
 
@@ -163,14 +163,14 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                             <div className="overflow-auto flex flex-wrap items-center justify-center">
                                                 {
                                                     topics.slice(0, 7).map((topic, topicIndex) => (
-                                                        <div className="flex ml-[3px] px-1 border font-bold text-sm text-red-400 m-1 rounded-md bg-red-100 border-red-400">{topic}</div>
+                                                        <div className="flex ml-[3px] px-1 border font-bold text-sm text-gray-400 m-1 rounded-md bg-gray-100 border-gray-400">{topic}</div>
                                                     ))
                                                 }
                                             </div>
                                         </div>
                                     ) :
                                         (
-                                            <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-gray-400 mb-2 rounded-md bg-gray-100 border-gray-400 px-1">
+                                            <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-red-400 mb-2 rounded-md bg-red-100 border-red-400 px-1">
                                                 <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
                                                 <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
 
@@ -185,7 +185,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                                 <div className="overflow-auto flex flex-wrap items-center justify-center">
                                                     {
                                                         topics.slice(0, 7).map((topic, topicIndex) => (
-                                                            <div className="flex ml-[3px] px-1 border font-bold text-sm text-gray-400 m-1 rounded-md bg-gray-100 border-gray-400">{topic}</div>
+                                                            <div className="flex ml-[3px] px-1 border font-bold text-sm text-red-400 m-1 rounded-md bg-red-100 border-red-400">{topic}</div>
                                                         ))
                                                     }
                                                 </div>
