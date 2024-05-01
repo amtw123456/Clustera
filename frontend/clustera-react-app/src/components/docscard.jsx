@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AppContext } from '../providers/AppState.jsx';
 import { AiFillEye } from 'react-icons/ai';
 import { IoDocumentSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
@@ -263,6 +264,7 @@ function SDocumentsCard({ summarizedDocuments, documentTopicDistributionThreshol
 
 
 function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGenerated, topicsGenerated, documentTopicDistributionThreshold, topicsGeneratedLabel, documentCountPerCluster }) {
+    const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
     const [isComponentLoading, setIsComponentLoading] = useState(true);
 
     useEffect(() => {
@@ -272,8 +274,18 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
         //         if (summarizedDocuments[value].includeToClusterBool) {
         //         }
         //     })
-        // ))
+
     }, []);
+
+    useEffect(() => {
+        console.log(includeClusterProvider)
+    }, [includeClusterProvider]);
+
+    const handleincludeClusterProviderChane = (index) => {
+        const newCheckboxes = [...includeClusterProvider];
+        newCheckboxes[index] = !newCheckboxes[index];
+        setIncludeClusterProvider(newCheckboxes);
+    };
 
     return (
         isComponentLoading ? (
@@ -293,7 +305,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                         <div className="px-2 text-lg ml-1 flex justify-left font-bold">
                             {
                                 topicsGeneratedLabel[index] === null ? (
-                                    <div>Cluster Label: Unlabeled</div>
+                                    <div>Cluster Label: Unlabeled <input type="checkbox" checked={includeClusterProvider[index]} onClick={() => handleincludeClusterProviderChane(index)} /></div>
                                 ) :
                                     // <div className="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
                                     <div>Cluster Label: {topicsGeneratedLabel[index]}</div>

@@ -13,8 +13,20 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     const [isClassifierLoading, setIsClassifierLoading] = useState();
     const [classifierLabels, setClassifierLabels] = useState([]);
 
+    const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
+
     useEffect(() => {
-        console.log(classifierCosineSimilarityResult)
+        console.log(includeClusterProvider)
+    }, [includeClusterProvider]);
+
+    const handleincludeClusterProviderChange = (index) => {
+        const newCheckboxes = [...includeClusterProvider];
+        newCheckboxes[index] = !newCheckboxes[index];
+        setIncludeClusterProvider(newCheckboxes);
+    };
+
+    useEffect(() => {
+        // console.log(classifierCosineSimilarityResult)
     }, [classifierCosineSimilarityResult]);
 
     const ldaClassifyDocument = async () => {
@@ -84,10 +96,11 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     }
     const Rectangle = ({ percentage, index }) => {
         const filledWidth = `${percentage}%`;
+        // console.log(includeClusterProvider[index])
         return (
             <div className="w-[1100px] h-8 bg-gray-300 rounded">
                 {
-                    classifierResult[0] === index ? (
+                    classifierResult[0] === (classifierLabels[index - 1]) ? (
                         < div className="h-full bg-green-400 rounded" style={{ width: filledWidth }}>
                             <div className="ml-1 text-white text-sm p-1">{percentage}%</div>
                         </div>
@@ -108,17 +121,21 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                     <div className="flex-row flex-wrap flex mt-1">
                         {
                             topicsGenerated.slice(1).map((topics, index) => (
-                                clustersGenerated[index + 1].length - documentCountPerCluster[index + 1] ? (
+                                includeClusterProvider[index] && clustersGenerated[index + 1].length - documentCountPerCluster[index + 1] ? (
                                     <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-teal-400 mb-2 rounded-md bg-teal-100 border-teal-400 px-1">
-                                        <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
+                                        <div className="flex text-sm flex px-1 items-center justify-center">
+                                            Cluster {index + 1}
+                                        </div>
                                         <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
+                                            <div className="flex items-center">
+                                                {
+                                                    topicsGeneratedLabel[index] === null ? (
+                                                        <>Unlabeled Cluster</>
+                                                    ) :
+                                                        <>{topicsGeneratedLabel[index]}</>
+                                                }
 
-                                            {
-                                                topicsGeneratedLabel[index] === null ? (
-                                                    <>Unlabeled Cluster</>
-                                                ) :
-                                                    <>{topicsGeneratedLabel[index]}</>
-                                            }
+                                            </div>
                                         </div>
                                         <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
                                         <div className="overflow-auto flex flex-wrap items-center justify-center">
@@ -130,26 +147,50 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                         </div>
                                     </div>
                                 ) :
-                                    <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-red-400 mb-2 rounded-md bg-red-100 border-red-400 px-1">
-                                        <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
-                                        <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
+                                    clustersGenerated[index + 1].length - documentCountPerCluster[index + 1] ? (
+                                        <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-red-400 mb-2 rounded-md bg-red-100 border-red-400 px-1">
+                                            <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
+                                            <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
 
-                                            {
-                                                topicsGeneratedLabel[index] === null ? (
-                                                    <>Unlabeled Cluster</>
-                                                ) :
-                                                    <>{topicsGeneratedLabel[index]}</>
-                                            }
+                                                {
+                                                    topicsGeneratedLabel[index] === null ? (
+                                                        <>Unlabeled Cluster</>
+                                                    ) :
+                                                        <>{topicsGeneratedLabel[index]}</>
+                                                }
+                                            </div>
+                                            <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
+                                            <div className="overflow-auto flex flex-wrap items-center justify-center">
+                                                {
+                                                    topics.slice(0, 7).map((topic, topicIndex) => (
+                                                        <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                    ))
+                                                }
+                                            </div>
                                         </div>
-                                        <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
-                                        <div className="overflow-auto flex flex-wrap items-center justify-center">
-                                            {
-                                                topics.slice(0, 7).map((topic, topicIndex) => (
-                                                    <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
+                                    ) :
+                                        (
+                                            <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-gray-400 mb-2 rounded-md bg-gray-100 border-gray-400 px-1">
+                                                <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
+                                                <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
+
+                                                    {
+                                                        topicsGeneratedLabel[index] === null ? (
+                                                            <>Unlabeled Cluster</>
+                                                        ) :
+                                                            <>{topicsGeneratedLabel[index]}</>
+                                                    }
+                                                </div>
+                                                <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
+                                                <div className="overflow-auto flex flex-wrap items-center justify-center">
+                                                    {
+                                                        topics.slice(0, 7).map((topic, topicIndex) => (
+                                                            <div className="flex ml-[3px] px-1 border font-bold text-sm text-gray-400 m-1 rounded-md bg-gray-100 border-gray-400">{topic}</div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
                             ))
                         }
                     </div>
@@ -196,16 +237,16 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                             <>
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
-                                                        topClassifierCosineSimilarityResult === index ? (
-                                                            <div className="font-bold italic ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        topClassifierCosineSimilarityResult === (classifierLabels[index] - 1) ? (
+                                                            <div className="font-bold italic ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                                         ) :
-                                                            <div className="ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                                         // <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                     ) :
-                                                        topClassifierCosineSimilarityResult === index ? (
-                                                            <div className="font-bold italic ml-1">{topicsGeneratedLabel[classifierLabels[index] - 1]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                        topClassifierCosineSimilarityResult === (classifierLabels[index] - 1) ? (
+                                                            <div className="font-bold italic ml-1">{topicsGeneratedLabel[classifierLabels[index] - 1]} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                                         ) :
-                                                            <div className="ml-1">{topicsGeneratedLabel[classifierLabels[index]] - 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="ml-1">{topicsGeneratedLabel[classifierLabels[index] - 1]} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                                 }
                                                 <Rectangle percentage={(topicDistribution * 100).toFixed(2)} index={index + 1} />
                                             </>
