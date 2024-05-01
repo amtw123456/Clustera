@@ -11,7 +11,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     const [classifierCosineSimilarityResult, setClassifierCosineSimilarityResult] = useState(Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([0])))
     const [topClassifierCosineSimilarityResult, setTopClassifierCosineSimilarityResult] = useState(0)
     const [isClassifierLoading, setIsClassifierLoading] = useState();
-
+    const [classifierLabels, setClassifierLabels] = useState([]);
 
     useEffect(() => {
         console.log(classifierCosineSimilarityResult)
@@ -39,6 +39,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
         } catch (error) {
             console.error('Error during text preprocessing:', error);
         } finally {
+            setClassifierLabels(responseData['classifier_labels'])
             setClassifierResult(responseData['lda_classifier_result'])
             setClassifierResultDistribution(responseData['lda_classifier_result_destribution'])
             setIsClassifierLoading(false)
@@ -59,7 +60,6 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                 classifierTopicDistribution[document.clusterId - 1].push(document.documentTopicDistribution)
             }
         })
-        // console.log(classifierDocumentsText)
 
         try {
             const response = await fetch(REACT_APP_BACKEND_API_URL + 'cosinesimilarity', {
@@ -106,28 +106,52 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                 <div className="ml-4 font-bold">Classifier Labels</div>
                 <div className="w-full overflow-hidden">
                     <div className="flex-row flex-wrap flex mt-1">
-                        {topicsGenerated.slice(1).map((topics, index) => (
-                            <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-teal-400 mb-2 rounded-md bg-teal-100 border-teal-400 px-1">
-                                <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
-                                <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
+                        {
+                            topicsGenerated.slice(1).map((topics, index) => (
+                                clustersGenerated[index + 1].length - documentCountPerCluster[index + 1] ? (
+                                    <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-teal-400 mb-2 rounded-md bg-teal-100 border-teal-400 px-1">
+                                        <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
+                                        <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
 
-                                    {
-                                        topicsGeneratedLabel[index] === null ? (
-                                            <>Unlabeled Cluster</>
-                                        ) :
-                                            <>{topicsGeneratedLabel[index]}</>
-                                    }
-                                </div>
-                                <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
-                                <div className="overflow-auto flex flex-wrap items-center justify-center">
-                                    {
-                                        topics.slice(0, 7).map((topic, topicIndex) => (
-                                            <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                        ))}
+                                            {
+                                                topicsGeneratedLabel[index] === null ? (
+                                                    <>Unlabeled Cluster</>
+                                                ) :
+                                                    <>{topicsGeneratedLabel[index]}</>
+                                            }
+                                        </div>
+                                        <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
+                                        <div className="overflow-auto flex flex-wrap items-center justify-center">
+                                            {
+                                                topics.slice(0, 7).map((topic, topicIndex) => (
+                                                    <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                ) :
+                                    <div className="border flex flex-col w-80 mx-2 h-[130px] overflow-auto rounded-md text-red-400 mb-2 rounded-md bg-red-100 border-red-400 px-1">
+                                        <div className="flex text-sm flex px-1 items-center justify-center">Cluster {index + 1}</div>
+                                        <div className="flex flex-row flex-wrap max-w-[500px] font-bold text-base justify-center">
+
+                                            {
+                                                topicsGeneratedLabel[index] === null ? (
+                                                    <>Unlabeled Cluster</>
+                                                ) :
+                                                    <>{topicsGeneratedLabel[index]}</>
+                                            }
+                                        </div>
+                                        <div className="flex text-sm flex px-1 items-center justify-center">Trained with {clustersGenerated[index + 1].length - documentCountPerCluster[index + 1]} / {clustersGenerated[index + 1].length} documents</div>
+                                        <div className="overflow-auto flex flex-wrap items-center justify-center">
+                                            {
+                                                topics.slice(0, 7).map((topic, topicIndex) => (
+                                                    <div className="flex ml-[3px] px-1 border font-bold text-sm text-orange-400 m-1 rounded-md bg-orange-100 border-orange-400">{topic}</div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                            ))
+                        }
                     </div>
                 </div>
                 <div className="flex mt-5 ml-3">
@@ -173,15 +197,15 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                                 {
                                                     topicsGeneratedLabel[index] === null ? (
                                                         topClassifierCosineSimilarityResult === index ? (
-                                                            <div className="font-bold italic ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="font-bold italic ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                         ) :
-                                                            <div className="ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="ml-1">Cluster {classifierLabels[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                         // <div className="font-bold   ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                     ) :
                                                         topClassifierCosineSimilarityResult === index ? (
-                                                            <div className="font-bold italic ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="font-bold italic ml-1">{topicsGeneratedLabel[classifierLabels[index] - 1]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                         ) :
-                                                            <div className="ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                            <div className="ml-1">{topicsGeneratedLabel[classifierLabels[index]] - 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
                                                 }
                                                 <Rectangle percentage={(topicDistribution * 100).toFixed(2)} index={index + 1} />
                                             </>
@@ -205,9 +229,6 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                         </div>
                     </div>
                 </div>
-
-
-
             </div >
         ) :
             <div className="flex-1">

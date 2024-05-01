@@ -300,6 +300,7 @@ function LDApage() {
   const buildClassifierParamters = () => {
     filterOutDocuments()
 
+    const uniqueClusterIds = []
     const classifierDocumentClusterId = []
     const classifierTopicDistribution = []
     const classifierDocumentsText = []

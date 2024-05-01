@@ -168,7 +168,8 @@ def lda_classify_document(request):
    return Response(
         data={
            "lda_classifier_result" : documentClassifierResult,
-           "lda_classifier_result_destribution" : documentClassifierResultEstimate
+           "lda_classifier_result_destribution" : documentClassifierResultEstimate,
+           "classifier_labels" : classifier.classes_
         }
    )
    
