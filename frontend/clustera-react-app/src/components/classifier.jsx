@@ -26,8 +26,8 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     };
 
     useEffect(() => {
-        console.log(classifierCosineSimilarityResult)
-        console.log(topClassifierCosineSimilarityResult)
+        // console.log(classifierCosineSimilarityResult)
+        // console.log(topClassifierCosineSimilarityResult)
     }, [classifierCosineSimilarityResult], topClassifierCosineSimilarityResult);
 
     const ldaClassifyDocument = async () => {

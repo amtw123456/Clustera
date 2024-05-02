@@ -332,7 +332,7 @@ function LDApage() {
   }
 
   const buildClassifierParamters = () => {
-    filterOutDocuments()
+    // filterOutDocuments()
 
     const uniqueClusterIds = []
     const classifierDocumentClusterId = []
@@ -720,6 +720,15 @@ function LDApage() {
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+              </div>
+              <div className="flex justify-center mt-6 mb-3">
+                <button onClick={() => filterOutDocuments()}>
+                  {
+                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                      Filter Documents
+                    </div>
+                  }
+                </button>
               </div>
               <div className="mx-4">
                 <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
