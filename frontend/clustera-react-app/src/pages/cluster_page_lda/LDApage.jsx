@@ -58,6 +58,8 @@ function LDApage() {
     if (includeClusterProvider.every(item => item === true)) {
       setIncludeAllClustersProvider(true)
     }
+
+
   }, [includeClusterProvider]);
 
   const toggleBoolUtilisBar = (stateName) => {
@@ -106,7 +108,6 @@ function LDApage() {
       if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
         classifierTopicDistribution.push(documentsProvider[i].documentTopicDistribution)
-
       }
     }
     try {
@@ -209,6 +210,9 @@ function LDApage() {
   const handleIncludeAllClustersCheckboxChange = () => {
     if (includeAllClustersProvider === false) {
       setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (true)));
+    }
+    else {
+      setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (false)));
     }
     setIncludeAllClustersProvider(!includeAllClustersProvider)
 
