@@ -26,8 +26,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     };
 
     useEffect(() => {
-        // console.log(classifierCosineSimilarityResult)
-    }, [classifierCosineSimilarityResult]);
+        console.log(classifierCosineSimilarityResult)
+        console.log(topClassifierCosineSimilarityResult)
+    }, [classifierCosineSimilarityResult], topClassifierCosineSimilarityResult);
 
     const ldaClassifyDocument = async () => {
         var responseData
@@ -259,9 +260,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                                         <>
                                             {
                                                 topicsGeneratedLabel[index] === null ? (
-                                                    <div className="font-bold ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                    <div className="font-bold ml-1">Cluster {index + 1} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                                 ) :
-                                                    <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[index]}</div>
+                                                    <div className="font-bold ml-1">{topicsGeneratedLabel[index]} | Cosine Similarity: {classifierCosineSimilarityResult[classifierLabels[index] - 1]}</div>
                                             }
                                             <Rectangle percentage={0} />
                                         </>

@@ -305,7 +305,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
                         <div className="px-2 text-lg ml-1 flex justify-left font-bold">
                             {
                                 topicsGeneratedLabel[index] === null ? (
-                                    <div>Cluster Label: Unlabeled <input type="checkbox" checked={includeClusterProvider[index]} onClick={() => handleincludeClusterProviderChane(index)} /></div>
+                                    <div>Cluster Label: Unlabeled </div>
                                 ) :
                                     // <div className="font-bold italic ml-1">{topicsGeneratedLabel[index]}</div>
                                     <div>Cluster Label: {topicsGeneratedLabel[index]}</div>

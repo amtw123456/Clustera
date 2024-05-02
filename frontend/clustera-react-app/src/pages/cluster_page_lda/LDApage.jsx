@@ -22,7 +22,7 @@ function LDApage() {
   const { clustersProvider, setClustersProvider } = useContext(AppContext);
   const { classifierModel, setClassifierModel } = useContext(AppContext);
   const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
-  const { includeAllClustersProvider, setIncludeAllClusterProvider } = useContext(AppContext);
+  const { includeAllClustersProvider, setIncludeAllClustersProvider } = useContext(AppContext);
 
   const [numberOfDocumentsNotIncludedPerCluster, setNumberOfDocumentsNotIncludedPerCluster] = useState([])
   const [silhouettescore, setSilhouettescore] = useState(0);
@@ -53,6 +53,12 @@ function LDApage() {
 
   const [alphaInput, setAlphaInput] = useState(0.05);
   const [betaInput, setBetaInput] = useState(0.05);
+
+  useEffect(() => {
+    if (includeClusterProvider.every(item => item === true)) {
+      setIncludeAllClustersProvider(true)
+    }
+  }, [includeClusterProvider]);
 
   const toggleBoolUtilisBar = (stateName) => {
     // Create an object to map state names to their corresponding setter functions
@@ -193,10 +199,22 @@ function LDApage() {
     newCheckboxes[index] = !newCheckboxes[index];
     setIncludeClusterProvider(newCheckboxes);
 
-    // if (includeAllClusters && !newCheckboxes[index]) {
-    //   setIncludeAllClusters(prevState => !prevState)
-    // }
+    if (includeAllClustersProvider && !newCheckboxes[index]) {
+      setIncludeAllClustersProvider(prevState => !prevState)
+    }
+
+
   };
+
+  const handleIncludeAllClustersCheckboxChange = () => {
+    if (includeAllClustersProvider === false) {
+      setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (true)));
+    }
+    setIncludeAllClustersProvider(!includeAllClustersProvider)
+
+
+  }
+
   const handleAlphaInput = (e) => {
     setAlphaInput(parseFloat(e.target.value));
   };
@@ -350,7 +368,6 @@ function LDApage() {
     } finally {
       setClassifierModel(responseData['lda_trained_classifier'])
       setIsLoading(false);
-      console.log(includeClusterProvider)
     }
   }
 
@@ -705,8 +722,8 @@ function LDApage() {
                 <div className='flex flex-row mt-2 items-center justify-center'>
                   <input
                     type="checkbox"
-                    // checked={includeClusterProvider[index]}
-                    // onClick={() => handleincludeClusterProviderChane(index)}
+                    checked={includeAllClustersProvider}
+                    onClick={() => handleIncludeAllClustersCheckboxChange()}
                     className=""
                   />
                   <div className='text-xs ml-1'>include all clusters</div>

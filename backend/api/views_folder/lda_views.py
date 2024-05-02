@@ -164,6 +164,7 @@ def lda_classify_document(request):
   
    documentClassifierResult = classifier.predict([documents])
    documentClassifierResultEstimate = classifier.predict_proba([documents])
+   
 
    return Response(
         data={
