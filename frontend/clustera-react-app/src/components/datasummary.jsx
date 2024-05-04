@@ -279,7 +279,11 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                     {topic}: &nbsp;
                                                 </div>
                                                 <div className="text-sm">
-                                                    {wordCounts.find(item => item[0] === topic)[1]}
+                                                    {wordCounts.find(item => item[0] === topic) ? (
+                                                        <>{wordCounts.find(item => item[0] === topic)[1]}</>
+                                                    ) : (
+                                                        <>No data found for this topic</>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
