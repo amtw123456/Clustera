@@ -10,7 +10,7 @@ export const AppStateProvider = ({ children }) => {
     const [documentsProvider, setDocumentsProvider] = useState([]);
     const [clustersProvider, setClustersProvider] = useState([]);
     const [classifierModel, setClassifierModel] = useState(false);
-    const [includeClusterProvider, setIncludeClusterProvider] = useState([]);
+    const [includeClusterProvider, setIncludeClusterProvider] = useState([true]);
     const [includeAllClustersProvider, setIncludeAllClustersProvider] = useState(true)
 
     return (

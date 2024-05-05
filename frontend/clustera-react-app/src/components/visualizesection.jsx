@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import WordCloudChart from './wordcloudchart.tsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
+import { AppContext } from "../providers/AppState.jsx";
 const HEADER_HEIGHT = 120;
 const PADDING = 20;
 
 function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredicted, topicsGenerated, clustersGenerated, tsneParameters, documentTopicDistributionThreshold, topicsGeneratedLabel }) {
 
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
+    const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
+    const { includeAllClustersProvider, setIncludeAllClustersProvider } = useContext(AppContext);
 
     const [isComponentLoading, setIsComponentLoading] = useState(true);
     const [tsneReducedData, setTsneReducedData] = useState([]);
@@ -125,6 +129,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         noOfClusters={noOfClusters}
                         topicsGeneratedLabel={topicsGeneratedLabel}
                         documentTopicDistributionThreshold={documentTopicDistributionThreshold}
+                        includeClusterProvider={includeClusterProvider}
                         width={1550}
                         height={920 - HEADER_HEIGHT - 2 * PADDING}
                     />
@@ -139,8 +144,6 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                     }
                 </div>
                 }
-
-
             </div>
         )
     );

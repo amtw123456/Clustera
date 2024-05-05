@@ -14,6 +14,7 @@ export type ScatterplotProps = {
     height: number;
     noOfClusters: number;
     documentTopicDistributionThreshold: number;
+    includeClusterProvider: [];
     reducedData: [];
     clusterLabel: [];
     topicsGeneratedLabel: [];

@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import * as d3 from "d3";
 import { InteractionData, ScatterplotProps, DataItem } from "./types";
-import { AppContext } from '../../providers/AppState.jsx';
+import { AppContext } from "../../providers/AppState.jsx";
 import { Axes } from "./Axes";
 import styles from "./scatterplot.module.css";
 import { Tooltip } from "./Tooltip";
 
 
-const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold, topicsGeneratedLabel }: ScatterplotProps) => {
+const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, noOfClusters, documentTopicDistributionThreshold, topicsGeneratedLabel, includeClusterProvider }: ScatterplotProps) => {
     // Sort the data: bigger squares must appear at the bottom
+
     const colors = [
         "#ffffff",
         "#e0ac2b", // Orange
@@ -72,7 +73,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
 
     reducedData.forEach((item, index) => {
 
-        if ((documetsData[index] as any).includeToClusterBool) {
+        if ((documetsData[index] as any).includeToClusterBool && (documetsData[index] as any).clusterId != 0 && includeClusterProvider[(documetsData[index] as any).clusterId - 1]) {
             data.push({
                 name: "Document: " + index,
                 documentInformation: [(documetsData[index] as any).documentTopicDistribution, (documetsData[index] as any).clusterLabel, (documetsData[index] as any).clusterId],

@@ -3,7 +3,7 @@ import { AppContext } from '../providers/AppState.jsx';
 import Scatterplot from "./scatterplot_folder/Scatterplot";
 
 
-function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments }) {
+function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments, numberOfClustersToDisplayThreshold }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
     const [classifierResult, setClassifierResult] = useState([0]);

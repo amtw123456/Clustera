@@ -8,6 +8,9 @@ import { AppContext } from '../providers/AppState.jsx';
 function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noOfClusters, topicCoheranceGenerated, topicsGenerated, clustersGenerated, topicsGeneratedLabel, documentCountPerCluster, filteredDocumentCount }) {
     const { wordCounts, setWordCounts } = useContext(AppContext);
 
+    const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
+    const { includeAllClustersProvider, setIncludeAllClustersProvider } = useContext(AppContext);
+
     const [averageCoheranceScore, setAverageCoheranceScore] = useState(0.00);
     const [numberOfClusteredDocuments, setNumberOfClusteredDocuments] = useState(0.00);
 
@@ -200,7 +203,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                         <div className="flex flex-col w-1/2 overflow-x-auto overflow-y-hidden">
                             <div className="font-bold w-full h-[15px] text-center">Clustered Data Donut Chart</div>
                             <div className="w-full flex flex-col">
-                                <PieChart clusterData={clustersGenerated} documentCountPerCluster={documentCountPerCluster} width={500} height={420} />
+                                <PieChart clusterData={clustersGenerated} documentCountPerCluster={documentCountPerCluster} includeClusterProvider={includeClusterProvider} width={500} height={420} />
                             </div>
                         </div>
                     </div>

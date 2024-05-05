@@ -59,7 +59,6 @@ function LDApage() {
       setIncludeAllClustersProvider(true)
     }
 
-
   }, [includeClusterProvider]);
 
   const toggleBoolUtilisBar = (stateName) => {
@@ -81,7 +80,9 @@ function LDApage() {
           stateSetterMap[key](true);
           // if(key == "")
           if ("isDataSummaryBool" === stateName) {
-            computeClusterSilhoutteScore()
+            if (!(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0)) {
+              computeClusterSilhoutteScore()
+            }
           }
 
         }
@@ -104,6 +105,7 @@ function LDApage() {
     var responseData;
     const classifierDocumentClusterId = []
     const classifierTopicDistribution = []
+
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].includeToClusterBool && documentsProvider[i].clusterId !== 0) {
         classifierDocumentClusterId.push(documentsProvider[i].clusterId)
@@ -167,7 +169,8 @@ function LDApage() {
       setNumberOfDocumentsNotIncludedPerCluster(Object.values(responseData['clusters']).map(cluster => 0))
       setTopicsGeneratedLabel(Array.from({ length: noOfClustersInput }, () => (null)))
       setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (true)))
-      computeClusterSilhoutteScore()
+      setIsLoading(false);
+
     }
   };
 
@@ -199,16 +202,31 @@ function LDApage() {
   const handleIncludeClusterCheckboxChange = (index) => {
     const newCheckboxes = [...includeClusterProvider];
     newCheckboxes[index] = !newCheckboxes[index];
+
     setIncludeClusterProvider(newCheckboxes);
 
     if (includeAllClustersProvider && !newCheckboxes[index]) {
       setIncludeAllClustersProvider(prevState => !prevState)
     }
 
-
   };
 
+
+  useEffect(() => {
+    filterOutDocuments()
+    if (!(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0)) {
+      computeClusterSilhoutteScore()
+
+    }
+    else {
+      setSilhouettescore(0)
+    }
+
+
+  }, [includeClusterProvider, includeAllClustersProvider]);
+
   const handleIncludeAllClustersCheckboxChange = () => {
+
     if (includeAllClustersProvider === false) {
       setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (true)));
     }
@@ -216,7 +234,6 @@ function LDApage() {
       setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (false)));
     }
     setIncludeAllClustersProvider(!includeAllClustersProvider)
-
 
   }
 
@@ -254,7 +271,7 @@ function LDApage() {
   const [documentNumberOfTokensThresholdState, setDocumentNumberOfTokensThresholdState] = useState(0)
   const [documentNumberOfTokensThreshold, setDocumentNumberOfTokensThreshold] = useState(0)
 
-  const [perplexity, setPerplexity] = useState(100)
+  const [perplexity, setPerplexity] = useState(2)
   const [angle, setAngle] = useState(0.5);
   const [noOfIterations, setNoOfIterations] = useState(500);
   const [learningRate, setLearningRate] = useState(30);
@@ -305,12 +322,12 @@ function LDApage() {
   };
 
   const filterOutDocuments = () => {
-
     setDocumentTopicDistributionThresholdState(documentTopicDistributionThreshold)
     setDocumentNumberOfTokensThresholdState(documentNumberOfTokensThreshold)
+
     for (let i = 0; i < documentsProvider.length; i++) {
       if (documentsProvider[i].documentTopicDistribution != null) {
-        if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold || documentsProvider[i].documentTokens.length < documentNumberOfTokensThreshold) {
+        if (Math.max(...(documentsProvider[i].documentTopicDistribution)) < documentTopicDistributionThreshold || documentsProvider[i].documentTokens.length < documentNumberOfTokensThreshold || !includeClusterProvider[documentsProvider[i].clusterId - 1]) {
           if (documentsProvider[i].includeToClusterBool) {
             documentsProvider[i].includeToClusterBool = false;
             numberOfDocumentsNotIncludedPerCluster[documentsProvider[i].clusterId] += 1;
@@ -329,7 +346,6 @@ function LDApage() {
       temp += count;
     });
     setNumberOfFilteredDocuments(temp)
-
   }
 
   const buildClassifierParamters = () => {
@@ -475,6 +491,35 @@ function LDApage() {
                 </button>
               </div>
 
+              <div className="mx-4 mt-5">
+                <div className="font-bold text-sm mb-2">Clusters to include:</div>
+                <div className='flex flex-row mt-2 items-center justify-center'>
+                  <input
+                    type="checkbox"
+                    checked={includeAllClustersProvider}
+                    onClick={() => handleIncludeAllClustersCheckboxChange()}
+                    className=""
+                  />
+                  <div className='text-xs ml-1'>include all clusters</div>
+                </div>
+              </div>
+
+              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                {
+                  Array.from(Array(noOfClustersInputParams), (item, index) => (
+                    <div className='flex flex-row mt-2 w-1/3 items-center'>
+                      <input
+                        type="checkbox"
+                        checked={includeClusterProvider[index]}
+                        onClick={() => handleIncludeClusterCheckboxChange(index)}
+                        className=""
+                      />
+                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                    </div>
+                  ))
+                }
+              </div>
+
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
@@ -484,13 +529,24 @@ function LDApage() {
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6">
-                <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }}>
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
-                    </div>
-                  }
-                </button>
+                {
+                  !(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0) ? (
+                    <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={false}  >
+                      {
+                        < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                          Filter Documents
+                        </div>
+                      }
+                    </button>
+                  ) :
+                    <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={true}  >
+                      {
+                        < div className="text-white block py-2 px-5 text-black border-gray-500 text-white px-12 py-2 bg-gray-500 rounded-lg text-sm font-bold hover:bg-gray-500">
+                          Filter Documents
+                        </div>
+                      }
+                    </button>
+                }
               </div>
 
               <div className="flex justify-start mt-3 px-4 font-bold">
@@ -588,6 +644,33 @@ function LDApage() {
           ) : isClusteredGeneratedBool ? (
             <>
               <div className="ml-4 italic text-base">Clusters Generated</div>
+              <div className="mx-4">
+                <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
+                <div className='flex flex-row mt-2 items-center justify-center'>
+                  <input
+                    type="checkbox"
+                    checked={includeAllClustersProvider}
+                    onClick={() => handleIncludeAllClustersCheckboxChange()}
+                    className=""
+                  />
+                  <div className='text-xs ml-1'>include all clusters</div>
+                </div>
+              </div>
+              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                {
+                  Array.from(Array(noOfClustersInputParams), (item, index) => (
+                    <div className='flex flex-row mt-2 w-1/3 items-center'>
+                      <input
+                        type="checkbox"
+                        checked={includeClusterProvider[index]}
+                        onClick={() => handleIncludeClusterCheckboxChange(index)}
+                        className=""
+                      />
+                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                    </div>
+                  ))
+                }
+              </div>
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
@@ -837,7 +920,36 @@ function LDApage() {
             </>
           ) : isVisualizeBool ? (
             <>
+
               <div className="ml-4 italic text-base">Visualize</div>
+              <div className="mx-4 mt-5">
+                <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
+                <div className='flex flex-row mt-2 items-center justify-center'>
+                  <input
+                    type="checkbox"
+                    checked={includeAllClustersProvider}
+                    onClick={() => handleIncludeAllClustersCheckboxChange()}
+                    className=""
+                  />
+                  <div className='text-xs ml-1'>include all clusters</div>
+                </div>
+              </div>
+
+              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                {
+                  Array.from(Array(noOfClustersInputParams), (item, index) => (
+                    <div className='flex flex-row mt-2 w-1/3 items-center'>
+                      <input
+                        type="checkbox"
+                        checked={includeClusterProvider[index]}
+                        onClick={() => handleIncludeClusterCheckboxChange(index)}
+                        className=""
+                      />
+                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                    </div>
+                  ))
+                }
+              </div>
               <div className="mx-4 my-3">
                 <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
@@ -1100,7 +1212,14 @@ function LDApage() {
           </div >
         ) : isClusteredGeneratedBool ? (
           <div className="ml-80 flex flex-row flex-wrap">
-            <ClusteredGeneratedCard summarizedDocuments={documentsProvider} noOfClusters={noOfClustersInputParams + 1} topicsGenerated={topicsGenerated} clustersGenerated={clustersProvider} documentTopicDistributionThreshold={documentTopicDistributionThresholdState} topicsGeneratedLabel={topicsGeneratedLabel} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
+            <ClusteredGeneratedCard
+              summarizedDocuments={documentsProvider}
+              noOfClusters={noOfClustersInputParams + 1}
+              topicsGenerated={topicsGenerated}
+              clustersGenerated={clustersProvider}
+              documentTopicDistributionThreshold={documentTopicDistributionThresholdState}
+              topicsGeneratedLabel={topicsGeneratedLabel}
+              documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
           </div >
         ) : isTopicsGeneratedBool ? (
           <div className="ml-80 flex flex-row flex-wrap">

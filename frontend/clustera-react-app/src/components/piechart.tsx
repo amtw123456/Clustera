@@ -66,7 +66,7 @@ const colors = [
     "#ffccbc", // Light pink
 ];
 
-const PieChart = ({ width, height, clusterData, documentCountPerCluster, filteredDocumentCount }) => {
+const PieChart = ({ width, height, clusterData, documentCountPerCluster, includeClusterProvider }) => {
     const ref = useRef(null);
 
     let data: DataItem[] = [];
