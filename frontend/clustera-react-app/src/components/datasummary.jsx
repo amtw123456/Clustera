@@ -222,7 +222,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                 <div className="font-bold">
                                     Silhouette score:
                                 </div>
-                                <div className="ml-1 italic">
+                                <div className="ml-1 italic bg-white px-1 border border-slate-200 rounded-lg">
                                     {silhouetteScoreGenerated}
                                 </div>
                             </div>
@@ -231,7 +231,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     <div className="font-bold">
                                         Coherance Score:
                                     </div>
-                                    <div className="ml-1 italic">
+                                    <div className="ml-1 italic bg-white px-1 border border-slate-200 rounded-lg">
                                         {averageCoheranceScore}
                                     </div>
                                 </div>
@@ -241,7 +241,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     <div className="font-bold">
                                         Number of Filtered Documents:
                                     </div>
-                                    <div className="ml-1 italic">
+                                    <div className="ml-1 italic bg-white px-1 border border-slate-200 rounded-lg">
                                         {filteredDocumentCount}
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     <div className="font-bold">
                                         Number of Unclustered Documents:
                                     </div>
-                                    <div className="ml-1 italic">
+                                    <div className="ml-1 italic bg-white px-1 border border-slate-200 rounded-lg">
                                         {clustersGenerated[0].length}
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                     <div className="font-bold">
                                         Number of Clustered Documents:
                                     </div>
-                                    <div className="ml-1 italic">
+                                    <div className="ml-1 italic bg-white px-1 border border-slate-200 rounded-lg">
                                         {numberOfClusteredDocuments}
                                     </div>
                                 </div>
