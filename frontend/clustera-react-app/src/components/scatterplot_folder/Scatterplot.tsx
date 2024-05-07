@@ -153,7 +153,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
         return (
             i === 0 ? (
                 <g key={i}>  {/* Add a unique key for each legend */}
-                    <circle
+                    {/* <circle
                         r={4}
                         cx={1320}
                         cy={19 * (i + 1) - 3}
@@ -169,7 +169,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         dominantBaseline="middle" // vertical alignment
                     >
                         Unlabeled Documents [Cluster {i}]
-                    </text>
+                    </text> */}
                 </g>
             ) :
                 <g key={i}>  {/* Add a unique key for each legend */}
