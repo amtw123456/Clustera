@@ -535,7 +535,7 @@ function LDApage() {
                 </div>
               </div>
               {
-                !(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0) ? (
+                !isCorporaNotClustered ? (
                   <div className="mx-4 flex flex-row w-6/7 flex-wrap">
                     {
                       Array.from(Array(noOfClustersInputParams), (item, index) => (
