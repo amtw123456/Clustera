@@ -125,13 +125,15 @@ function LDApage() {
       });
 
       responseData = await response.json();
-
+      setSilhouettescore(responseData['silhoutte_score'])
     } catch (error) {
       console.error('Error during text preprocessing:', error);
+      // setSilhouettescore(responseData['silhoutte_score'])
       setIsLoading(false);
     } finally {
       setIsLoading(false);
-      setSilhouettescore(responseData['silhoutte_score'])
+      // console.log(responseData['silhoutte_score'])
+      // setSilhouettescore(responseData['silhoutte_score'])
     }
   }
 
@@ -139,6 +141,7 @@ function LDApage() {
     var responseData;
     setIsLoading(true);
     setNoOfClustersInputParams(noOfClustersInput)
+
     try {
       const response = await fetch(REACT_APP_BACKEND_API_URL + 'lda', {
         method: 'POST',
@@ -400,7 +403,17 @@ function LDApage() {
             <>
               <div className="ml-4 italic text-base">Data Summary</div>
               <div className="mt-3 mx-4">
-                <div className="font-bold text-sm ml-1 mb-2">Cluster Vectorizer:</div>
+                <div className="flex flex-row">
+                  <a className="cluster-vectorizer-tooltip"><ImNotification className="flex mt-1 text-xs ml-1" /></a>
+                  <div className="font-bold text-sm ml-1 mb-2">Cluster Vectorizer:</div>
+                </div>
+                <Tooltip
+                  anchorSelect=".cluster-vectorizer-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="Count Vectorizer, Counts the frequency of terms across all documents in a corpus, representing each document as a vector of term counts. While TF-IDF, assigns weights to terms based on their importance within individual documents relative to their occurrence across the entire corpus."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                />
                 <select className="block px-3 w-52 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={vectorizerType} onChange={handleVectorizerChange}>
                   <option value="tfidf-vectorizer">TF-IDF Vectorizer</option>
                   <option value="count-vectorizer">Count Vectorizer</option>
@@ -451,8 +464,8 @@ function LDApage() {
                   <Tooltip anchorSelect=".lda-param-alpha-tooltip"
                     place="right"
                     positionStrategy="fixed"
-                    content="alpha"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                    content="Alpha(α) guides LDA by influencing document compositions: higher values suggest broader topics, lower values suggest focused topics. Adjusting alpha helps LDA capture expected diversity or focus in document topics."
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
                   />
 
                 </div>
@@ -463,15 +476,24 @@ function LDApage() {
                     <Tooltip anchorSelect=".lda-param-beta-tooltip"
                       place="right"
                       positionStrategy="fixed"
-                      content="betabetabetabetabetabetabetabetabetabeta"
-                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      content="Beta(β) in LDA guides how the model perceives word distributions within topics. Higher beta values imply more uniform word distributions, while lower values suggest more focused word choices. Adjusting beta helps LDA capture the expected diversity or specificity of words within topics."
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
                     />
                   </div>
                   <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={betaInput} onInput={(e) => handleBetaInput(e)} />
                 </div>
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Number of Clusters:</div>
+                <div className="flex flex-row">
+                  <a className="number-cluster-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Number of Clusters:</div>
+                  <Tooltip anchorSelect=".number-cluster-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="This indicates the number of clusters and topics the LDA model will produce."
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+                </div>
                 <input type="number" placeholder="" className="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
               </div>
 
@@ -492,7 +514,16 @@ function LDApage() {
               </div>
 
               <div className="mx-4 mt-5">
-                <div className="font-bold text-sm mb-2">Clusters to include:</div>
+                <div className="flex flex-row">
+                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                  <Tooltip anchorSelect=".clusters-include-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="This indicates the clusters you would like to include for evaluating the data"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+                </div>
                 <div className='flex flex-row mt-2 items-center justify-center'>
                   <input
                     type="checkbox"
@@ -503,29 +534,50 @@ function LDApage() {
                   <div className='text-xs ml-1'>include all clusters</div>
                 </div>
               </div>
-
-              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
-                {
-                  Array.from(Array(noOfClustersInputParams), (item, index) => (
-                    <div className='flex flex-row mt-2 w-1/3 items-center'>
-                      <input
-                        type="checkbox"
-                        checked={includeClusterProvider[index]}
-                        onClick={() => handleIncludeClusterCheckboxChange(index)}
-                        className=""
-                      />
-                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
-                    </div>
-                  ))
-                }
-              </div>
+              {
+                !(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0) ? (
+                  <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                    {
+                      Array.from(Array(noOfClustersInputParams), (item, index) => (
+                        <div className='flex flex-row mt-2 w-1/3 items-center'>
+                          <input
+                            type="checkbox"
+                            checked={includeClusterProvider[index]}
+                            onClick={() => handleIncludeClusterCheckboxChange(index)}
+                            className=""
+                          />
+                          <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                ) : <></>
+              }
 
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6">
@@ -598,11 +650,29 @@ function LDApage() {
             <>
               <div className="ml-4 italic text-base">Documents Summary</div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6">
@@ -645,7 +715,16 @@ function LDApage() {
             <>
               <div className="ml-4 italic text-base">Clusters Generated</div>
               <div className="mx-4">
-                <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
+                <div className="flex flex-row mt-2">
+                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                  <Tooltip anchorSelect=".clusters-include-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="This indicates the clusters you would like to include for evaluating the data"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+                </div>
                 <div className='flex flex-row mt-2 items-center justify-center'>
                   <input
                     type="checkbox"
@@ -672,11 +751,29 @@ function LDApage() {
                 }
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6">
@@ -721,12 +818,30 @@ function LDApage() {
           ) : isDocumentTopicDistributionBool ? (
             <>
               <div className="ml-4 italic text-base">Docoument Topic Distribution</div>
-              <div className="mx-4 my-5">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+              <div className="mx-4 my-3">
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6">
@@ -795,12 +910,30 @@ function LDApage() {
           ) : isClassifierBool ? (
             <>
               <div className="ml-4 italic text-base">Classifier</div>
-              <div className="mx-3 my-5">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+              <div className="mx-4 my-3">
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6 mb-3">
@@ -813,7 +946,16 @@ function LDApage() {
                 </button>
               </div>
               <div className="mx-4">
-                <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
+                <div className="flex flex-row">
+                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                  <Tooltip anchorSelect=".clusters-include-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="This indicates the clusters you would like to include for training the classifier"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+                </div>
                 <div className='flex flex-row mt-2 items-center justify-center'>
                   <input
                     type="checkbox"
@@ -923,7 +1065,16 @@ function LDApage() {
 
               <div className="ml-4 italic text-base">Visualize</div>
               <div className="mx-4 mt-5">
-                <div className="font-bold text-sm mb-2">Clusters to include for the Classifier:</div>
+                <div className="flex flex-row">
+                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Clusters to include:</div>
+                  <Tooltip anchorSelect=".clusters-include-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="This indicates the clusters you would like to include for displaying the clusters in the scatterplot graph"
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                  />
+                </div>
                 <div className='flex flex-row mt-2 items-center justify-center'>
                   <input
                     type="checkbox"
@@ -951,11 +1102,29 @@ function LDApage() {
                 }
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents that are is less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                <div className="flex flex-row">
+                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                </div>
+                <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                  place="right"
+                  positionStrategy="fixed"
+                  content="This would filter out documents with tokens that are less than the indicated number."
+                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                />
                 <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
               </div>
               <div className="flex justify-center mt-6 mb-3">
@@ -970,31 +1139,56 @@ function LDApage() {
               <div className="mx-4 my-3 flex-row flex">
                 <div>
                   <div className="flex flex-row justify-center">
-                    <a className="min-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                    <a className="perplexity-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
                     <div className="flex ml-1 font-bold text-sm mb-2">Perplexity:</div>
+                    <Tooltip anchorSelect=".perplexity-tooltip"
+                      place="right"
+                      positionStrategy="fixed"
+                      content="Perplexity in t-SNE controls the number of close neighbors each point considers during the dimensionality reduction process. A higher perplexity value generally results in considering more neighbors, leading to a smoother and more global view of the data. Conversely, a lower perplexity value focuses on fewer neighbors, potentially revealing more local structure in the data. Adjusting perplexity requires balancing between capturing local and global structures in the resulting visualization."
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                    />
                   </div>
                   <input type="number" placeholder="" min="1" max={documentsProvider.length - 1} className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={perplexity} onInput={(e) => handleInputPerplexity(e)} />
-                  <Tooltip anchorSelect=".min-df-tooltip" place="right">
-                    <div className='text-xs'>min_df = 5 means "ignore terms that appear in less than 5 documents".</div>
-                  </Tooltip>
+
                 </div>
                 <div className="ml-12">
                   <div className="flex flex-row justify-center">
-                    <a className="max-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                    <a className="angle-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
                     <div className="flex ml-1 font-bold text-sm mb-2">Angle:</div>
-                    <Tooltip anchorSelect=".max-df-tooltip" place="right">
-                      <div className='text-xs'>max_df = 25 means "ignore terms that appear in more than 25 documents</div>
-                    </Tooltip>
+                    <Tooltip anchorSelect=".angle-tooltip"
+                      place="right"
+                      positionStrategy="fixed"
+                      content="Angle parameter influences how t-SNE approximates the distances between points in high-dimensional space. A larger angle allows for faster computation but may sacrifice accuracy, while a smaller angle ensures more accurate results but requires more computational time. Adjusting the angle parameter requires balancing between the computational efficiency and the quality of the resulting visualization."
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                    />
                   </div>
                   <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={angle} onInput={(e) => handleInputAngle(e)} />
                 </div>
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Number of Iterations:</div>
+                <div className="flex flex-row">
+                  <a className="number_iterations-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Number of Iterations:</div>
+                  <Tooltip anchorSelect=".number_iterations-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="Number of iterations influences how thoroughly t-SNE adjusts the positions of data points in the visualization space to find an optimal arrangement. More iterations generally result in a more refined and accurate representation of the data, but they also require more computational time. The choice of the number of iterations depends on the desired balance between the quality of the visualization and the computational resources available."
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                  />
+                </div>
                 <input type="number" placeholder="" min="250" step="25" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfIterations} onInput={(e) => handleInputNoOfIterations(e)} />
               </div>
               <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Learning Rate:</div>
+                <div className="flex flex-row">
+                  <a className="learning-rate-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                  <div className="font-bold text-sm mb-2 ml-1">Learning Rate:</div>
+                  <Tooltip anchorSelect=".learning-rate-tooltip"
+                    place="right"
+                    positionStrategy="fixed"
+                    content="Learning rate affects how quickly or slowly t-SNE adjusts the positions of data points in the embedding space. A higher learning rate allows for faster convergence but may risk overshooting the optimal solution, leading to instability or poor quality embeddings. Conversely, a lower learning rate results in more cautious adjustments, potentially leading to better-quality embeddings but requiring more iterations to converge. Adjusting the learning rate is crucial for finding the right balance between convergence speed and the quality of the final visualization."
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                  />
+                </div>
                 <input type="number" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
               </div>
               <div className="flex justify-center mt-6">
