@@ -20,7 +20,6 @@ export class Document {
     }
 }
 
-
 export class Cluster {
     constructor(documentsIndex, clusterLabel, clusterId, clusterTopics) {
         this.documentsIndex = documentsIndex;

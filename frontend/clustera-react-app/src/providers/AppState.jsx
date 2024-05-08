@@ -13,6 +13,9 @@ export const AppStateProvider = ({ children }) => {
     const [includeClusterProvider, setIncludeClusterProvider] = useState([true]);
     const [includeAllClustersProvider, setIncludeAllClustersProvider] = useState(true)
 
+    const [vectorizerProvider, setVectorizerProvider] = useState()
+    const [ldaModelProvider, setLdaModelProvider] = useState()
+
     return (
         <AppContext.Provider value={
             {
@@ -23,7 +26,9 @@ export const AppStateProvider = ({ children }) => {
                 clustersProvider, setClustersProvider,
                 classifierModel, setClassifierModel,
                 includeClusterProvider, setIncludeClusterProvider,
-                includeAllClustersProvider, setIncludeAllClustersProvider
+                includeAllClustersProvider, setIncludeAllClustersProvider,
+                vectorizerProvider, setVectorizerProvider,
+                ldaModelProvider, setLdaModelProvider,
             }
         }>
             {children}

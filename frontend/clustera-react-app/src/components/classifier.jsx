@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from '../providers/AppState.jsx';
+import { Document } from '../modals/modals.js'
 import Scatterplot from "./scatterplot_folder/Scatterplot";
 
 
-function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments, numberOfClustersToDisplayThreshold }) {
+function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, documentCountPerCluster, clustersGenerated, summarizedDocuments, numberOfClustersToDisplayThreshold, clustersPredicted }) {
     const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
     const [classifierResult, setClassifierResult] = useState([0]);
@@ -14,9 +15,15 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     const [classifierLabels, setClassifierLabels] = useState([]);
 
     const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
+    const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
+    const { clustersProvider, setClustersProvider } = useContext(AppContext);
+
+    const { vectorizerProvider, setVectorizerProvider } = useContext(AppContext);
+    const { ldaModelProvider, setLdaModelProvider } = useContext(AppContext);
+
 
     useEffect(() => {
-        console.log(includeClusterProvider)
+        // console.log(includeClusterProvider)
     }, [includeClusterProvider]);
 
     const handleincludeClusterProviderChange = (index) => {
@@ -26,9 +33,9 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
     };
 
     useEffect(() => {
-        // console.log(classifierCosineSimilarityResult)
-        // console.log(topClassifierCosineSimilarityResult)
-    }, [classifierCosineSimilarityResult], topClassifierCosineSimilarityResult);
+        // console.log(documentsProvider)
+
+    }, [classifierCosineSimilarityResult, documentsProvider], topClassifierCosineSimilarityResult);
 
     const ldaClassifyDocument = async () => {
         var responseData
@@ -43,7 +50,10 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
                 },
                 body: JSON.stringify({
                     "lda_trained_classifier": classifierModel,
-                    "documents": [classifierTextInput.value]
+                    "documents": [classifierTextInput.value],
+                    'vectorizer': vectorizerProvider,
+                    'ldaModel': ldaModelProvider
+
                 }),
             });
 
@@ -56,11 +66,30 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
             setClassifierResult(responseData['lda_classifier_result'])
             setClassifierResultDistribution(responseData['lda_classifier_result_destribution'])
             setIsClassifierLoading(false)
+            var documentLabel = "Unlabeled"
+            if (topicsGeneratedLabel[responseData['lda_classifier_result'][0] - 1] !== null) {
+                documentLabel = topicsGeneratedLabel[responseData['lda_classifier_result'][0] - 1]
+            }
+            documentsProvider.push(
+                new Document(documentsProvider.length - 1,
+                    classifierTextInput.value,
+                    responseData['pDocument'],
+                    responseData['lda_classifier_result'][0],
+                    documentLabel,
+                    topicsGenerated[responseData['lda_classifier_result'][0]],
+                    responseData['lda_classifier_result_destribution_v2'],
+                    responseData['document_tokens'],
+                    true)
+            )
+            console.log(clustersProvider[responseData['lda_classifier_result'][0]])
+            console.log(clustersProvider)
+            console.log(documentsProvider)
+            clustersProvider[responseData['lda_classifier_result'][0]].push(documentsProvider.length - 1)
+            clustersPredicted.push(responseData['lda_classifier_result'][0])
         }
     };
 
     const determineCosineSimilarityToClusters = async () => {
-        const classifierDocumentClusterId = []
         const classifierTopicDistribution = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
         const classifierDocumentsText = Array.from({ length: Object.keys(clustersGenerated).length - 1 }, () => ([]))
         var responseData

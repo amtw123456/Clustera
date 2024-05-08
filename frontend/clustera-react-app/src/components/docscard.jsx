@@ -274,11 +274,18 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
         //         if (summarizedDocuments[value].includeToClusterBool) {
         //         }
         //     })
+        Array.from(Array(noOfClusters - 1), (item, index) => (
+            clustersGenerated[index + 1].map((value, innerIndex) => (
+                console.log(summarizedDocuments[value].documentId)
+            )
+            )))
+        console.log(clustersGenerated)
 
     }, []);
 
     useEffect(() => {
         console.log(includeClusterProvider)
+        console.log(clustersGenerated)
     }, [includeClusterProvider]);
 
     const handleincludeClusterProviderChane = (index) => {
@@ -300,10 +307,7 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
             </div>
         ) : (
             Array.from(Array(noOfClusters - 1), (item, index) => (
-
-
                 includeClusterProvider[index] ? (
-
                     <div className="w-[475px] h-72 m-3 rounded-lg bg-gray-100 drop-shadow-lg overflow-hidden" >
                         <div className="w-auto rounded-r-lg mt-2">
                             <div className="px-2 text-lg ml-1 flex justify-left font-bold">

@@ -1,5 +1,5 @@
 // ClusteraApp.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Upload } from "./Upload.jsx";
 import NavigationBar from '../../components/navbar.jsx';
 import PurpleWave from '../../components/wave.jsx'
@@ -7,9 +7,11 @@ import PurpleWave from '../../components/wave.jsx'
 const UploadPage = () => {
   const [fileName, setFileName] = useState('');
 
+
   useEffect(() => {
     // Disable scrollbar on page load
     document.body.style.overflow = 'hidden';
+
 
   }, []);
 

@@ -24,6 +24,9 @@ function LDApage() {
   const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
   const { includeAllClustersProvider, setIncludeAllClustersProvider } = useContext(AppContext);
 
+  const { vectorizerProvider, setVectorizerProvider } = useContext(AppContext);
+  const { ldaModelProvider, setLdaModelProvider } = useContext(AppContext);
+
   const [numberOfDocumentsNotIncludedPerCluster, setNumberOfDocumentsNotIncludedPerCluster] = useState([])
   const [silhouettescore, setSilhouettescore] = useState(0);
   const [topicsGenerated, setTopicsGenerated] = useState([]);
@@ -173,6 +176,9 @@ function LDApage() {
       setTopicsGeneratedLabel(Array.from({ length: noOfClustersInput }, () => (null)))
       setIncludeClusterProvider(Array.from({ length: noOfClustersInput }, () => (true)))
       setIsLoading(false);
+
+      setLdaModelProvider(responseData['lda_model'])
+      setVectorizerProvider(responseData['vectorizer'])
 
     }
   };
@@ -380,6 +386,13 @@ function LDApage() {
         },
         body: JSON.stringify({
           "lda_training_data": buildClassifierParamters(),
+          'vectorizer_type': vectorizerType,
+          "num_topics": noOfClustersInput,
+          "minimum_df_value": minimumDf,
+          "maximum_df_value": maximumDf,
+          "alpha_value": alphaInput,
+          "beta_value": betaInput,
+          "ldaModel": ldaModelProvider
         }),
       });
 
@@ -389,7 +402,10 @@ function LDApage() {
       console.error('Error during text preprocessing:', error);
     } finally {
       setClassifierModel(responseData['lda_trained_classifier'])
+      setLdaModelProvider(responseData['lda_model'])
+      setVectorizerProvider(responseData['vectorizer'])
       setIsLoading(false);
+
     }
   }
 
@@ -1430,7 +1446,7 @@ function LDApage() {
           </div >
         ) : isClassifierBool ? (
           <div className="ml-80 flex flex-row flex-wrap">
-            <Classifier summarizedDocuments={documentsProvider} classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} />
+            <Classifier summarizedDocuments={documentsProvider} classifierModel={classifierModel} topicsGenerated={topicsGenerated} topicsGeneratedLabel={topicsGeneratedLabel} clustersGenerated={clustersProvider} documentCountPerCluster={numberOfDocumentsNotIncludedPerCluster} clustersPredicted={clustersPredicted} />
           </div >
         ) : isExportBool ? (
           <div className="ml-80 flex flex-row flex-wrap">

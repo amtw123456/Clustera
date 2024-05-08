@@ -1,10 +1,32 @@
 // ClusteraApp.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Upload } from "./Upload";
 import { Link } from "react-router-dom";
 import NavigationBar from '../../components/navbar.jsx';
+import { AppContext } from '../../providers/AppState.jsx'
 
 const HomePage = () => {
+
+    const { uploadedData, setUploadedData } = useContext(AppContext);
+    const { preprocessedText, setPreprocessedText } = useContext(AppContext);
+    const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
+    const { clustersProvider, setClustersProvider } = useContext(AppContext);
+    const { classifierModel, setClassifierModel } = useContext(AppContext);
+    const { includeClusterProvider, setIncludeClusterProvider } = useContext(AppContext);
+    const { includeAllClustersProvider, setIncludeAllClustersProvider } = useContext(AppContext);
+
+    useEffect(() => {
+        setUploadedData([])
+        setPreprocessedText([])
+        setDocumentsProvider([])
+        setClustersProvider([])
+        setClassifierModel(false)
+        setIncludeClusterProvider([true])
+        setIncludeAllClustersProvider(true)
+
+    }, []);
+
+
     return (
         <div>
             <NavigationBar>
