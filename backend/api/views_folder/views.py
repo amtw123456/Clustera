@@ -3,6 +3,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score, pairwise_distances
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from googletrans import Translator
 
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
@@ -29,6 +30,7 @@ stop_words = set(stopwords.words('english')).union(custom_stopwords)
 stop_words = sorted(stop_words)
 punctuation = set(string.punctuation)
 translator = str.maketrans("", "", string.punctuation)
+print(stop_words)
 
 # sample payload
 """
@@ -99,6 +101,94 @@ def text_tokenization(request):
 
         for word in document.split():
             # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+            
+            if word not in stop_words and not word.isdigit() and len(word) < 50:
+                # lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                temp.append(word)
+
+        # document = ", ".join(temp)  
+        # temp = []
+        # for word in document.split():
+        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
+        #     temp.append(lemmatized_word)
+        
+        document = " ".join(temp)    
+        # documents_tokens.append(temp)
+        # preprocessed_text.append(document)
+        listOfDocuments.append(document)
+        PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+    end_time = time.time()  # Record the end time
+
+    elapsed_time = end_time - start_time  # Calculate the elapsed time
+    total_word_counts = count_words_in_documents(listOfDocuments)
+    sorted_word_counts = dict(sorted(total_word_counts.items(), key=lambda item: item[1], reverse=True))
+    
+    return Response(data={
+        "payload": PreProcessedInfo,
+        "execution_time": elapsed_time,
+        "total_word_counts" :sorted_word_counts.items(),
+    })
+
+# Create your views here.
+@api_view(['POST'])
+def text_tokenization_with_translation(request):
+    responseData = json.loads(request.body)
+    def translate_to_english(text):
+        translator = Translator()
+        translated_text = translator.translate(text, src='auto', dest='en')
+        return translated_text.text
+
+    def count_words_in_documents(document_contents):
+        total_word_counts = Counter()
+
+        # Process each document content
+        for content in document_contents:
+            words = content.split()
+            total_word_counts.update(words)
+
+        return total_word_counts
+    
+    start_time = time.time()
+    # json_file_path = os.path.join(os.path.dirname(__file__), 'output.json')
+    # # json_file_path = 'output.json'  # Update with your actual file path
+    # with open(json_file_path, 'r') as file:
+    #     data = json.load(file)
+
+    texts = [item.get('text', '') for item in responseData]
+    texts = [translate_to_english(text) for text in texts]
+
+    filtered_documents = []
+    for document in texts:
+        temp = []
+        document = document.translate(translator)
+        document = document.replace('“', '').replace('”', '').replace('’', "'").replace('.', '')
+        document = document.lower()
+
+        # for word in document.split():
+        #     if word not in stop_words and not word.isdigit():
+        #         temp.append(word)
+
+        # temp = []
+        # for word in document.split():
+        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
+        #     temp.append(lemmatized_word)
+        
+        # filtered_documents.append(" ".join(temp))
+        filtered_documents.append(document)
+    
+    # total_word_counts = count_words_in_documents(filtered_documents)
+    # print(total_word_counts.items())
+    # filtered_words = [word for word, count in total_word_counts.items() if count < 0]
+
+    PreProcessedInfo = []
+    listOfDocuments = []
+    for document in filtered_documents:
+        temp = []
+
+        for word in document.split():
+            # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+            
             if word not in stop_words and not word.isdigit() and len(word) < 50:
                 # lemmatized_word = WordNetLemmatizer().lemmatize(word)
                 temp.append(word)
@@ -174,6 +264,7 @@ def compute_documents_cosine_similarity(request):
 
 @api_view(['POST'])
 def compute_clusters_silhouette_score(request):
+    
     payload = json.loads(request.body)
     documentTopicDistribution = payload['lda_document_topic_distribution']
     documentLabels = payload['document_labels']
@@ -186,3 +277,6 @@ def compute_clusters_silhouette_score(request):
             "silhoutte_score": silhouette_scores,
         }
     )
+
+
+
