@@ -76,9 +76,9 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                         }
                                     </div>
                                 </div>
-                                <div className="ml-5 flex flex-row flex-wrap italic w-[500px] overflow font-bold text-base items-center">
-                                    <div className="flex text-base flex ml-[3px] px-1 ">Topic Coherence Score: :</div>
-                                    <div className='flex text-base italic rounded-md bg-green-100 border-green-400 text-green-400 px-1 border rounded-md'>{topicCoheranceGenerated[index + 1]}</div>
+                                <div className="ml-5 flex flex-row flex-wrap italic w-[500px] overflow text-base items-center">
+                                    <div className="flex text-base flex ml-[3px] px-1  font-bold">Topic Coherence Score: :</div>
+                                    <div className='flex text-base bg-white px-1 border border-slate-200 rounded-lg'>{topicCoheranceGenerated[index + 1]}</div>
                                 </div>
                             </div>
                         ))}
@@ -281,7 +281,7 @@ function DataSummarySection({ summarizedDocuments, silhouetteScoreGenerated, noO
                                                 <div className="font-bold text-sm ">
                                                     {topic}: &nbsp;
                                                 </div>
-                                                <div className="text-sm">
+                                                <div className="text-sm bg-white px-1 border border-slate-200 rounded-lg">
                                                     {wordCounts.find(item => item[0] === topic) ? (
                                                         <>{wordCounts.find(item => item[0] === topic)[1]}</>
                                                     ) : (

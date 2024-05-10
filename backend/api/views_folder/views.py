@@ -51,6 +51,7 @@ print(stop_words)
 @api_view(['POST'])
 def text_tokenization(request):
     responseData = json.loads(request.body)
+    print(responseData)
 
     def count_words_in_documents(document_contents):
         total_word_counts = Counter()
@@ -254,7 +255,7 @@ def compute_documents_cosine_similarity(request):
             temp += cosine_similarity(vectortizer.fit_transform([payload['documents'][0], document]))[1][0]
         cosine_similarity_of_clusters.append(temp / numberOfDocuments)
 
-    print(cosine_similarity_of_clusters)
+    # print(cosine_similarity_of_clusters)
     
     return Response(
         data={
