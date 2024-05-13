@@ -10,7 +10,9 @@ urlpatterns = [
     path("lsa", lsa_views.text_clustering_lsa),
     path("lda", lda_views.text_clustering_lda),
     path("trainldaclassifier", lda_views.train_lda_classifier),
-    path("ldaclassifydocuments", lda_views.lda_classify_document),
-    # path('ldav2', lda_views.text_clustering_lda_v2)
+    # path("ldaclassifydocuments", lda_views.lda_classify_document),
+    path('trainlsaclassifier', lsa_views.train_lsa_classifier),
+    # path('lsaclassifydocuments', lsa_views.lsa_classify_document),
+    path('classifydocument', views.classify_document)
     
 ]

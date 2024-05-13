@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score, pairwise_distances
 import codecs
 import math
-
+from sklearn.cluster import KMeans
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
@@ -86,6 +86,7 @@ def text_clustering_lda(request):
        if(all_equal(topic_distribution)):
           predicted_clusters.append(0)
        else:
+          
           predicted_clusters.append(np.argmax(topic_distribution, axis=0) + 1)
           
 

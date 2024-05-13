@@ -93,14 +93,14 @@ function LDApage() {
           stateSetterMap[key](false);
         }
         filterOutDocuments()
-
-        if (stateName == "isClassifierBool") {
-          trainClassifier()
-        }
       }
 
     } else {
       console.error(`State ${stateName} does not exist`);
+    }
+
+    if (stateName == "isClassifierBool") {
+      trainClassifier()
     }
   };
 
@@ -280,7 +280,14 @@ function LDApage() {
   const [documentNumberOfTokensThresholdState, setDocumentNumberOfTokensThresholdState] = useState(0)
   const [documentNumberOfTokensThreshold, setDocumentNumberOfTokensThreshold] = useState(0)
 
-  const [perplexity, setPerplexity] = useState(2)
+  const [perplexity, setPerplexity] = useState(() => {
+    if (documentsProvider.length > 2000) {
+      return 200;
+    } else {
+      return parseInt(documentsProvider.length * 0.05);
+    }
+  });
+
   const [angle, setAngle] = useState(0.5);
   const [noOfIterations, setNoOfIterations] = useState(500);
   const [learningRate, setLearningRate] = useState(30);

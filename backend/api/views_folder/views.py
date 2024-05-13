@@ -4,7 +4,7 @@ from sklearn.metrics import silhouette_score, pairwise_distances
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from googletrans import Translator
-
+import codecs
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
@@ -17,6 +17,7 @@ from nltk.corpus import stopwords
 import string
 import json
 import os
+import pickle
 
 nltk.download('stopwords')
 lemma = WordNetLemmatizer()
@@ -51,7 +52,7 @@ print(stop_words)
 @api_view(['POST'])
 def text_tokenization(request):
     responseData = json.loads(request.body)
-    print(responseData)
+    # print(responseData)
 
     def count_words_in_documents(document_contents):
         total_word_counts = Counter()
@@ -279,5 +280,44 @@ def compute_clusters_silhouette_score(request):
         }
     )
 
+
+@api_view(['POST'])
+def classify_document(request):
+   payload = json.loads(request.body)
+   classifier = payload['lda_trained_classifier']
+   documents = payload['documents'][0]
+
+   classifier = pickle.loads(codecs.decode(classifier.encode(), "base64"))
+   unpickled_vectorizer = pickle.loads(codecs.decode( payload['vectorizer'].encode(), "base64"))
+   unpickled_lda_model = pickle.loads(codecs.decode( payload['ldaModel'].encode(), "base64"))
+   
+   documents = documents.translate(translator)
+   documents = documents.replace('“', '').replace('”', '').replace('’', "'").replace('.', '')
+   documents = documents.lower()
+   
+   temp = []
+   for word in documents.split():
+     if word not in stop_words and not word.isdigit():
+        temp.append(word)
+
+   documents = " ".join(temp)
+   vectorizedDocumentToClassify = unpickled_vectorizer.transform([documents])
+   featureVectorsOfDocumentToClassify = np.hstack((vectorizedDocumentToClassify.toarray(), unpickled_lda_model.transform(vectorizedDocumentToClassify)))
+  #  print("RED")
+  #  print(unpickled_lda_model.transform(vectorizedDocumentToClassify))
+   documentClassifierResult = classifier.predict(featureVectorsOfDocumentToClassify)
+   documentClassifierResultEstimate = classifier.predict_proba(featureVectorsOfDocumentToClassify)
+   
+  #  print(documentClassifierResultEstimate)
+   return Response(
+        data={
+           "lda_classifier_result" : documentClassifierResult,
+           "lda_classifier_result_destribution" : documentClassifierResultEstimate,
+           "lda_classifier_result_destribution_v2" : documentClassifierResultEstimate[0],
+           "classifier_labels" : classifier.classes_,
+           'document_tokens' : temp,
+           'pDocument' : documents
+        }
+   )   
 
 

@@ -43,7 +43,7 @@ function Classifier({ topicsGenerated, classifierModel, topicsGeneratedLabel, do
         setIsClassifierLoading(true)
 
         try {
-            const response = await fetch(REACT_APP_BACKEND_API_URL + 'ldaclassifydocuments', {
+            const response = await fetch(REACT_APP_BACKEND_API_URL + 'classifydocument', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
