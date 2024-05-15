@@ -25,9 +25,9 @@ function NavigationBar() {
                     <Link to="/" className="text-white text-2xl font-bold">Clustera</Link>
                 </div>
                 <div className="hidden md:flex space-x-9 flex-1 justify-end">
-                    <Link to="/" className="text-white text-base hover:bg-gray-300">Upload</Link>
-                    <Link to="/aboutPage" className="text-white text-base hover:bg-gray-300">About</Link>
-                    <Link to="/documentationPage" className="text-white text-base hover:bg-gray-300">Documentation</Link>
+                    <Link to="/" className="text-white text-base hover:text-gray-300">Upload</Link>
+                    <Link to="/aboutPage" className="text-white text-base hover:text-gray-300">About</Link>
+                    <Link to="/documentationPage" className="text-white text-base hover:text-gray-300">Documentation</Link>
                 </div>
             </div>
         </nav >

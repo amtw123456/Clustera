@@ -1,5 +1,5 @@
 // ClusteraApp.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import NavigationBar from '../../components/navbar.jsx';
 import tutorialImageOne from "../../assets/Tutorialpt1.png";
@@ -10,6 +10,10 @@ import tutorialImageFive from "../../assets/Tutorialpt5.png";
 import tutorialImageSix from "../../assets/Tutorialpt6.png";
 
 const DocumentationPage = () => {
+    useEffect(() => {
+        document.body.style.overflow = 'auto';
+
+    });
     const documents = [
         {
             "text": "Trump Gives Stephen Bannon Access to National Security Council."
@@ -24,7 +28,7 @@ const DocumentationPage = () => {
     return (
         <>
             <NavigationBar />
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center overflow-auto'>
                 <div className='w-3/5 border-r border-l border-b'>
                     <div className='flex flex-col px-4'>
                         <div className='text-6xl fond-bold mt-12'>Custera</div>
