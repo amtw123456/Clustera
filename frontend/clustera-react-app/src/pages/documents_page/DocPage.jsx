@@ -135,7 +135,7 @@ function DocPage() {
         <div className="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
           <div className="ml-4 pt-4 font-bold text-2xl">Documents Hub</div>
           <ul className="mt-12">
-            <li className="flex ">{
+            <li>{
               isLoading ? (
                 <div>
                   <button disabled type="button" className="block py-2 px-4 text-black flex-1">
@@ -148,16 +148,13 @@ function DocPage() {
                 </div>
               ) : (
                 isPreProcessed ? (
-                  <button
-                    className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96 cursor-not-allowed hover:cursor-not-allowed"
-                    disabled
-                  >
-                    <div>{"Text Pre-Processing"}</div>
-                  </button>
+                  <span className="block py-2 px-5 text-black bg-gray-300 cursor-not-allowed">Text Pre-Processing</span>
                 ) : (
-                  <button className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96" onClick={() => preprocessText()}>
-                    {"Text Pre-Processing"}
-                  </button>
+                  <div class="flex">
+                    <button className="block py-2 px-4 text-black flex-1 pr-32 hover:bg-gray-300 w-96" onClick={() => preprocessText()}>
+                      {"Text Pre-Processing"}
+                    </button>
+                  </div>
                 )
               )
             }</li>
@@ -187,8 +184,22 @@ function DocPage() {
                 )
               )
             }</li>
-            <li><Link to="/cluster_page_lsa" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LSA</Link></li>
-            <li><Link to="/cluster_page_lda" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LDA</Link></li>
+            <li>
+              {
+                isPreProcessed ? (
+                  <Link to="/cluster_page_lsa" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LSA</Link>
+                ) :
+                  <span className="block py-2 px-5 text-black bg-gray-300 cursor-not-allowed">Cluster Using LSA</span>
+              }
+            </li>
+            <li>
+              {
+                isPreProcessed ? (
+                  <Link to="/cluster_page_lda" className="block py-2 px-5 text-black hover:bg-gray-300">Cluster Using LDA</Link>
+                ) :
+                  <span className="block py-2 px-5 text-black bg-gray-300 cursor-not-allowed">Cluster Using LDA</span>
+              }
+            </li>
           </ul>
         </div>
         <div className="mx-auto w-3/5">
@@ -212,7 +223,6 @@ function DocPage() {
               ) : (
                 <button href="/" className="text-blue-400 text-base border-b px-12 pt-1" onClick={() => toggleDocumentWordCountBool()}>Document Word Count</button>
               )}
-
               <a href="/" className="text-blue-400 text-base border-b pr-96 pt-1"></a>
             </div>
           </div>
