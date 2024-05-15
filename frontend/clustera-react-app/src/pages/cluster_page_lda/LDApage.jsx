@@ -52,7 +52,9 @@ function LDApage() {
   const [noOfClustersInputParams, setNoOfClustersInputParams] = useState(1)
   const [vectorizerType, setVectorizerType] = useState('tfidf');
   const [minimumDf, setMinimumDf] = useState(1);
-  const [maximumDf, setMaximumDf] = useState(2);
+  const [maximumDf, setMaximumDf] = useState(() => {
+    return documentsProvider.length
+  });
 
   const [alphaInput, setAlphaInput] = useState(0.05);
   const [betaInput, setBetaInput] = useState(0.05);
@@ -421,10 +423,12 @@ function LDApage() {
       <NavigationBar />
       <div className="bg-gray-200 mt-16 ml-5 h-[calc(100vh-75px)] w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300 overflow-auto">
         <div className="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
+
         {
           isDataSummaryBool ? (
             <>
               <div className="ml-4 italic text-base">Data Summary</div>
+
               <div className="mt-3 mx-4">
                 <div className="flex flex-row">
                   <a className="cluster-vectorizer-tooltip"><ImNotification className="flex mt-1 text-xs ml-1" /></a>
@@ -454,7 +458,7 @@ function LDApage() {
                     place="right"
                     positionStrategy="fixed"
                     content="min_df = 5 means  ignore terms that appear in less than 5 documents"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
                   />
                 </div>
 
@@ -466,11 +470,11 @@ function LDApage() {
                       anchorSelect=".max-df-tooltip"
                       place="right"
                       positionStrategy="fixed"
-                      content="max_df = 25 means ignore terms that appear in more than 25 documents"
-                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      content="max_df = 25 means ignore terms that appear in more than 25 documents the. The recommended value for this input field is 50% of the number of documents you have"
+                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
                     />
                   </div>
-                  <input type="number" step="1" min="2" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
+                  <input type="number" step="1" min="2" max={documentsProvider.length} placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
                 </div>
               </div>
 

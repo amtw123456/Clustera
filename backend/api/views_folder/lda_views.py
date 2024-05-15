@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score, pairwise_distances
 import codecs
 import math
-from sklearn.cluster import KMeans
+
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
