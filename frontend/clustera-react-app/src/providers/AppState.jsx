@@ -16,6 +16,8 @@ export const AppStateProvider = ({ children }) => {
     const [vectorizerProvider, setVectorizerProvider] = useState()
     const [ldaModelProvider, setLdaModelProvider] = useState()
 
+    const [developerMode, setDeveloperMode] = useState("Easy")
+
     return (
         <AppContext.Provider value={
             {
@@ -29,6 +31,7 @@ export const AppStateProvider = ({ children }) => {
                 includeAllClustersProvider, setIncludeAllClustersProvider,
                 vectorizerProvider, setVectorizerProvider,
                 ldaModelProvider, setLdaModelProvider,
+                developerMode, setDeveloperMode
             }
         }>
             {children}
