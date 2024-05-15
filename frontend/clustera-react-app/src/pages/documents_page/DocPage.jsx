@@ -11,6 +11,7 @@ function DocPage() {
   const { preprocessedText, setPreprocessedText } = useContext(AppContext);
   const { wordCounts, setWordCounts } = useContext(AppContext);
   const { documentsProvider, setDocumentsProvider } = useContext(AppContext);
+  const { developerMode, setDeveloperMode } = useContext(AppContext);
 
   const [responseInfo, setResponseInfo] = useState([]);
   const [isPreProcessed, setIsPreProcessed] = useState(false);
@@ -25,6 +26,15 @@ function DocPage() {
   const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
   const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
+  const handleDeveloperModeChange = (e) => {
+    if (developerMode === "Easy") {
+      setDeveloperMode("Expert");
+    }
+    else {
+      setDeveloperMode("Easy");
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = 'auto';
@@ -132,6 +142,38 @@ function DocPage() {
     isPageLoading ? <LoadingScreen /> : (
       <div className="" >
         <NavigationBar />
+        <div className="fixed bottom-0 right-0 z-50">
+          <>
+            {developerMode === "Easy" ? (
+              <button onClick={() => null} disabled={true} className='ml-2 my-2'>
+                <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-xs cursor-pointer">
+                  Easy Mode
+                </div>
+              </button>
+            ) : (
+              <button onClick={() => handleDeveloperModeChange()} className='ml-2 my-2'>
+                <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-xs cursor-pointer hover:bg-blue-700">
+                  Easy Mode
+                </div>
+              </button>
+            )}
+          </>
+          <>
+            {developerMode === "Expert" ? (
+              <button onClick={() => null} disabled={true} className='ml-2 mr-4 my-2'>
+                <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-xs cursor-pointer">
+                  Expert Mode
+                </div>
+              </button>
+            ) : (
+              <button onClick={() => handleDeveloperModeChange()} className='ml-2 mr-4 my-2'>
+                <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-xs cursor-pointer hover:bg-blue-700">
+                  Expert Mode
+                </div>
+              </button>
+            )}
+          </>
+        </div>
         <div className="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
           <div className="ml-4 pt-4 font-bold text-2xl">Documents Hub</div>
           <ul className="mt-12">

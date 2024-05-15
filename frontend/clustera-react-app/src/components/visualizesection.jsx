@@ -138,7 +138,7 @@ function VisualizationSection({ summarizedDocuments, noOfClusters, clustersPredi
                         TopicTokenFrequencies.slice(1).map((TokenFrequencies, Index) => (
                             <div className="flex-col flex justify-center mb-10">
                                 <WordCloudChart width={750} height={350} TokenFrequencies={TokenFrequencies} />
-                                <div className="text-center font-bold">Wordcloud of Cluster: {Index}</div>
+                                <div className="text-center font-bold">Wordcloud of Cluster: {Index + 1}</div>
                             </div>
                         ))
                     }

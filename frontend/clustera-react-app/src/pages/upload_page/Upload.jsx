@@ -73,16 +73,13 @@ export function Upload() {
         Upload File
       </label>
 
-      <div class="mt-3 flex flex-row">
-
-
-
+      {/* <div class="mt-3 flex flex-row">
         <>
           {
             developerMode === "Easy" ? (
               <button onClick={() => null} disabled={true}>
 
-                < div className="text-white block py-2 px-5 w-36 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-sm font-bold cursor-pointer">
+                < div className="text-white block py-2 px-5 w-36 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-800">
                   Easy Mode
                 </div>
               </button>
@@ -99,7 +96,7 @@ export function Upload() {
 
             developerMode === "Expert" ? (
               <button onClick={() => null} class="ml-4" disabled={true}>
-                < div className="text-white block py-2 px-5 w-36 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-sm font-bold cursor-pointer">
+                < div className="text-white block py-2 px-5 w-36 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-800">
                   Export Mode
                 </div>
               </button>
@@ -113,7 +110,7 @@ export function Upload() {
         </>
 
       </div >
-
+ */}
 
       <input
         type="file"

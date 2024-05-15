@@ -52,8 +52,14 @@ function LDApage() {
   // data summary hooks
   const [noOfClustersInput, setNoOfClustersInput] = useState(1)
   const [noOfClustersInputParams, setNoOfClustersInputParams] = useState(1)
-  const [vectorizerType, setVectorizerType] = useState('tfidf');
-  const [minimumDf, setMinimumDf] = useState(1);
+  const [vectorizerType, setVectorizerType] = useState('count-vectorizer');
+  const [minimumDf, setMinimumDf] = useState(() => {
+    if (documentsProvider.length > 1000) {
+      return 50;
+    } else {
+      return parseInt(documentsProvider.length * 0.05);
+    }
+  });
   const [maximumDf, setMaximumDf] = useState(() => {
     return documentsProvider.length
   });
@@ -432,6 +438,39 @@ function LDApage() {
   return (
     <div>
       <NavigationBar />
+      <div className="fixed bottom-0 right-0 z-50">
+        <>
+          {developerMode === "Easy" ? (
+            <button onClick={() => null} disabled={true} className='ml-2 my-2'>
+              <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-xs cursor-pointer">
+                Easy Mode
+              </div>
+            </button>
+          ) : (
+            <button onClick={() => handleDeveloperModeChange()} className='ml-2 my-2'>
+              <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-xs cursor-pointer hover:bg-blue-700">
+                Easy Mode
+              </div>
+            </button>
+          )}
+        </>
+        <>
+          {developerMode === "Expert" ? (
+            <button onClick={() => null} disabled={true} className='ml-2 mr-4 my-2'>
+              <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-800 rounded-lg text-xs cursor-pointer">
+                Expert Mode
+              </div>
+            </button>
+          ) : (
+            <button onClick={() => handleDeveloperModeChange()} className='ml-2 mr-4 my-2'>
+              <div className="text-white block py-2 px-3 w-26 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-xs cursor-pointer hover:bg-blue-700">
+                Expert Mode
+              </div>
+            </button>
+          )}
+        </>
+      </div>
+
       <div className="bg-gray-200 mt-16 ml-5 h-[calc(100vh-75px)] w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300 overflow-auto">
         <div className="ml-4 pt-4 font-bold text-2xl">LDA Clustering</div>
         {
@@ -456,37 +495,45 @@ function LDApage() {
                   <option value="count-vectorizer">Count Vectorizer</option>
                 </select>
               </div>
-              <div className="mx-4 my-3 flex-row flex static">
-                <div>
-                  <div className="flex flex-row justify-center">
-                    <a className="min-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                    <div className="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
-                  </div>
-                  <input type="number" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
-                  <Tooltip
-                    anchorSelect=".min-df-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="min_df = 5 means  ignore terms that appear in less than 5 documents"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                  />
-                </div>
 
-                <div className="ml-12">
-                  <div className="flex flex-row justify-center">
-                    <a className="max-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                    <div className="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
-                    <Tooltip
-                      anchorSelect=".max-df-tooltip"
-                      place="right"
-                      positionStrategy="fixed"
-                      content="max_df = 25 means ignore terms that appear in more than 25 documents the. The recommended value for this input field is 50% of the number of documents you have"
-                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                    />
+              <>
+                {developerMode === "Expert" ? (
+                  <div className="mx-4 my-3 flex-row flex static">
+                    <div>
+                      <div className="flex flex-row justify-center">
+                        <a className="min-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="flex ml-1 font-bold text-sm mb-2">Min_df:</div>
+                      </div>
+                      <input type="number" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={minimumDf} onInput={(e) => handleInputOfMinimumDf(e)} />
+                      <Tooltip
+                        anchorSelect=".min-df-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="min_df = 5 means  ignore terms that appear in less than 5 documents"
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                      />
+                    </div>
+
+                    <div className="ml-12">
+                      <div className="flex flex-row justify-center">
+                        <a className="max-df-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="flex ml-1 font-bold text-sm mb-2">Max_df:</div>
+                        <Tooltip
+                          anchorSelect=".max-df-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="max_df = 25 means ignore terms that appear in more than 25 documents the. The recommended value for this input field is 50% of the number of documents you have"
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                        />
+                      </div>
+                      <input type="number" step="1" min="2" max={documentsProvider.length} placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
+                    </div>
                   </div>
-                  <input type="number" step="1" min="2" max={documentsProvider.length} placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={maximumDf} onInput={(e) => handleInputOfMaximumDf(e)} />
-                </div>
-              </div>
+                ) : (
+                  <></>
+                )}
+              </>
+
 
               {
                 developerMode === "Expert" ? (
@@ -557,114 +604,125 @@ function LDApage() {
                   }
                 </button>
               </div>
-
-              <div className="mx-4 mt-5">
-                <div className="flex flex-row">
-                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
-                  <Tooltip anchorSelect=".clusters-include-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="This indicates the clusters you would like to include for evaluating the data"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                  />
-                </div>
-                <div className='flex flex-row mt-2 items-center justify-center'>
-                  <input
-                    type="checkbox"
-                    checked={includeAllClustersProvider}
-                    onClick={() => handleIncludeAllClustersCheckboxChange()}
-                    className=""
-                  />
-                  <div className='text-xs ml-1'>include all clusters</div>
-                </div>
-              </div>
               {
-                !isCorporaNotClustered ? (
-                  <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="mx-4 mt-5">
+                      <div className="flex flex-row">
+                        <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                        <Tooltip anchorSelect=".clusters-include-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="This indicates the clusters you would like to include for evaluating the data"
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                        />
+                      </div>
+                      <div className='flex flex-row mt-2 items-center justify-center'>
+                        <input
+                          type="checkbox"
+                          checked={includeAllClustersProvider}
+                          onClick={() => handleIncludeAllClustersCheckboxChange()}
+                          className=""
+                        />
+                        <div className='text-xs ml-1'>include all clusters</div>
+                      </div>
+                    </div>
                     {
-                      Array.from(Array(noOfClustersInputParams), (item, index) => (
-                        <div className='flex flex-row mt-2 w-1/3 items-center'>
-                          <input
-                            type="checkbox"
-                            checked={includeClusterProvider[index]}
-                            onClick={() => handleIncludeClusterCheckboxChange(index)}
-                            className=""
-                          />
-                          <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                      !isCorporaNotClustered ? (
+                        <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                          {
+                            Array.from(Array(noOfClustersInputParams), (item, index) => (
+                              <div className='flex flex-row mt-2 w-1/3 items-center'>
+                                <input
+                                  type="checkbox"
+                                  checked={includeClusterProvider[index]}
+                                  onClick={() => handleIncludeClusterCheckboxChange(index)}
+                                  className=""
+                                />
+                                <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                              </div>
+                            ))
+                          }
                         </div>
-                      ))
+                      ) : <></>
                     }
-                  </div>
+
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      {
+                        !(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0) ? (
+                          <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={false}  >
+                            {
+                              < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                                Filter Documents
+                              </div>
+                            }
+                          </button>
+                        ) :
+                          <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={true}  >
+                            {
+                              < div className="text-white block py-2 px-5 text-black border-gray-500 text-white px-12 py-2 bg-gray-500 rounded-lg text-sm font-bold hover:bg-gray-500">
+                                Filter Documents
+                              </div>
+                            }
+                          </button>
+                      }
+                    </div>
+                  </>
                 ) : <></>
               }
 
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                {
-                  !(includeClusterProvider.filter(value => value === true).length === 1 || includeClusterProvider.filter(value => value === true).length === 0) ? (
-                    <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={false}  >
-                      {
-                        < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                          Filter Documents
-                        </div>
-                      }
-                    </button>
-                  ) :
-                    <button onClick={() => { filterOutDocuments(); computeClusterSilhoutteScore() }} disabled={true}  >
-                      {
-                        < div className="text-white block py-2 px-5 text-black border-gray-500 text-white px-12 py-2 bg-gray-500 rounded-lg text-sm font-bold hover:bg-gray-500">
-                          Filter Documents
-                        </div>
-                      }
-                    </button>
-                }
-              </div>
-
-              <div className="flex justify-start mt-3 px-4 font-bold">
-                What does this options do(Data Summary)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    After preprocessing your documents, you may now cluster them and potentially identify the topics associated with each cluster generated.
-                  </li>
-                  <li className="mt-2">
-                    The Cluster vectorizer dropdown form allows you to choose between two vectorizing option to vectorize your documents.
-                  </li>
-                  <li className="mt-2">
-                    The "Minimum Document Frequency" (Min DF) and "Maximum Document Frequency" (Max DF) are parameters used in text mining and natural language processing (NLP) to filter out terms based on their occurrence frequency across a collection of documents (corpus).
-                  </li>
-                  <li className="mt-2">
-                    The input for the number of clusters determines how many clusters the set of documents would generate.
-                  </li>
-                </ul>
-              </div>
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="flex justify-start mt-3 px-4 font-bold">
+                      What does this options do(Data Summary)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          After preprocessing your documents, you may now cluster them and potentially identify the topics associated with each cluster generated.
+                        </li>
+                        <li className="mt-2">
+                          The Cluster vectorizer dropdown form allows you to choose between two vectorizing option to vectorize your documents.
+                        </li>
+                        <li className="mt-2">
+                          The "Minimum Document Frequency" (Min DF) and "Maximum Document Frequency" (Max DF) are parameters used in text mining and natural language processing (NLP) to filter out terms based on their occurrence frequency across a collection of documents (corpus).
+                        </li>
+                        <li className="mt-2">
+                          The input for the number of clusters determines how many clusters the set of documents would generate.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Data Summary)?
               </div>
@@ -690,58 +748,65 @@ function LDApage() {
                   </li>
                 </ul>
               </div>
+
             </>
           ) : isDocumentSummaryBool ? (
             <>
               <div className="ml-4 italic text-base">Documents Summary</div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                <button onClick={() => filterOutDocuments()}>{ }
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
                     </div>
-                  }
-                </button>
-              </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do (Data Summary)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Filter which documents to show, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Filter which documents to show, depending on the number of tokens a document has.
-                  </li>
-                </ul>
-              </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <button onClick={() => filterOutDocuments()}>{ }
+                        {
+                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                            Filter Documents
+                          </div>
+                        }
+                      </button>
+                    </div>
+                    <div className="flex justify-start mt-6 px-4 font-bold">
+                      What does this options do (Data Summary)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          Filter which documents to show, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Filter which documents to show, depending on the number of tokens a document has.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page (Document Summary)?
               </div>
@@ -759,90 +824,97 @@ function LDApage() {
           ) : isClusteredGeneratedBool ? (
             <>
               <div className="ml-4 italic text-base">Clusters Generated</div>
-              <div className="mx-4">
-                <div className="flex flex-row mt-2">
-                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
-                  <Tooltip anchorSelect=".clusters-include-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="This indicates the clusters you would like to include for evaluating the data"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                  />
-                </div>
-                <div className='flex flex-row mt-2 items-center justify-center'>
-                  <input
-                    type="checkbox"
-                    checked={includeAllClustersProvider}
-                    onClick={() => handleIncludeAllClustersCheckboxChange()}
-                    className=""
-                  />
-                  <div className='text-xs ml-1'>include all clusters</div>
-                </div>
-              </div>
-              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
-                {
-                  Array.from(Array(noOfClustersInputParams), (item, index) => (
-                    <div className='flex flex-row mt-2 w-1/3 items-center'>
-                      <input
-                        type="checkbox"
-                        checked={includeClusterProvider[index]}
-                        onClick={() => handleIncludeClusterCheckboxChange(index)}
-                        className=""
+
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="mx-4">
+                      <div className="flex flex-row mt-2">
+                        <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                        <Tooltip anchorSelect=".clusters-include-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="This indicates the clusters you would like to include for evaluating the data"
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                        />
+                      </div>
+                      <div className='flex flex-row mt-2 items-center justify-center'>
+                        <input
+                          type="checkbox"
+                          checked={includeAllClustersProvider}
+                          onClick={() => handleIncludeAllClustersCheckboxChange()}
+                          className=""
+                        />
+                        <div className='text-xs ml-1'>include all clusters</div>
+                      </div>
+                    </div>
+                    <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                      {
+                        Array.from(Array(noOfClustersInputParams), (item, index) => (
+                          <div className='flex flex-row mt-2 w-1/3 items-center'>
+                            <input
+                              type="checkbox"
+                              checked={includeClusterProvider[index]}
+                              onClick={() => handleIncludeClusterCheckboxChange(index)}
+                              className=""
+                            />
+                            <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
                       />
-                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
                     </div>
-                  ))
-                }
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                <button onClick={() => filterOutDocuments()}>{ }
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
                     </div>
-                  }
-                </button>
-              </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do (Clusters Generated)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Filter which documents to show, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Filter which documents to show, depending on the number of tokens a document has.
-                  </li>
-                </ul>
-              </div>
+                    <div className="flex justify-center mt-6">
+                      <button onClick={() => filterOutDocuments()}>{ }
+                        {
+                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                            Filter Documents
+                          </div>
+                        }
+                      </button>
+                    </div>
+                    <div className="flex justify-start mt-6 px-4 font-bold">
+                      What does this options do (Clusters Generated)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          Filter which documents to show, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Filter which documents to show, depending on the number of tokens a document has.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this page (Clusters Generated)?
               </div>
@@ -863,54 +935,61 @@ function LDApage() {
           ) : isDocumentTopicDistributionBool ? (
             <>
               <div className="ml-4 italic text-base">Docoument Topic Distribution</div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                <button onClick={() => filterOutDocuments()}>{ }
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
+              {
+                developerMode === "Expert" ? (
+                  <>
+
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
                     </div>
-                  }
-                </button>
-              </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do (Document Topic Distribution)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Filter which documents to show, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Filter which documents to show, depending on the number of tokens a document has.
-                  </li>
-                </ul>
-              </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <button onClick={() => filterOutDocuments()}>{ }
+                        {
+                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                            Filter Documents
+                          </div>
+                        }
+                      </button>
+                    </div>
+                    <div className="flex justify-start mt-6 px-4 font-bold">
+                      What does this options do (Document Topic Distribution)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          Filter which documents to show, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Filter which documents to show, depending on the number of tokens a document has.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page (Document Topic Distribution)?
               </div>
@@ -955,129 +1034,135 @@ function LDApage() {
           ) : isClassifierBool ? (
             <>
               <div className="ml-4 italic text-base">Classifier</div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6 mb-3">
-                <button onClick={() => filterOutDocuments()}>
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
-                    </div>
-                  }
-                </button>
-              </div>
-              <div className="mx-4">
-                <div className="flex flex-row">
-                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
-                  <Tooltip anchorSelect=".clusters-include-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="This indicates the clusters you would like to include for training the classifier"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                  />
-                </div>
-                <div className='flex flex-row mt-2 items-center justify-center'>
-                  <input
-                    type="checkbox"
-                    checked={includeAllClustersProvider}
-                    onClick={() => handleIncludeAllClustersCheckboxChange()}
-                    className=""
-                  />
-                  <div className='text-xs ml-1'>include all clusters</div>
-                </div>
-              </div>
-
-              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
-                {
-                  Array.from(Array(noOfClustersInputParams), (item, index) => (
-                    <div className='flex flex-row mt-2 w-1/3 items-center'>
-                      <input
-                        type="checkbox"
-                        checked={includeClusterProvider[index]}
-                        onClick={() => handleIncludeClusterCheckboxChange(index)}
-                        className=""
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
                       />
-                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
                     </div>
-                  ))
-                }
-              </div>
-
-              <div className="flex justify-center mt-6">
-                {
-                  includeClusterProvider.every(item => item === false) ? (
-                    <button onClick={() => trainClassifier()} disabled={true} >
-                      {
-                        isLoading ? (
-                          <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                          </svg>
-                        ) :
-                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-gray-500 rounded-lg text-sm font-bold hover:bg-gray-500">
-                            Train Classifier
-                          </div>
-                      }
-
-                    </button>) : (
-                    <button onClick={() => trainClassifier()} disabled={false} >
-                      {
-                        isLoading ? (
-                          <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                          </svg>
-                        ) :
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6 mb-3">
+                      <button onClick={() => filterOutDocuments()}>
+                        {
                           < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                            Train Classifier
+                            Filter Documents
                           </div>
-                      }
+                        }
+                      </button>
+                    </div>
+                    <div className="mx-4">
+                      <div className="flex flex-row">
+                        <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-2">Clusters to include:</div>
+                        <Tooltip anchorSelect=".clusters-include-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="This indicates the clusters you would like to include for training the classifier"
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                        />
+                      </div>
+                      <div className='flex flex-row mt-2 items-center justify-center'>
+                        <input
+                          type="checkbox"
+                          checked={includeAllClustersProvider}
+                          onClick={() => handleIncludeAllClustersCheckboxChange()}
+                          className=""
+                        />
+                        <div className='text-xs ml-1'>include all clusters</div>
+                      </div>
+                    </div>
 
-                    </button>
-                  )
-                }
-              </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do (Classifier)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Filter which documents will be used to train the classifier, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Filter which documents will be used to train the classifier, depending on the number of tokens a document has.
-                  </li>
-                  <li className="mt-2">
-                    When you have filtered documents that you want to exclude and are satisfied with what you have filtered, you can press the "Train Classifier" to retrain the classifier.
-                  </li>
-                </ul>
-              </div>
+                    <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                      {
+                        Array.from(Array(noOfClustersInputParams), (item, index) => (
+                          <div className='flex flex-row mt-2 w-1/3 items-center'>
+                            <input
+                              type="checkbox"
+                              checked={includeClusterProvider[index]}
+                              onClick={() => handleIncludeClusterCheckboxChange(index)}
+                              className=""
+                            />
+                            <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                          </div>
+                        ))
+                      }
+                    </div>
+
+                    <div className="flex justify-center mt-6">
+                      {
+                        includeClusterProvider.every(item => item === false) ? (
+                          <button onClick={() => trainClassifier()} disabled={true} >
+                            {
+                              isLoading ? (
+                                <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                </svg>
+                              ) :
+                                < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-gray-500 rounded-lg text-sm font-bold hover:bg-gray-500">
+                                  Train Classifier
+                                </div>
+                            }
+
+                          </button>) : (
+                          <button onClick={() => trainClassifier()} disabled={false} >
+                            {
+                              isLoading ? (
+                                <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                </svg>
+                              ) :
+                                < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                                  Train Classifier
+                                </div>
+                            }
+
+                          </button>
+                        )
+                      }
+                    </div>
+                    <div className="flex justify-start mt-6 px-4 font-bold">
+                      What does this options do (Classifier)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          Filter which documents will be used to train the classifier, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Filter which documents will be used to train the classifier, depending on the number of tokens a document has.
+                        </li>
+                        <li className="mt-2">
+                          When you have filtered documents that you want to exclude and are satisfied with what you have filtered, you can press the "Train Classifier" to retrain the classifier.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-6 px-4 font-bold">
                 What does this page do (Classifier)?
               </div>
@@ -1107,175 +1192,180 @@ function LDApage() {
             </>
           ) : isVisualizeBool ? (
             <>
-
-              <div className="ml-4 italic text-base">Visualize</div>
-              <div className="mx-4 mt-5">
-                <div className="flex flex-row">
-                  <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Clusters to include:</div>
-                  <Tooltip anchorSelect=".clusters-include-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="This indicates the clusters you would like to include for displaying the clusters in the scatterplot graph"
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                  />
-                </div>
-                <div className='flex flex-row mt-2 items-center justify-center'>
-                  <input
-                    type="checkbox"
-                    checked={includeAllClustersProvider}
-                    onClick={() => handleIncludeAllClustersCheckboxChange()}
-                    className=""
-                  />
-                  <div className='text-xs ml-1'>include all clusters</div>
-                </div>
-              </div>
-
-              <div className="mx-4 flex flex-row w-6/7 flex-wrap">
-                {
-                  Array.from(Array(noOfClustersInputParams), (item, index) => (
-                    <div className='flex flex-row mt-2 w-1/3 items-center'>
-                      <input
-                        type="checkbox"
-                        checked={includeClusterProvider[index]}
-                        onClick={() => handleIncludeClusterCheckboxChange(index)}
-                        className=""
-                      />
-                      <div className='text-xs ml-2'>Cluster: {index + 1}</div>
-                    </div>
-                  ))
-                }
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents that are is less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
-                </div>
-                <Tooltip anchorSelect=".document-token-threshold-tooltip"
-                  place="right"
-                  positionStrategy="fixed"
-                  content="This would filter out documents with tokens that are less than the indicated number."
-                  style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
-                />
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6 mb-3">
-                <button onClick={() => filterOutDocuments()}>
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
-                    </div>
-                  }
-                </button>
-              </div>
-              <div className="mx-4 my-3 flex-row flex">
-                <div>
-                  <div className="flex flex-row justify-center">
-                    <a className="perplexity-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                    <div className="flex ml-1 font-bold text-sm mb-2">Perplexity:</div>
-                    <Tooltip anchorSelect=".perplexity-tooltip"
-                      place="right"
-                      positionStrategy="fixed"
-                      content="Perplexity in t-SNE controls the number of close neighbors each point considers during the dimensionality reduction process. A higher perplexity value generally results in considering more neighbors, leading to a smoother and more global view of the data. Conversely, a lower perplexity value focuses on fewer neighbors, potentially revealing more local structure in the data. Adjusting perplexity requires balancing between capturing local and global structures in the resulting visualization."
-                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                    />
-                  </div>
-                  <input type="number" placeholder="" min="1" max={documentsProvider.length - 1} className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={perplexity} onInput={(e) => handleInputPerplexity(e)} />
-
-                </div>
-                <div className="ml-12">
-                  <div className="flex flex-row justify-center">
-                    <a className="angle-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                    <div className="flex ml-1 font-bold text-sm mb-2">Angle:</div>
-                    <Tooltip anchorSelect=".angle-tooltip"
-                      place="right"
-                      positionStrategy="fixed"
-                      content="Angle parameter influences how t-SNE approximates the distances between points in high-dimensional space. A larger angle allows for faster computation but may sacrifice accuracy, while a smaller angle ensures more accurate results but requires more computational time. Adjusting the angle parameter requires balancing between the computational efficiency and the quality of the resulting visualization."
-                      style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                    />
-                  </div>
-                  <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={angle} onInput={(e) => handleInputAngle(e)} />
-                </div>
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="number_iterations-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Number of Iterations:</div>
-                  <Tooltip anchorSelect=".number_iterations-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="Number of iterations influences how thoroughly t-SNE adjusts the positions of data points in the visualization space to find an optimal arrangement. More iterations generally result in a more refined and accurate representation of the data, but they also require more computational time. The choice of the number of iterations depends on the desired balance between the quality of the visualization and the computational resources available."
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                  />
-                </div>
-                <input type="number" placeholder="" min="250" step="25" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfIterations} onInput={(e) => handleInputNoOfIterations(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="flex flex-row">
-                  <a className="learning-rate-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                  <div className="font-bold text-sm mb-2 ml-1">Learning Rate:</div>
-                  <Tooltip anchorSelect=".learning-rate-tooltip"
-                    place="right"
-                    positionStrategy="fixed"
-                    content="Learning rate affects how quickly or slowly t-SNE adjusts the positions of data points in the embedding space. A higher learning rate allows for faster convergence but may risk overshooting the optimal solution, leading to instability or poor quality embeddings. Conversely, a lower learning rate results in more cautious adjustments, potentially leading to better-quality embeddings but requiring more iterations to converge. Adjusting the learning rate is crucial for finding the right balance between convergence speed and the quality of the final visualization."
-                    style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                  />
-                </div>
-                <input type="number" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                <button onClick={() => recomputeTsneValue()}>
-                  {
-                    isLoading ? (
-                      <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                      </svg>
-                    ) :
-                      < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                        Recompute Scatterplot Values
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="ml-4 italic text-base">Visualize</div>
+                    <div className="mx-4 mt-5">
+                      <div className="flex flex-row">
+                        <a className="clusters-include-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Clusters to include:</div>
+                        <Tooltip anchorSelect=".clusters-include-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="This indicates the clusters you would like to include for displaying the clusters in the scatterplot graph"
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                        />
                       </div>
-                  }
-                </button>
-              </div>
-              <div className="flex justify-start mt-6 px-4 font-bold">
-                What does this options do(Data Summary)?
-              </div>
-              <div className="px-4 mt-2">
-                <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Allows you to set the perplexity of the scatterplot graph.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to set the angle of the scatterplot graph.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to set the number of iterations when generating the scatterplot graph.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to set the learning rate when generating the scatterplot graph.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to filter which documents to show in the scatterplot graph, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to filter which documents to show in the scatterplot graph, depending on the number of tokens a document has.
-                  </li>
-                </ul>
-              </div>
+                      <div className='flex flex-row mt-2 items-center justify-center'>
+                        <input
+                          type="checkbox"
+                          checked={includeAllClustersProvider}
+                          onClick={() => handleIncludeAllClustersCheckboxChange()}
+                          className=""
+                        />
+                        <div className='text-xs ml-1'>include all clusters</div>
+                      </div>
+                    </div>
+
+                    <div className="mx-4 flex flex-row w-6/7 flex-wrap">
+                      {
+                        Array.from(Array(noOfClustersInputParams), (item, index) => (
+                          <div className='flex flex-row mt-2 w-1/3 items-center'>
+                            <input
+                              type="checkbox"
+                              checked={includeClusterProvider[index]}
+                              onClick={() => handleIncludeClusterCheckboxChange(index)}
+                              className=""
+                            />
+                            <div className='text-xs ml-2'>Cluster: {index + 1}</div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-topic-distribution-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Topic Distribution Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-topic-distribution-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents that are is less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="document-token-threshold-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Document Tokens Threshold:</div>
+                      </div>
+                      <Tooltip anchorSelect=".document-token-threshold-tooltip"
+                        place="right"
+                        positionStrategy="fixed"
+                        content="This would filter out documents with tokens that are less than the indicated number."
+                        style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
+                      />
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6 mb-3">
+                      <button onClick={() => filterOutDocuments()}>
+                        {
+                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                            Filter Documents
+                          </div>
+                        }
+                      </button>
+                    </div>
+                    <div className="mx-4 my-3 flex-row flex">
+                      <div>
+                        <div className="flex flex-row justify-center">
+                          <a className="perplexity-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                          <div className="flex ml-1 font-bold text-sm mb-2">Perplexity:</div>
+                          <Tooltip anchorSelect=".perplexity-tooltip"
+                            place="right"
+                            positionStrategy="fixed"
+                            content="Perplexity in t-SNE controls the number of close neighbors each point considers during the dimensionality reduction process. A higher perplexity value generally results in considering more neighbors, leading to a smoother and more global view of the data. Conversely, a lower perplexity value focuses on fewer neighbors, potentially revealing more local structure in the data. Adjusting perplexity requires balancing between capturing local and global structures in the resulting visualization."
+                            style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                          />
+                        </div>
+                        <input type="number" placeholder="" min="1" max={documentsProvider.length - 1} className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={perplexity} onInput={(e) => handleInputPerplexity(e)} />
+
+                      </div>
+                      <div className="ml-12">
+                        <div className="flex flex-row justify-center">
+                          <a className="angle-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                          <div className="flex ml-1 font-bold text-sm mb-2">Angle:</div>
+                          <Tooltip anchorSelect=".angle-tooltip"
+                            place="right"
+                            positionStrategy="fixed"
+                            content="Angle parameter influences how t-SNE approximates the distances between points in high-dimensional space. A larger angle allows for faster computation but may sacrifice accuracy, while a smaller angle ensures more accurate results but requires more computational time. Adjusting the angle parameter requires balancing between the computational efficiency and the quality of the resulting visualization."
+                            style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                          />
+                        </div>
+                        <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={angle} onInput={(e) => handleInputAngle(e)} />
+                      </div>
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="number_iterations-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Number of Iterations:</div>
+                        <Tooltip anchorSelect=".number_iterations-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="Number of iterations influences how thoroughly t-SNE adjusts the positions of data points in the visualization space to find an optimal arrangement. More iterations generally result in a more refined and accurate representation of the data, but they also require more computational time. The choice of the number of iterations depends on the desired balance between the quality of the visualization and the computational resources available."
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                        />
+                      </div>
+                      <input type="number" placeholder="" min="250" step="25" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfIterations} onInput={(e) => handleInputNoOfIterations(e)} />
+                    </div>
+                    <div className="mx-4 my-3">
+                      <div className="flex flex-row">
+                        <a className="learning-rate-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
+                        <div className="font-bold text-sm mb-2 ml-1">Learning Rate:</div>
+                        <Tooltip anchorSelect=".learning-rate-tooltip"
+                          place="right"
+                          positionStrategy="fixed"
+                          content="Learning rate affects how quickly or slowly t-SNE adjusts the positions of data points in the embedding space. A higher learning rate allows for faster convergence but may risk overshooting the optimal solution, leading to instability or poor quality embeddings. Conversely, a lower learning rate results in more cautious adjustments, potentially leading to better-quality embeddings but requiring more iterations to converge. Adjusting the learning rate is crucial for finding the right balance between convergence speed and the quality of the final visualization."
+                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
+                        />
+                      </div>
+                      <input type="number" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={learningRate} onInput={(e) => handleInputLearningRate(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <button onClick={() => recomputeTsneValue()}>
+                        {
+                          isLoading ? (
+                            <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                            </svg>
+                          ) :
+                            < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                              Recompute Scatterplot Values
+                            </div>
+                        }
+                      </button>
+                    </div>
+                    <div className="flex justify-start mt-6 px-4 font-bold">
+                      What does this options do(Data Summary)?
+                    </div>
+                    <div className="px-4 mt-2">
+                      <ul className="ml-6 list-disc text-sm">
+                        <li className="mt-4">
+                          Allows you to set the perplexity of the scatterplot graph.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to set the angle of the scatterplot graph.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to set the number of iterations when generating the scatterplot graph.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to set the learning rate when generating the scatterplot graph.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to filter which documents to show in the scatterplot graph, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to filter which documents to show in the scatterplot graph, depending on the number of tokens a document has.
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-2 px-4 font-bold">
                 What details are provided in this Page(Document Summary)?
               </div>
@@ -1299,35 +1389,47 @@ function LDApage() {
 
           ) : isExportBool ? (
             <>
-              <div className="ml-4 italic text-base">Export</div>
-              <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
-                <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
-              </div>
-              <div className="mx-4 my-3">
-                <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
-                <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
-              </div>
-              <div className="flex justify-center mt-6">
-                <button onClick={() => filterOutDocuments()}>{ }
-                  {
-                    < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
-                      Filter Documents
+              {
+                developerMode === "Expert" ? (
+                  <>
+                    <div className="ml-4 italic text-base">Export</div>
+                    <div className="mx-4 my-3">
+                      <div className="font-bold text-sm mb-2">Document Topic Distribution Threshold:</div>
+                      <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentTopicDistributionThreshold} onInput={(e) => handleInputDocumentTopicDistributionThreshold(e)} />
                     </div>
-                  }
-                </button>
-              </div>
+                    <div className="mx-4 my-3">
+                      <div className="font-bold text-sm mb-2">Document Tokens Threshold:</div>
+                      <input type="number" step="1" min="0" placeholder="" className="block px-3 py-2 w-24 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={documentNumberOfTokensThreshold} onInput={(e) => handleInputDocumentTokenThreshold(e)} />
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <button onClick={() => filterOutDocuments()}>{ }
+                        {
+                          < div className="text-white block py-2 px-5 text-black border-blue-500 text-white px-12 py-2 bg-blue-500 rounded-lg text-sm font-bold cursor-pointer hover:bg-blue-700">
+                            Filter Documents
+                          </div>
+                        }
+                      </button>
+                    </div>
+                  </>
+                ) : <></>
+              }
               <div className="flex justify-start mt-6 px-4 font-bold">
                 What does this options do(Data Summary)?
               </div>
               <div className="px-4 mt-2">
                 <ul className="ml-6 list-disc text-sm">
-                  <li className="mt-4">
-                    Allows you to filter which documents to download, depending on a documents topic distribution.
-                  </li>
-                  <li className="mt-2">
-                    Allows you to filter which documents to download, depending on the number of tokens a document has.
-                  </li>
+                  {
+                    developerMode === "Expert" ? (
+                      <>
+                        <li className="mt-4">
+                          Allows you to filter which documents to download, depending on a documents topic distribution.
+                        </li>
+                        <li className="mt-2">
+                          Allows you to filter which documents to download, depending on the number of tokens a document has.
+                        </li>
+                      </>
+                    ) : <></>
+                  }
                   <li className="mt-2">
                     The checkboxes allow you to pick which other information the user wants to download along with the documents.
                   </li>
