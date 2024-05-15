@@ -57,7 +57,11 @@ function LDApage() {
     if (documentsProvider.length > 1000) {
       return 50;
     } else {
-      return parseInt(documentsProvider.length * 0.05);
+      if (parseInt(documentsProvider.length * 0.05) !== 0) {
+        return parseInt(documentsProvider.length * 0.05);
+      }
+      return 1;
+
     }
   });
   const [maximumDf, setMaximumDf] = useState(() => {
