@@ -52,7 +52,7 @@ export function Upload() {
       };
       setTimeout(() => {
         setIsLoading(false);
-      }, 3500);
+      }, 300);
     }
   };
 
@@ -119,15 +119,15 @@ export function Upload() {
         style={{ display: 'none' }}
       />
       {
-        isLoading || uploadedData.isEmpty ? (
+        fileName !== "" ? (
           <Link to="/documentsPage">
-            <button className="bg-gray-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-gray-500" disabled={true}>
+            <button className="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700" disabled={false}>
               Cluster Documents
             </button >
           </Link >
         ) :
           <Link to="/documentsPage">
-            <button className="bg-purple-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-purple-700" disabled={false}>
+            <button className="bg-gray-500 text-white px-8 py-2 mb-3 py-2 mt-4 rounded-lg text-sm font-bold hover:bg-gray-700" disabled={true}>
               Cluster Documents
             </button >
           </Link >
