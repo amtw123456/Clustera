@@ -8,6 +8,9 @@ import tutorialImageThree from "../../assets/Tutorialpt3.png";
 import tutorialImageFour from "../../assets/Tutorialpt4.png";
 import tutorialImageFive from "../../assets/Tutorialpt5.png";
 import tutorialImageSix from "../../assets/Tutorialpt6.png";
+import tutorialImageSeven from "../../assets/Tutorialpt7.png";
+import tutorialImageEight from "../../assets/Tutorialpt8.png";
+import tutorialImageNine from "../../assets/Tutorialpt9.png";
 
 const DocumentationPage = () => {
     useEffect(() => {
@@ -22,7 +25,7 @@ const DocumentationPage = () => {
             "text": "India, Japan and Australia begin discussions on launching a trilateral 'Supply Chain Resilience Initiative' (SCRI) to reduce dependency on China."
         },
         {
-            "text": "France and Germany back US on 21% minimum corporate tax proposal"
+            "text": "France backs US on 21% minimum corporate tax proposal"
         }
     ];
     return (
@@ -32,7 +35,7 @@ const DocumentationPage = () => {
                 <div className='w-3/5 border-r border-l border-b'>
                     <div className='flex flex-col px-4'>
                         <div className='text-6xl fond-bold mt-12'>Custera</div>
-                        <div className='mt-6 text-lg font-bold'>Introduciton: </div>
+                        <div className='mt-6 text-lg font-bold'>Introduction: </div>
                         <div className='text-base fond-bold text-justify'>Custera is an application that allows you do document analysis in the form of clustering, classification and categorization using topic modeling methods.
                         </div>
                         <div className='mt-4 text-base fond-bold text-justify'>
@@ -84,13 +87,13 @@ const DocumentationPage = () => {
                             <img src={tutorialImageTwo} />
                         </div>
                         <div className='mt-4 text-base text-justify'>
-                            Once you have clicked upload file pick a file that you would like to use for the document analysis in this case the sampledata.json
+                            You may now go to the documents hub to do text pre-processing before we can cluster documents.
                         </div>
                         <div className='mt-2'>
                             <img src={tutorialImageThree} />
                         </div>
                         <div className='mt-4 text-base text-justify'>
-                            You may now go to the documents hub to do text pre-processing before we can cluster documents. Tex pre-processing is the process of removing stops words from documents
+                            Text pre-processing is the process of removing stops words from documents
                         </div>
                         <div className='mt-1 text-base text-justify'>
                             An example would be when we apply text pre-processing on this text: The quick brown fox jumps over the lazy dog.
@@ -101,6 +104,7 @@ const DocumentationPage = () => {
                         <div className='mt-1 text-base font-bold text-justify'>
                             Preprocessed Sentence: quick brown fox jumps lazy dog.
                         </div>
+
                         <div className='mt-2'>
                             <img src={tutorialImageFour} />
                         </div>
@@ -116,6 +120,25 @@ const DocumentationPage = () => {
                         <div className='mt-2'>
                             <img src={tutorialImageSix} />
                         </div>
+                        <div className='mt-4 text-base fond-bold text-justify'>
+                            Now that you are in the clustering part of the web application. You may now input the number of clusters you would like to create. You may Experiment with this until you are satisfied with the result.
+                        </div>
+                        <div className='mt-2'>
+                            <img src={tutorialImageSeven} />
+                        </div>
+                        <div className='mt-4 text-base fond-bold text-justify'>
+                            Click on the cluster documents to start the process for clustering and getting the topics that are related to each other.
+                        </div>
+                        <div className='mt-2'>
+                            <img src={tutorialImageEight} />
+                        </div>
+                        <div className='mt-4 text-base fond-bold text-justify'>
+                            Once the web application has finished clustering the documents this would return a result like this.
+                        </div>
+                        <div className='mt-2'>
+                            <img src={tutorialImageNine} />
+                        </div>
+
 
 
                     </div>
