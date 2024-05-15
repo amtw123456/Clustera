@@ -274,18 +274,18 @@ function ClusteredGeneratedCard({ summarizedDocuments, noOfClusters, clustersGen
         //         if (summarizedDocuments[value].includeToClusterBool) {
         //         }
         //     })
-        Array.from(Array(noOfClusters - 1), (item, index) => (
-            clustersGenerated[index + 1].map((value, innerIndex) => (
-                console.log(summarizedDocuments[value].documentId)
-            )
-            )))
-        console.log(clustersGenerated)
+        // Array.from(Array(noOfClusters - 1), (item, index) => (
+        //     clustersGenerated[index + 1].map((value, innerIndex) => (
+        //         console.log(summarizedDocuments[value].documentId)
+        //     )
+        //     )))
+        // console.log(clustersGenerated)
 
     }, []);
 
     useEffect(() => {
-        console.log(includeClusterProvider)
-        console.log(clustersGenerated)
+        // console.log(includeClusterProvider)
+        // console.log(clustersGenerated)
     }, [includeClusterProvider]);
 
     const handleincludeClusterProviderChane = (index) => {
