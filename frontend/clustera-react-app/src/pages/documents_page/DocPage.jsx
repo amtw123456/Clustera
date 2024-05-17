@@ -25,6 +25,9 @@ function DocPage() {
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
   const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
+  const [lemmatizationBool, setLemmatizationBool] = useState(false);
+  const [stemmingBool, setStemmingBool] = useState(false);
+
   const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
   const handleDeveloperModeChange = (e) => {
@@ -77,7 +80,11 @@ function DocPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(uploadedData),
+        body: JSON.stringify({
+          'documents': uploadedData,
+          'enableLemmitization': lemmatizationBool,
+          'enableStemming': stemmingBool
+        }),
       });
 
       const responseData = await response.json();
@@ -106,7 +113,11 @@ function DocPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(uploadedData),
+        body: JSON.stringify({
+          'documents': uploadedData,
+          'enableLemmitization': lemmatizationBool,
+          'enableStemming': stemmingBool
+        }),
       });
 
       const responseData = await response.json();
@@ -136,6 +147,17 @@ function DocPage() {
     ))
 
     setPreprocessedText(listOfPreProcessedText)
+  };
+
+  const handleLemmizationCheckboxChange = () => {
+    setLemmatizationBool(prevState => !prevState)
+
+
+  };
+
+  const handleStemmingCheckboxChange = () => {
+    setStemmingBool(prevState => !prevState)
+
   };
 
   return (
@@ -176,6 +198,44 @@ function DocPage() {
         </div>
         <div className="bg-gray-200 mt-16 ml-5 h-screen w-72 top-0 left-0 z-10 border border-base rounded-lg fixed border-gray-300">
           <div className="ml-4 pt-4 font-bold text-2xl">Documents Hub</div>
+
+          <div className="ml-4 italic text-base">Raw Documents</div>
+          <>
+            {developerMode === "Easy" ? (
+              <></>
+            ) : (
+              <>
+                <div className="mt-3 mx-4">
+                  <div className="flex flex-row">
+                    {/* <a className="cluster-vectorizer-tooltip"><ImNotification className="flex mt-1 text-xs ml-1" /></a> */}
+                    {/* <div className="font-bold text-sm ml-1 mb-2">Enable Lemetization:</div>
+               */}
+                    <label class="flex items-center mr-2">
+                      <span class="text-sm font-medium mr-3 font-bold dark:text-gray-400">Enable Lemmatization:</span>
+                      <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 border border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-gray-600 dark:checkbox-gray-500" checked={lemmatizationBool} onClick={() => handleLemmizationCheckboxChange()} />
+                    </label>
+
+                  </div>
+                </div>
+
+                <div className="mt-3 mx-4">
+                  <div className="flex flex-row">
+                    {/* <a className="cluster-vectorizer-tooltip"><ImNotification className="flex mt-1 text-xs ml-1" /></a> */}
+                    {/* <div className="font-bold text-sm ml-1 mb-2">Enable Lemetization:</div>
+               */}
+                    <label class="flex items-center mr-2">
+                      <span class="text-sm font-medium mr-3 font-bold dark:text-gray-400">Enable Stemming:</span>
+                      <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 border border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-gray-600 dark:checkbox-gray-500" checked={stemmingBool} onClick={() => handleStemmingCheckboxChange()} />
+                    </label>
+
+                  </div>
+                </div>
+              </>
+
+            )}
+          </>
+
+
           <ul className="mt-12">
             <li>{
               isLoading ? (

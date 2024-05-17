@@ -18,10 +18,13 @@ import string
 import json
 import os
 import pickle
+from nltk.stem import PorterStemmer
+
+
 
 nltk.download('stopwords')
 lemma = WordNetLemmatizer()
-
+stemmer = PorterStemmer()
 # Load data from a JSON file
 
 # Extract text content from the data
@@ -70,7 +73,7 @@ def text_tokenization(request):
     # with open(json_file_path, 'r') as file:
     #     data = json.load(file)
 
-    texts = [item.get('text', '') for item in responseData]
+    texts = [item.get('text', '') for item in responseData['documents']]
     # print(texts)
 
     filtered_documents = []
@@ -98,27 +101,72 @@ def text_tokenization(request):
 
     PreProcessedInfo = []
     listOfDocuments = []
-    for document in filtered_documents:
-        temp = []
 
-        for word in document.split():
-            # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
-            
-            if word not in stop_words and not word.isdigit() and len(word) < 50:
-                # lemmatized_word = WordNetLemmatizer().lemmatize(word)
-                temp.append(word)
+    if responseData['enableLemmitization'] == True and responseData['enableStemming'] == True:
+        for document in filtered_documents:
+            temp = []
 
-        # document = ", ".join(temp)  
-        # temp = []
-        # for word in document.split():
-        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
-        #     temp.append(lemmatized_word)
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                    stemmed_word = stemmer.stem(lemmatized_word)
+                    temp.append(stemmed_word)
+                
         
-        document = " ".join(temp)    
-        # documents_tokens.append(temp)
-        # preprocessed_text.append(document)
-        listOfDocuments.append(document)
-        PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+    
+    elif responseData['enableLemmitization'] == True:    
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                    temp.append(lemmatized_word)
+                            
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+    
+    
+    elif responseData['enableStemming'] == True:    
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    stemmed_word = stemmer.stem(word)
+                    temp.append(stemmed_word)
+                
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+    else:
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    # word = WordNetLemmatizer().lemmatize(word)
+                    temp.append(word)
+                
+            
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
 
     end_time = time.time()  # Record the end time
 
@@ -157,7 +205,7 @@ def text_tokenization_with_translation(request):
     # with open(json_file_path, 'r') as file:
     #     data = json.load(file)
 
-    texts = [item.get('text', '') for item in responseData]
+    texts = [item.get('text', '') for item in responseData['documents']]
     texts = [translate_to_english(text) for text in texts]
 
     filtered_documents = []
@@ -185,27 +233,71 @@ def text_tokenization_with_translation(request):
 
     PreProcessedInfo = []
     listOfDocuments = []
-    for document in filtered_documents:
-        temp = []
+    if responseData['enableLemmitization'] == True and responseData['enableStemming'] == True:
+        for document in filtered_documents:
+            temp = []
 
-        for word in document.split():
-            # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
-            
-            if word not in stop_words and not word.isdigit() and len(word) < 50:
-                # lemmatized_word = WordNetLemmatizer().lemmatize(word)
-                temp.append(word)
-
-        # document = ", ".join(temp)  
-        # temp = []
-        # for word in document.split():
-        #     lemmatized_word = WordNetLemmatizer().lemmatize(word)
-        #     temp.append(lemmatized_word)
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                    stemmed_word = stemmer.stem(lemmatized_word)
+                    temp.append(stemmed_word)
+                
         
-        document = " ".join(temp)    
-        # documents_tokens.append(temp)
-        # preprocessed_text.append(document)
-        listOfDocuments.append(document)
-        PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+
+    elif responseData['enableLemmitization'] == True:    
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    lemmatized_word = WordNetLemmatizer().lemmatize(word)
+                    temp.append(lemmatized_word)
+                            
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+
+    elif responseData['enableStemming'] == True:    
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    stemmed_word = stemmer.stem(word)
+                    temp.append(stemmed_word)
+                
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
+    else:
+        for document in filtered_documents:
+            temp = []
+
+            for word in document.split():
+                # if word not in stop_words and not word.isdigit() and word not in filtered_words and len(word) < 50:
+                
+                if word not in stop_words and not word.isdigit() and len(word) < 50:
+                    # word = WordNetLemmatizer().lemmatize(word)
+                    temp.append(word)
+                
+            
+            document = " ".join(temp)    
+            listOfDocuments.append(document)
+            PreProcessedInfo.append([{"postText": document}, {"postTokens" : temp}])
+
 
     end_time = time.time()  # Record the end time
 
