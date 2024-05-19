@@ -79,9 +79,9 @@ Once you have opened your gunicorn.conf add this code to it
 ```bash
 [program:gunicorn]
 directory = /home/ubuntu/Clustera/backend
-command = /home/ubuntu.env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Clustera/backend/app.sock backend.wsgi:application
+command = /home/ubuntu/env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Clustera/backend/app.sock backend.wsgi:application
 autostart = true
-autorrestart = true
+autorestart = true
 stderr_logfile= /var/log/gunicorn/gunicorn.err.log
 stdout_logfile= /var/log/gunicorn/gunicorn.out.log
 [group:guni]
