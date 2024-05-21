@@ -17,6 +17,9 @@ function DocPage() {
   const [isPreProcessed, setIsPreProcessed] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingPreProcessBool, setIsLoadingPreProcessBool] = useState(false);
+  const [isLoadingPreProcessWTranslateBool, setIsLoadingPreProcessWTranslateBool] = useState(false);
+
   const [isPageLoading, setPageIsLoading] = useState(true);
   const [isDocumentsLoading, setIsDocumentsLoading] = useState(false);
 
@@ -69,11 +72,13 @@ function DocPage() {
 
   };
 
+
   const preprocessText = async () => {
     setIsPreProcessed((prevValue) => !prevValue);
     setIsPreProcessed(true);
     try {
       setIsLoading(true);
+      setIsLoadingPreProcessBool(true);
 
       const response = await fetch(REACT_APP_BACKEND_API_URL, {
         method: 'POST',
@@ -102,6 +107,7 @@ function DocPage() {
       // Handle errors if necessary
     } finally {
       setIsLoading(false);
+      setIsLoadingPreProcessBool(false);
 
     }
   };
@@ -111,7 +117,7 @@ function DocPage() {
     setIsPreProcessed(true);
     try {
       setIsLoading(true);
-
+      setIsLoadingPreProcessWTranslateBool(true);
       const response = await fetch(REACT_APP_BACKEND_API_URL + "/tokenizationtranslation", {
         method: 'POST',
         headers: {
@@ -135,7 +141,7 @@ function DocPage() {
       // Handle errors if necessary
     } finally {
       setIsLoading(false);
-
+      setIsLoadingPreProcessWTranslateBool(false);
     }
   };
 
@@ -242,7 +248,7 @@ function DocPage() {
 
           <ul className="mt-12">
             <li>{
-              isLoading ? (
+              isLoadingPreProcessBool ? (
                 <div>
                   <button disabled type="button" className="block py-2 px-4 text-black flex-1">
                     <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -265,7 +271,7 @@ function DocPage() {
               )
             }</li>
             <li className="flex ">{
-              isLoading ? (
+              isLoadingPreProcessWTranslateBool ? (
                 <div>
                   <button disabled type="button" className="block py-2 px-4 text-black flex-1">
                     <svg aria-hidden="true" role="status" className="inline w-5 h-5 me-3 text-white animate-spin fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
