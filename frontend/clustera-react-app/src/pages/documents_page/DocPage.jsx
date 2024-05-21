@@ -86,7 +86,11 @@ function DocPage() {
           'enableStemming': stemmingBool
         }),
       });
-
+      console.log(JSON.stringify({
+        'documents': uploadedData,
+        'enableLemmitization': lemmatizationBool,
+        'enableStemming': stemmingBool
+      }))
       const responseData = await response.json();
       const contentLength = response.headers.get('Content-Length');
       // console.log('Payload size:', contentLength, 'bytes');

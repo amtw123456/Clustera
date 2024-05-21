@@ -584,7 +584,7 @@ function LSApage() {
                     style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }}
                   />
                 </div>
-                <input type="number" placeholder="" className="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
+                <input type="number" min="1" placeholder="" className="block px-3 py-2 w-16 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={noOfClustersInput} onInput={(e) => handleInputNoOfClusters(e)} />
               </div>
 
 
