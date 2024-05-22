@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Document } from '../../modals/modals.js'
 import { AppContext } from '../../providers/AppState.jsx';
 import { Link } from "react-router-dom";
+import Papa from 'papaparse';
 
 export function Upload() {
   const { uploadedData, setUploadedData } = useContext(AppContext);
@@ -14,11 +15,23 @@ export function Upload() {
   const [fileName, setFileName] = useState("");
   const [jsonData, setJsonData] = useState([]);
 
+  const [csvData, setCsvData] = useState([]);
+
   useEffect(() => {
+
     setUploadedData(jsonData);
     buildDocumentsFromUpload(jsonData);
-    console.log(developerMode)
+
   }, [jsonData, developerMode]);
+
+  useEffect(() => {
+
+
+    setUploadedData(csvData);
+    buildDocumentsFromUpload(csvData);
+
+
+  }, [csvData, developerMode]);
 
   const handleDeveloperModeChange = (e) => {
     if (developerMode === "Easy") {
@@ -35,26 +48,72 @@ export function Upload() {
 
     if (file) {
       const fileReader = new FileReader();
-      fileReader.readAsText(file, "UTF-8");
 
-      fileReader.onload = (e) => {
-        const content = e.target.result;
-        setFiles(content);
-        setFileName(file.name);
+      // Check file extension to determine parsing method
+      const extension = file.name.split('.').pop().toLowerCase();
 
-        try {
-          const parsedJson = JSON.parse(content);
-          setJsonData(parsedJson);
+      if (extension === 'json') {
+        fileReader.readAsText(file, "UTF-8");
+        fileReader.onload = (e) => {
+          const content = e.target.result;
+          setFiles(content);
+          setFileName(file.name);
 
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-        }
-      };
+          try {
+            const parsedJson = JSON.parse(content);
+            setJsonData(parsedJson);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        };
+      } else if (extension === 'csv') {
+        // Use a CSV parsing library (example with Papa Parse)
+        fileReader.readAsText(file, "UTF-8");
+        fileReader.onload = (e) => {
+          const content = e.target.result;
+          setFiles(content);
+          setFileName(file.name);
+
+          // Parse CSV using Papa Parse
+          const parsedData = Papa.parse(content, { header: true }); // Adjust options as needed
+          setCsvData(parsedData.data); // Assuming data property holds parsed CSV data
+        };
+      } else {
+        console.error("Unsupported file format:", file.name);
+      }
+
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
     }
   };
+
+  // const uploadDocuments = (e) => {
+  //   const file = e.target.files[0];
+  //   setIsLoading(true);
+
+  //   if (file) {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsText(file, "UTF-8");
+
+  //     fileReader.onload = (e) => {
+  //       const content = e.target.result;
+  //       setFiles(content);
+  //       setFileName(file.name);
+
+  //       try {
+  //         const parsedJson = JSON.parse(content);
+  //         setJsonData(parsedJson);
+
+  //       } catch (error) {
+  //         console.error("Error parsing JSON:", error);
+  //       }
+  //     };
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 300);
+  //   }
+  // };
 
   const buildDocumentsFromUpload = async (data) => {
 
