@@ -26,7 +26,7 @@ function NavigationBar() {
                 </div>
                 <div className="hidden md:flex space-x-9 flex-1 justify-end">
                     <Link to="/" className="text-white text-base hover:text-gray-300">Upload</Link>
-                    <Link to="/aboutPage" className="text-white text-base hover:text-gray-300">About</Link>
+                    {/* <Link to="/aboutPage" className="text-white text-base hover:text-gray-300">About</Link> */}
                     <Link to="/documentationPage" className="text-white text-base hover:text-gray-300">Documentation</Link>
                 </div>
             </div>
