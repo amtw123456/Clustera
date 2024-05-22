@@ -12,7 +12,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
 
     const colors = [
         "#ffffff",
-        "#e0ac2b", // Orange
+        // "#e0ac2b", // Orange
         "#e85252", // Red
         "#6689c6", // Blue
         "#9a6fb0", // Purple
@@ -118,10 +118,10 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
         const xPos = xScale(d.x) - size / 2;
         const yPos = yScale(d.y) - size / 2;
 
-        const isDimmed = interactionData && interactionData.color !== d.color;
-        const className = isDimmed
-            ? styles.scatterPlotsCircle + " " + styles.dimmed
-            : styles.scatterPlotsCircle;
+        // const isDimmed = interactionData && interactionData.color !== d.color;
+        // const className = isDimmed
+        //     ? styles.scatterPlotsCircle + " " + styles.dimmed
+        //     : styles.scatterPlotsCircle;
 
         return (
             <g
@@ -132,6 +132,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                         yPos,
                         ...d,
                     })
+                    // null
                 }
                 onMouseLeave={() => setInteractionData(undefined)}
             >
@@ -140,7 +141,7 @@ const Scatterplot = ({ width, height, reducedData, clusterLabel, documetsData, n
                     r={7}
                     cx={xPos}
                     cy={yPos}
-                    className={className}
+                    // className={className}
                     stroke={"black"}
                     fill={d.color}
                     strokeWidth={1}

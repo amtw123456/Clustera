@@ -538,38 +538,6 @@ function LSApage() {
               {
                 developerMode === "Expert" ? (
                   <>
-                    <div className="mt-3 mx-4">
-                      <div className="font-bold text-sm ml-1 mb-2">Latent Dirichlet Allocation Parameters:</div>
-                    </div>
-                    <div className="mx-4 my-3 flex-row flex">
-                      <div>
-                        <div className="flex flex-row justify-center">
-                          <a className="lda-param-alpha-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                          <div className="flex ml-1 font-bold text-sm mb-2">α (Alpha)</div>
-                        </div>
-                        <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={alphaInput} onInput={(e) => handleAlphaInput(e)} />
-                        <Tooltip anchorSelect=".lda-param-alpha-tooltip"
-                          place="right"
-                          positionStrategy="fixed"
-                          content="Alpha(α) guides LDA by influencing document compositions: higher values suggest broader topics, lower values suggest focused topics. Adjusting alpha helps LDA capture expected diversity or focus in document topics."
-                          style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                        />
-
-                      </div>
-                      <div className="ml-12">
-                        <div className="flex flex-row justify-center">
-                          <a className="lda-param-beta-tooltip"><ImNotification className="flex mt-1 text-xs" /></a>
-                          <div className="flex ml-1 font-bold text-sm mb-2">β (Beta)</div>
-                          <Tooltip anchorSelect=".lda-param-beta-tooltip"
-                            place="right"
-                            positionStrategy="fixed"
-                            content="Beta(β) in LDA guides how the model perceives word distributions within topics. Higher beta values imply more uniform word distributions, while lower values suggest more focused word choices. Adjusting beta helps LDA capture the expected diversity or specificity of words within topics."
-                            style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', width: "600px" }}
-                          />
-                        </div>
-                        <input type="number" step="0.01" min="0.01" max="1" placeholder="" className="block px-3 py-2 w-20 h-9 text-sm rounded-lg border border-gray-300 focus:outline-none focus:border-blue-300" value={betaInput} onInput={(e) => handleBetaInput(e)} />
-                      </div>
-                    </div>
                   </>
                 ) : <></>
               }

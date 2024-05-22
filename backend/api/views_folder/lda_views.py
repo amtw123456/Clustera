@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score, pairwise_distances
 import codecs
 import math
-
+from googletrans import Translator
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
@@ -202,6 +202,11 @@ def train_lda_classifier(request):
 
 @api_view(['POST'])
 def lda_classify_document(request):
+   def translate_to_english(text):
+        translator = Translator()
+        translated_text = translator.translate(text, src='auto', dest='en')
+        return translated_text.text
+
    payload = json.loads(request.body)
    classifier = payload['lda_trained_classifier']
    documents = payload['documents'][0]
@@ -220,7 +225,8 @@ def lda_classify_document(request):
         temp.append(word)
 
    documents = " ".join(temp)
-   vectorizedDocumentToClassify = unpickled_vectorizer.transform([documents])
+   print(translate_to_english(documents))
+   vectorizedDocumentToClassify = unpickled_vectorizer.transform([translate_to_english(documents)])
    featureVectorsOfDocumentToClassify = np.hstack((vectorizedDocumentToClassify.toarray(), unpickled_lda_model.transform(vectorizedDocumentToClassify)))
   #  print("RED")
   #  print(unpickled_lda_model.transform(vectorizedDocumentToClassify))

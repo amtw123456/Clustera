@@ -375,6 +375,10 @@ def compute_clusters_silhouette_score(request):
 
 @api_view(['POST'])
 def classify_document(request):
+   def translate_to_english(text):
+        translator = Translator()
+        translated_text = translator.translate(text, src='auto', dest='en')
+        return translated_text.text
    payload = json.loads(request.body)
    classifier = payload['lda_trained_classifier']
    documents = payload['documents'][0]
@@ -393,7 +397,7 @@ def classify_document(request):
         temp.append(word)
 
    documents = " ".join(temp)
-   vectorizedDocumentToClassify = unpickled_vectorizer.transform([documents])
+   vectorizedDocumentToClassify = unpickled_vectorizer.transform([translate_to_english(documents)])
    featureVectorsOfDocumentToClassify = np.hstack((vectorizedDocumentToClassify.toarray(), unpickled_lda_model.transform(vectorizedDocumentToClassify)))
   #  print("RED")
   #  print(unpickled_lda_model.transform(vectorizedDocumentToClassify))
