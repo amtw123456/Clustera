@@ -28,7 +28,7 @@ function DocPage() {
   const [isPreProcessedBool, setIsPreProcessedBool] = useState(false);
   const [isDocumentWordCountBool, setIsDocumentWordCountBool] = useState(false);
 
-  const [lemmatizationBool, setLemmatizationBool] = useState(false);
+  const [lemmatizationBool, setLemmatizationBool] = useState(true);
   const [stemmingBool, setStemmingBool] = useState(false);
 
   const REACT_APP_BACKEND_API_URL = process.env.REACT_APP_BACKEND_API_URL;
